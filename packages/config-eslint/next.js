@@ -39,7 +39,12 @@ module.exports = {
       },
     },
   },
-  ignorePatterns: ["node_modules/", "dist/"],
+  ignorePatterns: [
+    "node_modules/",
+    "dist/",
+    "tailwind.config.ts",
+    "next-env.d.ts",
+  ],
   // add rules configurations here
   rules: {
     "import/no-default-export": "off",
