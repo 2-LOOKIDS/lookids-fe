@@ -1,5 +1,6 @@
 message="$(cat $1)"
-requiredPattern="^\[(INIT|FEAT|TEST|FIX|DOCS|STYLE|REFACTOR|DESIGN|!HOTFIX|!BREAKING CHANGE|CHORE|COMMENT|RENAME|REMOVE|ADD|REVERT)\] : .+$"
+requiredPattern="^\[(INIT|FEAT|TEST|FIX|DOCS|STYLE|REFACTOR|DESIGN|!HOTFIX|!BREAKING CHANGE|CHORE|COMMENT|RENAME|REMOVE|ADD|REVERT)\] : .+ KAN-[0-9]+$"
+
 
 # Use grep with Perl-compatible regex for emoji support
 if ! echo "$message" | grep -Pq "$requiredPattern"; then
