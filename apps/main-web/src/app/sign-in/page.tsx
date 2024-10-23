@@ -1,8 +1,8 @@
-import { Button } from "@/components/ui/button";
+import { Button } from "@repo/ui/button";
 export default function page() {
   return (
     <div>
-      <Button variant="starbucks">hello</Button>
+      <Button>hello</Button>
       This is a Sign-In PaGE. Let me check
     </div>
   );
