@@ -1,4 +1,5 @@
-import { Button } from "@repo/ui/button";
+import { Button } from "@/components/ui/button";
+
 export default function page() {
   return (
     <div>
