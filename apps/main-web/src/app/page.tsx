@@ -1,5 +1,5 @@
-import { Badge } from "@repo/ui/badge";
-import { Card } from "@repo/ui/card";
+import { Badge } from "@repo/ui/components/badge";
+import { Card } from "@repo/ui/components/card";
 import Image from "next/image";
 
 function Gradient({
