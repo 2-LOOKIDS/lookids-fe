@@ -12,7 +12,7 @@ const config: Pick<
     "./src/components/**/*.{js,ts,jsx,tsx}", // 추가된 부분
   ],
   presets: [sharedConfig],
-  plugins: [require("tailwindcss-animate")],
+  plugins: [require("tailwindcss-animate"), require("@tailwindcss/line-clamp")],
   theme: {
     extend: {
       borderRadius: {
@@ -21,6 +21,9 @@ const config: Pick<
         sm: "calc(var(--radius) - 4px)",
       },
       colors: {
+        lookids: {
+          DEFAULT: "#FD9340",
+        },
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         card: {
