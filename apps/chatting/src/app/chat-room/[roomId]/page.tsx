@@ -35,7 +35,7 @@ export default async function page() {
   }
   return (
     <main className="flex flex-col h-[100vh] w-full max-w-4xl bg-white mx-auto overflow-hidden">
-      <ChatView />
+      <ChatView roomId={"1"} />
       <div className="border-t border-gray-200" />
       <ChatSender newChat={newChat} />
     </main>

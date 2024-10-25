@@ -10,6 +10,5 @@ const config: Omit<Config, "content"> = {
       },
     },
   },
-  plugins: [require("@tailwindcss/line-clamp")],
 };
 export default config;
