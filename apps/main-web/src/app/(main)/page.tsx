@@ -10,7 +10,7 @@ export default function page() {
       </header>
       <main>
         <div className="flex flex-col mt-10 h-screen">
-          <FeedCardList />
+          {/* <FeedCardList /> */}
           <FeedCard></FeedCard>
         </div>
       </main>
