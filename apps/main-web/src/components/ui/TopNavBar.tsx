@@ -1,7 +1,7 @@
-import MainHamburger from "./MainHamburger";
-import BellTest from "./MainTopBell";
-import MainTopLogo from "./MainTopLogo";
-import MainTopSearch from "./MainTopSearch";
+import MainHamburger from "../main/MainHamburger";
+import BellTest from "../main/MainTopBell";
+import MainTopLogo from "../main/MainTopLogo";
+import MainTopSearch from "../main/MainTopSearch";
 
 export default function TopNavBar() {
   return (

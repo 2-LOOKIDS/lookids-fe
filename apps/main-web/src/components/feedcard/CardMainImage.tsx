@@ -9,8 +9,8 @@ export default function CardMainImage() {
           style={{ aspectRatio: "1 / 1" }}
         >
           <Image
-            src="/jihunpistol.jpg"
-            alt="지훈지훈피스톨"
+            src="/pome.jpg"
+            alt="포메사진"
             layout="fill"
             objectFit="cover"
             priority

@@ -12,7 +12,7 @@ const config: Pick<
     "./src/components/**/*.{js,ts,jsx,tsx}", // 추가된 부분
   ],
   presets: [sharedConfig],
-  plugins: [require("tailwindcss-animate"), require("@tailwindcss/line-clamp")],
+  plugins: [require("tailwindcss-animate")],
   theme: {
     extend: {
       borderRadius: {
