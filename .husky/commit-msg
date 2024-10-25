@@ -8,7 +8,7 @@ if ! echo "$message" | grep -Pq "$requiredPattern"; then
   echo "=========================================================================="
   echo "============== Format should be => [type]: [subject] ====================="
   echo "== Allowed Types: INIT|FEAT|TEST|FIX|DOCS|STYLE|REFACTOR|DESIGN|!HOTFIX|!BREAKING CHANGE|CHORE|COMMENT|RENAME|REMOVE|ADD|REVERT =="
-  echo "== EXAMPLE =>[FEAT] : Add new feature                ======================"
+  echo "== EXAMPLE =>[FEAT] : Add new feature KAN-59               ======================"
   echo "=========================================================================="
   echo "== Your commit message was => $message "
   echo "== For more information, check script in .husky/commit-msg or README.md =="
