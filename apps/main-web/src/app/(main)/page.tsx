@@ -1,6 +1,6 @@
-import FeedCard from "@/components/feedcard/FeedCard";
-import BottomAppBar from "@/components/ui/BottomAppBar";
-import TopNavBar from "@/components/ui/TopNavBar";
+import FeedCard from "../../components/feedcard/FeedCard";
+import BottomAppBar from "../../components/ui/BottomAppBar";
+import TopNavBar from "../../components/ui/TopNavBar";
 
 export default function page() {
   return (
