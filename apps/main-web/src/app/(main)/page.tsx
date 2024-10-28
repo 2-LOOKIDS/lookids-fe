@@ -9,8 +9,14 @@ export default function page() {
         <TopNavBar />
       </header>
       <main>
-        <div className="flex flex-col mt-10 h-screen">
+        <div className="flex flex-col mt-10 ">
           {/* <FeedCardList /> */}
+          <FeedCard></FeedCard>
+          <FeedCard></FeedCard>
+          <FeedCard></FeedCard>
+          <FeedCard></FeedCard>
+          <FeedCard></FeedCard>
+          <FeedCard></FeedCard>
           <FeedCard></FeedCard>
         </div>
       </main>
