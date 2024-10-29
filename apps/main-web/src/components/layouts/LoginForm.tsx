@@ -1,45 +1,45 @@
-// components/LoginForm.js
+import { Button } from "@repo/ui/components/ui/button";
+import { Input } from "@repo/ui/components/ui/input";
+import { Label } from "@repo/ui/components/ui/label";
+
 export default function LoginForm() {
   return (
     <div className="bg-white p-8 rounded-lg shadow-lg w-96 mx-auto mt-8">
-      <form>
-        <div className="mb-4">
-          <label
-            className="block text-gray-700 text-sm font-bold mb-2"
-            htmlFor="userEmail"
-          >
-            이메일
-          </label>
-          <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+      <form className="space-y-6">
+        <div className="space-y-2">
+          <Label htmlFor="userEmail">이메일</Label>
+          <Input
             id="userEmail"
-            type="text"
             placeholder="이메일을 입력하세요"
+            type="email"
           />
         </div>
-        <div className="mb-6">
-          <label
-            className="block text-gray-700 text-sm font-bold mb-2"
-            htmlFor="password"
-          >
-            비밀번호
-          </label>
-          <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
-            id="password"
-            type="password"
-            placeholder="********"
-          />
+        <div className="space-y-2">
+          <Label htmlFor="password">비밀번호</Label>
+          <Input id="password" placeholder="********" type="password" />
         </div>
-        <div className="flex items-center justify-between">
-          <button
-            className="bg-[#FD9340] hover:bg-[#FC703F] text-white font-bold py-2 px-4 w-full rounded focus:outline-none focus:shadow-outline"
-            type="button"
-          >
-            로그인
-          </button>
-        </div>
+        <Button
+          className="w-full bg-[#FD9340] hover:bg-[#FC703F] text-white"
+          type="submit"
+        >
+          로그인
+        </Button>
       </form>
+
+      <div className="mt-6 space-y-4">
+        <Button
+          className="w-full bg-white text-black border border-gray-300 hover:bg-gray-100"
+          variant="outline"
+        >
+          Google로 로그인
+        </Button>
+        <Button className="w-full bg-[#FEE500] text-black hover:bg-[#FDD800]">
+          Kakao로 로그인
+        </Button>
+        <Button className="w-full bg-[#03C75A] text-white hover:bg-[#02B350]">
+          Naver로 로그인
+        </Button>
+      </div>
     </div>
   );
 }
