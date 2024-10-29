@@ -1,8 +1,8 @@
 import "@repo/ui/styles.css";
 import "./globals.css";
 
-import { Inter } from "next/font/google";
 import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 
 // import { Toaster } from "@repo/ui/components/ui/toaster";
 
@@ -20,10 +20,7 @@ export default function RootLayout({
 }): JSX.Element {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        {children}
-        {/* <Toaster /> */}
-      </body>
+      <body className={inter.className}>{children}</body>
     </html>
   );
 }

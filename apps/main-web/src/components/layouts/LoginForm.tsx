@@ -1,11 +1,11 @@
 import { Button } from "@repo/ui/components/ui/button";
 import { Input } from "@repo/ui/components/ui/input";
 import { Label } from "@repo/ui/components/ui/label";
-
+import Image from "next/image";
 export default function LoginForm() {
   return (
-    <div className="bg-white p-8 rounded-lg shadow-lg w-96 mx-auto mt-8">
-      <form className="space-y-6">
+    <div className="bg-white p-8 rounded-lg  w-96 mx-auto mt-2">
+      <form className="space-y-2">
         <div className="space-y-2">
           <Label htmlFor="userEmail">이메일</Label>
           <Input
@@ -26,19 +26,16 @@ export default function LoginForm() {
         </Button>
       </form>
 
-      <div className="mt-6 space-y-4">
-        <Button
-          className="w-full bg-white text-black border border-gray-300 hover:bg-gray-100"
-          variant="outline"
-        >
-          Google로 로그인
-        </Button>
-        <Button className="w-full bg-[#FEE500] text-black hover:bg-[#FDD800]">
-          Kakao로 로그인
-        </Button>
-        <Button className="w-full bg-[#03C75A] text-white hover:bg-[#02B350]">
-          Naver로 로그인
-        </Button>
+      <div className="flex justify-around items-center rounded-md mt-2 py-3 gap-x-4">
+        <button>
+          <Image src="/signin/google.png" width={50} height={50} alt={""} />
+        </button>
+        <button>
+          <Image src="/signin/kakao.png" width={50} height={50} alt={""} />
+        </button>
+        <button>
+          <Image src="/signin/naver.png" width={50} height={50} alt={""} />
+        </button>
       </div>
     </div>
   );
