@@ -20,6 +20,9 @@ const config: Pick<
         sm: "calc(var(--radius) - 4px)",
       },
       colors: {
+        lookids: {
+          DEFAULT: "#FD9340",
+        },
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         card: {
