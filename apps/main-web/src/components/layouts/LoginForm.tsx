@@ -43,6 +43,8 @@ export default function LoginForm() {
           <Label htmlFor="password">비밀번호</Label>
           <Input id="password" placeholder="********" type="password" />
         </div>
+        {loginError && <p className="text-red-500 text-sm">{loginError}</p>}
+
         <Button
           className="w-full bg-[#FD9340] hover:bg-[#FC703F] text-white"
           type="submit"
