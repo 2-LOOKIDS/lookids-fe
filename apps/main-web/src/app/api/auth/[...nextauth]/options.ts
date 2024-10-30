@@ -80,16 +80,16 @@ export const options: NextAuthOptions = {
     async jwt({ token, user, account, profile, session }) {
       if (account && user) {
         token.accessToken = user.accessToken; // accessToken을 string으로 캐스팅
-        token.name = user.name as string; // 이름도 string으로 캐스팅
       }
 
       return token;
     },
 
-    async session({ session, token }) {
+    async session({ session, token, user }) {
       session.user = {
         ...session.user,
-        name: token.name as string, // token에서 name을 string으로 캐스팅
+        uuid: user.uuid,
+        refreshToken: user.refreshToken,
         accessToken: token.accessToken as string, // token에서 accessToken을 string으로 캐스팅
       };
       return session;
