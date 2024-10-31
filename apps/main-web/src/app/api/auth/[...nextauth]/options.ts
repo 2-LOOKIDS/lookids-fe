@@ -1,6 +1,8 @@
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
 import KakaoProvider from "next-auth/providers/kakao";
+import NaverProvider from "next-auth/providers/naver";
 
 export const options: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
@@ -17,7 +19,7 @@ export const options: NextAuthOptions = {
         }
         // 로그인 요청을 보낼 URL
         const res = await fetch(
-          `${process.env.BACKEND_URL}/api/v1/auth/login`,
+          `${process.env.BACKEND_URL}/auth-service/api/v1/auth/sign-in`,
           {
             method: "POST",
             body: JSON.stringify(credentials),
@@ -35,13 +37,24 @@ export const options: NextAuthOptions = {
       clientId: process.env.KAKAO_CLIENT_ID || "",
       clientSecret: process.env.KAKAO_CLIENT_SECRET || "",
     }),
+    NaverProvider({
+      clientId: process.env.NAVER_CLIENT_ID || "",
+      clientSecret: process.env.NAVER_CLIENT_SECRET || "",
+    }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID || "",
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
+    }),
   ],
   callbacks: {
     async signIn({ profile, user, account }) {
-      // Kakao 로그인 처리
-      if (account?.provider === "kakao") {
-        const result = await fetch(
-          `${process.env.BACKEND_URL}/api/v1/auth/sociallogin`,
+      if (
+        account?.provider === "kakao" ||
+        account?.provider === "naver" ||
+        account?.provider === "google"
+      ) {
+        const res = await fetch(
+          `${process.env.BACKEND_URL}/auth-service/api/v1/auth/social-sign-in`,
           {
             method: "POST",
             body: JSON.stringify({
@@ -51,27 +64,25 @@ export const options: NextAuthOptions = {
             headers: { "Content-Type": "application/json" },
           },
         );
-        if (result.ok) {
-          const data = await result.json();
-          user.accessToken = data.data.accessToken;
-          user.name = data.data.name;
+
+        if (res.ok) {
+          const data = await res.json();
+          console.log("data", data);
+          user.accessToken = data.result.accessToken;
+          user.refreshToken = data.result.refreshToken;
+          user.uuid = data.result.uuid;
           return true;
-        } else if (result.status === 401) {
-          // 여기서 Kakao 정보를 `user`에 추가하여 `jwt`에서 처리할 수 있도록 넘김
-          const provider = account.provider;
-          const providerAccountId = account.providerAccountId;
-          return `/member/join?provider=${provider}&providerAccountId=${providerAccountId}`; // 회원가입 페이지로 리다이렉트
         } else {
-          throw new Error("Kakao 로그인 중 오류 발생");
+          return false;
         }
       }
       return true;
     },
-
-    async jwt({ token, user, account, profile, session }) {
+    async jwt({ token, user, account }) {
       if (account && user) {
-        token.accessToken = user.accessToken; // accessToken을 string으로 캐스팅
-        token.name = user.name as string; // 이름도 string으로 캐스팅
+        token.accessToken = user.accessToken;
+        token.refreshToken = user.refreshToken;
+        token.uuid = user.uuid;
       }
 
       return token;
@@ -80,8 +91,9 @@ export const options: NextAuthOptions = {
     async session({ session, token }) {
       session.user = {
         ...session.user,
-        name: token.name as string, // token에서 name을 string으로 캐스팅
-        accessToken: token.accessToken as string, // token에서 accessToken을 string으로 캐스팅
+        uuid: token.uuid,
+        refreshToken: token.refreshToken,
+        accessToken: token.accessToken,
       };
       return session;
     },
