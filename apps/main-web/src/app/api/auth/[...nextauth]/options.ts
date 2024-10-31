@@ -10,16 +10,16 @@ export const options: NextAuthOptions = {
     CredentialsProvider({
       name: "credentials",
       credentials: {
-        login_id: { label: "id", type: "text" },
+        loginId: { label: "id", type: "text" },
         password: { label: "password", type: "password" },
       },
       async authorize(credentials) {
-        if (!credentials?.login_id || !credentials?.password) {
+        if (!credentials?.loginId || !credentials?.password) {
           return null;
         }
         // 로그인 요청을 보낼 URL
         const res = await fetch(
-          `${process.env.BACKEND_URL}/api/v1/auth/sign-in`,
+          `${process.env.BACKEND_URL}/auth-service/api/v1/auth/sign-in`,
           {
             method: "POST",
             body: JSON.stringify(credentials),
@@ -48,49 +48,52 @@ export const options: NextAuthOptions = {
   ],
   callbacks: {
     async signIn({ profile, user, account }) {
-      // Kakao 로그인 처리
-      if (account?.provider === "kakao") {
-        const result = await fetch(
-          `${process.env.BACKEND_URL}/api/v1/auth/sociallogin`,
+      if (
+        account?.provider === "kakao" ||
+        account?.provider === "naver" ||
+        account?.provider === "google"
+      ) {
+        const res = await fetch(
+          `${process.env.BACKEND_URL}/auth-service/api/v1/auth/social-sign-in`,
           {
             method: "POST",
             body: JSON.stringify({
               provider: account.provider,
-              provider_id: account.providerAccountId,
+              providerAccountId: account.providerAccountId,
             }),
             headers: { "Content-Type": "application/json" },
           },
         );
-        if (result.ok) {
-          const data = await result.json();
-          user.accessToken = data.data.accessToken;
-          user.name = data.data.name;
+
+        if (res.ok) {
+          const data = await res.json();
+          console.log("data", data);
+          user.accessToken = data.result.accessToken;
+          user.refreshToken = data.result.refreshToken;
+          user.uuid = data.result.uuid;
           return true;
-        } else if (result.status === 401) {
-          const provider = account.provider;
-          const providerAccountId = account.providerAccountId;
-          //
         } else {
-          throw new Error(`${account.provider} 로그인 중 오류 발생`);
+          return false;
         }
       }
       return true;
     },
-
-    async jwt({ token, user, account, profile, session }) {
+    async jwt({ token, user, account }) {
       if (account && user) {
-        token.accessToken = user.accessToken; // accessToken을 string으로 캐스팅
+        token.accessToken = user.accessToken;
+        token.refreshToken = user.refreshToken;
+        token.uuid = user.uuid;
       }
 
       return token;
     },
 
-    async session({ session, token, user }) {
+    async session({ session, token }) {
       session.user = {
         ...session.user,
-        uuid: user.uuid,
-        refreshToken: user.refreshToken,
-        accessToken: token.accessToken as string, // token에서 accessToken을 string으로 캐스팅
+        uuid: token.uuid,
+        refreshToken: token.refreshToken,
+        accessToken: token.accessToken,
       };
       return session;
     },

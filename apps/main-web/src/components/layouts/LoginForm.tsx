@@ -62,7 +62,7 @@ export default function LoginForm() {
         <button
           onClick={() =>
             signIn("google", {
-              redirect: true,
+              redirect: false,
               callbackUrl: "/",
             })
           }
@@ -72,7 +72,7 @@ export default function LoginForm() {
         <button
           onClick={() =>
             signIn("kakao", {
-              redirect: true,
+              redirect: false,
               callbackUrl: "/",
             })
           }
@@ -82,7 +82,7 @@ export default function LoginForm() {
         <button
           onClick={() =>
             signIn("naver", {
-              redirect: true,
+              redirect: false,
               callbackUrl: "/",
             })
           }
