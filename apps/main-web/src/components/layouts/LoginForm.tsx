@@ -52,6 +52,11 @@ export default function LoginForm() {
           로그인
         </Button>
       </form>
+      <div className="mt-4 flex items-center">
+        <div className="border-t border-gray-300 flex-grow"></div>
+        <span className="mx-4 text-gray-500">혹은</span>
+        <div className="border-t border-gray-300 flex-grow"></div>
+      </div>
 
       <div className="flex justify-around items-center rounded-md mt-2 py-3 gap-x-4">
         <button

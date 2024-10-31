@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function LookidsLogo() {
   return (
-    <div className="mt-2">
+    <div className="mt-2 mx-auto">
       <Image
         src="/lookids.png"
         alt={"루키즈"}
