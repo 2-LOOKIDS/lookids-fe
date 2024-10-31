@@ -9,6 +9,7 @@ import { UserInfoSchema, UserInfoType } from "../../../types/auth/signup";
 
 import { Button } from "@repo/ui/components/ui/button";
 import { Input } from "@repo/ui/components/ui/input";
+import ProgressBar from "./ProgressBar";
 import React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -55,29 +56,32 @@ export default function UserInfo({
   };
 
   return (
-    <FormProvider {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
-        {formInputs.map((input, index) => (
-          <FormField
-            key={index}
-            control={form.control}
-            name={input.name}
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <Input
-                    placeholder={input.label}
-                    type={input.type}
-                    {...field}
-                  />
-                </FormControl>
-                {form.formState.errors?.[input.name] && <FormMessage />}
-              </FormItem>
-            )}
-          />
-        ))}
-        <Button>가입</Button>
-      </form>
-    </FormProvider>
+    <>
+      <ProgressBar step={2} totalStep={3} />
+      <FormProvider {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
+          {formInputs.map((input, index) => (
+            <FormField
+              key={index}
+              control={form.control}
+              name={input.name}
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input
+                      placeholder={input.label}
+                      type={input.type}
+                      {...field}
+                    />
+                  </FormControl>
+                  {form.formState.errors?.[input.name] && <FormMessage />}
+                </FormItem>
+              )}
+            />
+          ))}
+          <Button>가입</Button>
+        </form>
+      </FormProvider>
+    </>
   );
 }

@@ -15,6 +15,7 @@ import {
 
 import { Button } from "@repo/ui/components/ui/button";
 import { Checkbox } from "@repo/ui/components/ui/checkbox";
+import ProgressBar from "./ProgressBar";
 import React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -52,29 +53,32 @@ export default function TermsConsent({ onNext }: TermsConsentProps) {
   };
 
   return (
-    <FormProvider {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
-        {termList.map((term, index) => (
-          <FormField
-            key={index}
-            control={form.control}
-            name={`terms.${term.name}`}
-            render={({ field }) => (
-              <FormItem>
-                <span>{term.content}</span>
-                <FormControl>
-                  <Checkbox
-                    checked={field.value}
-                    onCheckedChange={(checked) => field.onChange(checked)}
-                  />
-                </FormControl>
-                {form.formState.errors.terms?.[term.name] && <FormMessage />}
-              </FormItem>
-            )}
-          ></FormField>
-        ))}
-        <Button type="submit">Next</Button>
-      </form>
-    </FormProvider>
+    <>
+      <ProgressBar step={0} totalStep={3} />
+      <FormProvider {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
+          {termList.map((term, index) => (
+            <FormField
+              key={index}
+              control={form.control}
+              name={`terms.${term.name}`}
+              render={({ field }) => (
+                <FormItem>
+                  <span>{term.content}</span>
+                  <FormControl>
+                    <Checkbox
+                      checked={field.value}
+                      onCheckedChange={(checked) => field.onChange(checked)}
+                    />
+                  </FormControl>
+                  {form.formState.errors.terms?.[term.name] && <FormMessage />}
+                </FormItem>
+              )}
+            ></FormField>
+          ))}
+          <Button type="submit">Next</Button>
+        </form>
+      </FormProvider>
+    </>
   );
 }
