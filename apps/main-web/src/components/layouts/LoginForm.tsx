@@ -4,8 +4,10 @@ import { Button } from "@repo/ui/components/ui/button";
 import { Input } from "@repo/ui/components/ui/input";
 import { Label } from "@repo/ui/components/ui/label";
 import { signIn } from "next-auth/react";
-import Image from "next/image";
 import { useState } from "react";
+import GoogleSign from "./signin/GoogleSign";
+import KakaoSign from "./signin/KakaoSign";
+import NaverSign from "./signin/NaverSign";
 export default function LoginForm() {
   const [loginError, setLoginError] = useState<string | null>(null); // 에러 메시지 상태
 
@@ -58,7 +60,7 @@ export default function LoginForm() {
         <div className="border-t border-gray-300 flex-grow"></div>
       </div>
 
-      <div className="flex justify-around items-center rounded-md mt-2 py-3 gap-x-4">
+      <section className="flex justify-around items-center rounded-md mt-2 py-3 gap-x-4">
         <button
           onClick={() =>
             signIn("google", {
@@ -67,7 +69,7 @@ export default function LoginForm() {
             })
           }
         >
-          <Image src="/signin/google.png" width={50} height={50} alt={""} />
+          <GoogleSign />
         </button>
         <button
           onClick={() =>
@@ -77,7 +79,7 @@ export default function LoginForm() {
             })
           }
         >
-          <Image src="/signin/kakao.png" width={50} height={50} alt={""} />
+          <KakaoSign />
         </button>
         <button
           onClick={() =>
@@ -87,9 +89,9 @@ export default function LoginForm() {
             })
           }
         >
-          <Image src="/signin/naver.png" width={50} height={50} alt={""} />
+          <NaverSign />
         </button>
-      </div>
+      </section>
     </div>
   );
 }

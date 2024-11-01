@@ -1,3 +1,4 @@
+import Link from "next/link";
 import LoginForm from "../../../components/layouts/LoginForm";
 import CatJelly from "../../../components/ui/CatJelly";
 import LookidsLogo from "../../../components/ui/LookidsLogo";
@@ -8,6 +9,12 @@ export default function Page() {
     <div className="flex flex-col w-full items-center justify-center ">
       <LookidsLogo />
       <LoginForm />
+      <p className="text-gray-400">
+        계정이 아직 없나요?
+        <Link className="ml-4 text-red-500" href="/sign-up">
+          Register
+        </Link>
+      </p>
       <CatJelly />
     </div>
   );

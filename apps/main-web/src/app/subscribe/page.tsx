@@ -30,7 +30,7 @@ export default function PushNotificationManager() {
 
   useEffect(() => {
     const isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent);
-    const isInStandaloneMode = window.navigator.standalone;
+    const isInStandaloneMode = window.navigator;
 
     if (isIOS && isInStandaloneMode) {
       // iOS PWA에서 푸시 알림 지원
