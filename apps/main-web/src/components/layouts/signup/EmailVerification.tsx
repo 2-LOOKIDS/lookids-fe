@@ -11,9 +11,11 @@ import {
   FormMessage,
 } from "@repo/ui/components/ui/form";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
-import { useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Button } from "@repo/ui/components/ui/button";
+import { Clock5 } from "lucide-react";
+import CustomInput from "./CustomInput";
 import { Input } from "@repo/ui/components/ui/input";
 import ProgressBar from "./ProgressBar";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -23,7 +25,9 @@ interface EmailVerificationProps {
 }
 
 export default function EmailVerification({ onNext }: EmailVerificationProps) {
+  const VERIFICATION_CODE_EXPIRATION_TIME = 180;
   const [isInputVisible, setIsInputVisible] = useState<boolean>(false);
+  const [timer, setTimer] = useState<number>(VERIFICATION_CODE_EXPIRATION_TIME);
 
   const form = useForm<EmailVerificationType>({
     resolver: zodResolver(EmailVerificationSchema),
@@ -33,6 +37,8 @@ export default function EmailVerification({ onNext }: EmailVerificationProps) {
     },
   });
 
+  // const email = form.getValues("email");
+  // const test = form.trigger("email");
   const isValidEmail = (email: string): boolean => {
     // 이메일 중복 확인
   };
@@ -41,12 +47,35 @@ export default function EmailVerification({ onNext }: EmailVerificationProps) {
     //인증 코드 발송
   };
 
-  const validateEmailAndSendVerificationCode = () => {
+  const startTimer = () => {
+    setTimer(180); // 3분 설정
+  };
+
+  useEffect(() => {
+    if (timer <= 0) return; // 타이머가 0이면 종료
+
+    const interval = setInterval(() => {
+      setTimer((prev) => prev - 1);
+    }, 1000);
+    return () => clearInterval(interval); // 컴포넌트 언마운트 시 타이머 정리
+  }, [timer]);
+
+  const formatTime = (time: number) => {
+    const minutes = Math.floor(time / 60);
+    const seconds = time % 60;
+    return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+  };
+
+  const validateEmailAndSendVerificationCode = async () => {
+    const test = await form.trigger("email");
     // if (isValidEmail()) {
     //   setIsInputVisible(true);
     //   sendEmail();
     // }
-    setIsInputVisible(true);
+    if (test) {
+      setIsInputVisible(true);
+      startTimer();
+    }
   };
 
   const onSubmit: SubmitHandler<EmailVerificationType> = (values) => {
@@ -65,8 +94,10 @@ export default function EmailVerification({ onNext }: EmailVerificationProps) {
     form.setValue("emailVerificationCode", newValue);
 
     // 다음 인덱스로 포커스 이동 (마지막 인덱스가 아닐 경우)
-    if (value && index < 5) {
-      document.getElementById(`input-${index + 1}`)?.focus(); // 다음 입력 필드로 포커스 이동
+    if (index === 5) {
+      onSubmit(form.getValues());
+    } else {
+      document.getElementById(`input-${index + 1}`)?.focus();
     }
   };
 
@@ -118,7 +149,7 @@ export default function EmailVerification({ onNext }: EmailVerificationProps) {
                             id={`input-${index}`} // 각 input에 고유 id 부여
                             type="text"
                             maxLength={1} // 각 input의 최대 길이 1
-                            className="h-[72px] w-[50px] rounded-xl border border-[#E5E5E5] bg-[#F4F4F4] text-2xl focus-visible:ring-0 focus-visible:ring-offset-0 font-mono text-orange-500 text-center"
+                            className="h-[72px] w-[50px] rounded-xl border border-[#E5E5E5] bg-[#F4F4F4] text-2xl focus-visible:ring-0 focus-visible:ring-offset-0 font-mono text-[#FD9340] text-center"
                             onChange={(e) =>
                               handleChange(index, e.target.value)
                             }
@@ -133,13 +164,25 @@ export default function EmailVerification({ onNext }: EmailVerificationProps) {
                   </FormItem>
                 )}
               ></FormField>
+              <div className="flex items-center gap-1.5 justify-center text-[#FD9340]">
+                <Clock5 size={20} />
+                <p>{formatTime(timer)}</p>
+              </div>
+              <div className="mt-4 flex gap-2 justify-center">
+                <p className="">인증 번호를 받지 않았다면?</p>
+                <p
+                  className="font-semibold"
+                  onClick={validateEmailAndSendVerificationCode}
+                >
+                  재전송
+                </p>
+              </div>
             </section>
           ) : (
             <p className="mt-[14px] text-center text-sm font-normal leading-6 text-[#838383]">
               인증받을 이메일을 입력하세요
             </p>
           )}
-          <Button>Next</Button>
         </form>
       </FormProvider>
     </>
