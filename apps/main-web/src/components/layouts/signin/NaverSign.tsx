@@ -1,0 +1,29 @@
+export default function NaverSign() {
+  return (
+    <svg
+      width="54"
+      height="54"
+      viewBox="0 0 54 54"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <rect width="54" height="54" rx="16" fill="#03C75A" />
+      <g clipPath="url(#clip0_144_771)">
+        <path
+          d="M30.5614 27.7033L23.1461 17H17V37H23.4386V26.295L30.8539 37H37V17H30.5614V27.7033Z"
+          fill="white"
+        />
+      </g>
+      <defs>
+        <clipPath id="clip0_144_771">
+          <rect
+            width="20"
+            height="20"
+            fill="white"
+            transform="translate(17 17)"
+          />
+        </clipPath>
+      </defs>
+    </svg>
+  );
+}

@@ -11,6 +11,9 @@ import { options } from "./api/auth/[...nextauth]/options";
 export const metadata: Metadata = {
   title: "Lookids",
   description: "루키즈 공식 홈페이지",
+  icons: {
+    icon: "/icons/favicon-96x96.png",
+  },
 };
 
 export default async function RootLayout({
