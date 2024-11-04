@@ -11,8 +11,6 @@ export const TermsConsentSchema = z.object({
     term1: mustAgree,
     term2: mustAgree,
     term3: mustAgree,
-    term4: mustAgree,
-    term5: mustAgree,
   }),
 });
 
@@ -70,8 +68,6 @@ export interface Step1 {
     term1: boolean;
     term2: boolean;
     term3: boolean;
-    term4: boolean;
-    term5: boolean;
   };
   email?: string;
   emailVerification?: string;
@@ -86,8 +82,6 @@ export interface Step2 {
     term1: boolean;
     term2: boolean;
     term3: boolean;
-    term4: boolean;
-    term5: boolean;
   };
   email?: string;
   emailVerificationCode?: string;
@@ -102,8 +96,6 @@ export interface Step3 {
     term1: boolean;
     term2: boolean;
     term3: boolean;
-    term4: boolean;
-    term5: boolean;
   };
   email: string;
   emailVerificationCode: string;
@@ -111,4 +103,8 @@ export interface Step3 {
   password?: string;
   passwordConfirm?: string;
   nickname?: string;
+}
+
+export interface VerificationResponse {
+  verification: boolean;
 }
