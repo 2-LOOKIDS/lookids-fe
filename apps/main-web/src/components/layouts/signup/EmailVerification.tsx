@@ -19,6 +19,7 @@ import { Button } from "@repo/ui/components/ui/button";
 import { Clock5 } from "lucide-react";
 import { Input } from "@repo/ui/components/ui/input";
 import ProgressBar from "./ProgressBar";
+import { checkCredentialsAvailability } from "../../../actions/auth/sign-up";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 interface EmailVerificationProps {
@@ -40,8 +41,9 @@ export default function EmailVerification({ onNext }: EmailVerificationProps) {
 
   // const email = form.getValues("email");
   // const test = form.trigger("email");
-  const isValidEmail = (email: string): boolean => {
-    // 이메일 중복 확인
+  const isValidEmail = async (email: string): Promise<boolean> => {
+    const response = await checkCredentialsAvailability(email, "email");
+    return response;
   };
 
   const sendEmail = (eamil: string): string => {
@@ -69,18 +71,24 @@ export default function EmailVerification({ onNext }: EmailVerificationProps) {
 
   const validateEmailAndSendVerificationCode = async () => {
     const test = await form.trigger("email");
-    // if (isValidEmail()) {
-    //   setIsInputVisible(true);
-    //   sendEmail();
-    // }
-    if (test) {
+    if (!test) return;
+    const response = await isValidEmail(form.getValues("email"));
+    if (!response) {
+      form.setError("email", {
+        type: "manual",
+        message: "이 이메일은 이미 사용 중입니다.",
+      });
+    } else {
       setIsInputVisible(true);
       startTimer();
     }
   };
 
-  const onSubmit: SubmitHandler<EmailVerificationType> = (values) => {
-    onNext(values.email, values.emailVerificationCode);
+  const onSubmit: SubmitHandler<EmailVerificationType> = async (values) => {
+    const response = await isValidEmail(values.email);
+    if (response) {
+      onNext(values.email, values.emailVerificationCode);
+    }
   };
 
   const handleChange = (index: number, value: string) => {

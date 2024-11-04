@@ -104,3 +104,7 @@ export interface Step3 {
   passwordConfirm?: string;
   nickname?: string;
 }
+
+export interface VerificationResponse {
+  verification: boolean;
+}
