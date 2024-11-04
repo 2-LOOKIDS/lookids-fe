@@ -11,7 +11,7 @@ const SignUpForm = dynamic(
 
 export default function page() {
   return (
-    <main>
+    <main className="w-full">
       <SignUpForm />
     </main>
   );

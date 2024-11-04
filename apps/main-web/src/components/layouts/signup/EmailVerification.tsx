@@ -1,5 +1,7 @@
 "use client";
 
+import "./styles.css";
+
 import {
   EmailVerificationSchema,
   EmailVerificationType,
@@ -15,7 +17,6 @@ import { useEffect, useState } from "react";
 
 import { Button } from "@repo/ui/components/ui/button";
 import { Clock5 } from "lucide-react";
-import CustomInput from "./CustomInput";
 import { Input } from "@repo/ui/components/ui/input";
 import ProgressBar from "./ProgressBar";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -110,22 +111,24 @@ export default function EmailVerification({ onNext }: EmailVerificationProps) {
             control={form.control}
             name="email"
             render={({ field }) => (
-              <FormItem className="mx-10 ">
+              <FormItem className="mx-10">
                 <FormControl>
                   <Input
-                    className="h-[52px] text-[20px]  placeholder:text-[#BDBDBD] focus-visible:ring-0 focus-visible:ring-offset-0 border-0 border-b rounded-none "
+                    className="signup-input"
                     placeholder="이메일"
                     type="email"
                     {...field}
                   />
                 </FormControl>
-                <Button
-                  type="button"
-                  className="fixed bottom-[41px] left-[41px] right-[41px] flex h-[59px]  flex-row items-center justify-center gap-2 rounded-xl bg-[#FD9340] px-2 py-[21px] text-center text-2xl font-semibold leading-6 text-white hover:bg-[#FD9340]/90"
-                  onClick={validateEmailAndSendVerificationCode}
-                >
-                  <p className="text-[20px]">인증 코드 받기</p>
-                </Button>
+                <div className="flex justify-center">
+                  <Button
+                    type="button"
+                    className="signup-button"
+                    onClick={validateEmailAndSendVerificationCode}
+                  >
+                    <p className="text-[20px]">인증 코드 받기</p>
+                  </Button>
+                </div>
                 {form.formState.errors.email && <FormMessage />}
               </FormItem>
             )}
@@ -142,7 +145,7 @@ export default function EmailVerification({ onNext }: EmailVerificationProps) {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl className="flex justify-center mt-[57px]">
-                      <div className="flex gap-2 mb-4">
+                      <div className="flex gap-1 mb-4">
                         {Array.from({ length: 6 }).map((_, index) => (
                           <Input
                             key={index}
