@@ -13,13 +13,16 @@ import {
   FormMessage,
 } from "@repo/ui/components/ui/form";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
+import {
+  checkCredentialsAvailability,
+  sendVerificationCode,
+} from "../../../actions/auth/sign-up";
 import { useEffect, useState } from "react";
 
 import { Button } from "@repo/ui/components/ui/button";
 import { Clock5 } from "lucide-react";
 import { Input } from "@repo/ui/components/ui/input";
 import ProgressBar from "./ProgressBar";
-import { checkCredentialsAvailability } from "../../../actions/auth/sign-up";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 interface EmailVerificationProps {
@@ -39,58 +42,6 @@ export default function EmailVerification({ onNext }: EmailVerificationProps) {
     },
   });
 
-  // const email = form.getValues("email");
-  // const test = form.trigger("email");
-  const isValidEmail = async (email: string): Promise<boolean> => {
-    const response = await checkCredentialsAvailability(email, "email");
-    return response;
-  };
-
-  const sendEmail = (eamil: string): string => {
-    //인증 코드 발송
-  };
-
-  const startTimer = () => {
-    setTimer(180); // 3분 설정
-  };
-
-  useEffect(() => {
-    if (timer <= 0) return; // 타이머가 0이면 종료
-
-    const interval = setInterval(() => {
-      setTimer((prev) => prev - 1);
-    }, 1000);
-    return () => clearInterval(interval); // 컴포넌트 언마운트 시 타이머 정리
-  }, [timer]);
-
-  const formatTime = (time: number) => {
-    const minutes = Math.floor(time / 60);
-    const seconds = time % 60;
-    return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
-  };
-
-  const validateEmailAndSendVerificationCode = async () => {
-    const test = await form.trigger("email");
-    if (!test) return;
-    const response = await isValidEmail(form.getValues("email"));
-    if (!response) {
-      form.setError("email", {
-        type: "manual",
-        message: "이 이메일은 이미 사용 중입니다.",
-      });
-    } else {
-      setIsInputVisible(true);
-      startTimer();
-    }
-  };
-
-  const onSubmit: SubmitHandler<EmailVerificationType> = async (values) => {
-    const response = await isValidEmail(values.email);
-    if (response) {
-      onNext(values.email, values.emailVerificationCode);
-    }
-  };
-
   const handleChange = (index: number, value: string) => {
     // 최대 6자리로 제한하고 값 업데이트
     const codeArray = [
@@ -108,6 +59,58 @@ export default function EmailVerification({ onNext }: EmailVerificationProps) {
     } else {
       document.getElementById(`input-${index + 1}`)?.focus();
     }
+  };
+
+  const startTimer = () => {
+    setTimer(VERIFICATION_CODE_EXPIRATION_TIME); // 3분 설정
+  };
+
+  useEffect(() => {
+    if (timer <= 0) return; // 타이머가 0이면 종료
+
+    const interval = setInterval(() => {
+      setTimer((prev) => prev - 1);
+    }, 1000);
+    return () => clearInterval(interval); // 컴포넌트 언마운트 시 타이머 정리
+  }, [timer]);
+
+  const formatTime = (time: number) => {
+    const minutes = Math.floor(time / 60);
+    const seconds = time % 60;
+    return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+  };
+
+  const isValidEmail = async (email: string): Promise<boolean> => {
+    const response = await checkCredentialsAvailability(email, "email");
+    return response;
+  };
+
+  const sendEmail = async (email: string): Promise<boolean> => {
+    //인증 코드 발송
+    const response = await sendVerificationCode(email);
+    return response;
+  };
+
+  const validateEmailAndSendVerificationCode = async () => {
+    const isEmailValid = await form.trigger("email");
+    if (!isEmailValid) return;
+    const email = form.getValues("email");
+    const isEmailUnique = await isValidEmail(email);
+    if (!isEmailUnique) {
+      form.setError("email", {
+        type: "manual",
+        message: "이 이메일은 이미 사용 중입니다.",
+      });
+      setIsInputVisible(false);
+    } else {
+      setIsInputVisible(true);
+      sendEmail(email);
+      startTimer();
+    }
+  };
+
+  const onSubmit: SubmitHandler<EmailVerificationType> = async (values) => {
+    onNext(values.email, values.emailVerificationCode);
   };
 
   return (
