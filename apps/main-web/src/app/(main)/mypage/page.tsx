@@ -1,3 +1,3 @@
 export default function page() {
-  return <div>마이페이지</div>;
+  return <div className="mt-20">마이페이지</div>;
 }

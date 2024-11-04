@@ -1,5 +1,8 @@
 "use client";
+
 import SocialCard from "../../components/feedcard/SocialCard";
+import MainSwiper from "../../components/main/MainSwiper";
+import RecommendedPet from "../../components/main/RecommendPet";
 
 export default function page() {
   function urlBase64ToUint8Array(base64String: string) {
@@ -19,13 +22,17 @@ export default function page() {
   return (
     <div>
       <main>
-        <div className="flex flex-col mt-10 ">
+        <div className="flex flex-col mt-20 mb-20 ">
+          <MainSwiper></MainSwiper>
+          <hr />
+          {/* <section className="mt-4 mx-4 h-[300px] bg-gray-200 rounded-xl " /> */}
           {/* <FeedCardList /> */}
           {/* <FeedCard></FeedCard>
           <FeedCard></FeedCard>
           <FeedCard></FeedCard> */}
           <SocialCard />
           <SocialCard />
+          <RecommendedPet />
           <SocialCard />
           <SocialCard />
         </div>
