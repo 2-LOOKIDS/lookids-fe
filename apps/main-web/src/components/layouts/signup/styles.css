@@ -1,0 +1,12 @@
+.signup-input {
+  @apply h-[52px] text-[20px]  placeholder:text-[#BDBDBD] focus-visible:ring-0 focus-visible:ring-offset-0 border-0 border-b rounded-none;
+}
+
+.signup-button {
+  /* @apply fixed bottom-[41px] left-[41px] right-[41px] flex h-[59px] flex-row items-center justify-center gap-2 rounded-xl bg-[#FD9340] px-2 py-[21px] text-center text-2xl font-semibold leading-6 text-white hover:bg-[#FD9340]/90; */
+  @apply w-[348px] h-[59px] rounded-xl bg-[#FD9340] px-2 py-[21px] text-center text-2xl font-semibold leading-6 text-white hover:bg-[#FD9340]/90 mb-4;
+}
+
+.signup-checkbox {
+  @apply h-6 w-6 rounded data-[state=checked]:bg-[#FD9340] data-[state=checked]:border-transparent;
+}
