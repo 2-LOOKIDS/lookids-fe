@@ -3,6 +3,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import KakaoProvider from "next-auth/providers/kakao";
 import NaverProvider from "next-auth/providers/naver";
+import { refreshToken } from "../../../../actions/common/refreshToken";
 
 export const options: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
@@ -67,10 +68,10 @@ export const options: NextAuthOptions = {
 
         if (res.ok) {
           const data = await res.json();
-          console.log("data", data);
           user.accessToken = data.result.accessToken;
           user.refreshToken = data.result.refreshToken;
           user.uuid = data.result.uuid;
+          console.log("유저값", user);
           return true;
         } else {
           return false;
@@ -79,10 +80,25 @@ export const options: NextAuthOptions = {
       return true;
     },
     async jwt({ token, user, account }) {
+      // 초기 로그인 시 AccessToken과 RefreshToken 설정
       if (account && user) {
         token.accessToken = user.accessToken;
         token.refreshToken = user.refreshToken;
         token.uuid = user.uuid;
+      }
+
+      // 만료된 토큰인지 확인 후 갱신 로직 실행
+
+      if (token.accessToken && token.refreshToken && token.uuid) {
+        try {
+          const data = await refreshToken(
+            token.refreshToken as string,
+            token.uuid as string,
+          );
+          token.accessToken = data.result.accessToken; // 갱신된 AccessToken 저장
+        } catch (error) {
+          console.error("Token 갱신 실패:", error);
+        }
       }
 
       return token;
