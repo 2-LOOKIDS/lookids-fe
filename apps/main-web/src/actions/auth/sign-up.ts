@@ -1,6 +1,6 @@
 "use server";
 
-import { CommonResType } from "../../types/responseType";
+import { CommonResponse } from "../../types/responseType";
 import { VerificationResponse } from "../../types/auth/signup";
 
 // auth-service BASE_URL
@@ -26,7 +26,8 @@ export const checkCredentialsAvailability = async (
     body,
   });
 
-  const result = (await response.json()) as CommonResType<VerificationResponse>;
+  const result =
+    (await response.json()) as CommonResponse<VerificationResponse>;
   return result.result.verification;
 };
 
@@ -41,6 +42,7 @@ export const sendVerificationCode = async (email: string): Promise<boolean> => {
     body: JSON.stringify({ key: email }),
   });
 
-  const result = (await response.json()) as CommonResType<VerificationResponse>;
+  const result =
+    (await response.json()) as CommonResponse<VerificationResponse>;
   return result.result.verification;
 };
