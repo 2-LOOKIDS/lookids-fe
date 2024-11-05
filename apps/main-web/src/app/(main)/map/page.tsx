@@ -1,5 +1,9 @@
-import React from "react";
+import KaKaoMap from "../../../components/map/KaKaoMap";
 
 export default function page() {
-  return <div>page</div>;
+  return (
+    <div className="mt-10">
+      <KaKaoMap />
+    </div>
+  );
 }
