@@ -88,7 +88,6 @@ export const options: NextAuthOptions = {
         token.uuid = user.uuid;
         token.AccessTokenExpiredTime = user.AccessTokenExpiredTime;
       }
-
       // 만료된 토큰인지 확인 후 갱신 로직 실행
       if (Date.now() > token.AccessTokenExpiredTime && token.refreshToken) {
         try {
@@ -97,6 +96,7 @@ export const options: NextAuthOptions = {
             token.uuid as string,
           );
           token.accessToken = data.result.accessToken; // 갱신된 AccessToken 저장
+          token.AccessTokenExpiredTime = data.result.AccessTokenExpiredTime; // 갱신된 AccessToken 만료 시간 저장
         } catch (error) {
           signOut({ callbackUrl: "/sign-in" }); // 토큰 갱신 실패 시 로그아웃
           console.error("Token 갱신 실패:", error);
