@@ -85,11 +85,11 @@ export const options: NextAuthOptions = {
         token.accessToken = user.accessToken;
         token.refreshToken = user.refreshToken;
         token.uuid = user.uuid;
+        token.AccessTokenExpiredTime = user.AccessTokenExpiredTime;
       }
 
       // 만료된 토큰인지 확인 후 갱신 로직 실행
-
-      if (token.accessToken && token.refreshToken && token.uuid) {
+      if (Date.now() > token.AccessTokenExpiredTime && token.refreshToken) {
         try {
           const data = await refreshToken(
             token.refreshToken as string,
