@@ -3,7 +3,7 @@ import { Button } from "@repo/ui/components/ui/button";
 import { Checkbox } from "@repo/ui/components/ui/checkbox";
 import { Input } from "@repo/ui/components/ui/input";
 import { Textarea } from "@repo/ui/components/ui/textarea";
-import { Camera, Check, ChevronLeft, Plus, X } from "lucide-react";
+import { Check, ChevronLeft, Plus, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRef, useState } from "react";
@@ -26,17 +26,6 @@ export default function AddFeed() {
         setImage(reader.result as string);
       };
       reader.readAsDataURL(file);
-    }
-  };
-
-  const handleCameraCapture = async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-      // Here you would typically open a camera view component
-      // For this example, we'll just trigger the file input
-      fileInputRef.current?.click();
-    } catch (err) {
-      console.error("Camera access denied:", err);
     }
   };
 
@@ -99,13 +88,6 @@ export default function AddFeed() {
                   className="rounded-full"
                 >
                   <Plus className="w-6 h-6 mr-2" /> 사진 선택하기
-                </Button>
-                <Button
-                  onClick={handleCameraCapture}
-                  variant="outline"
-                  className="rounded-full"
-                >
-                  <Camera className="w-6 h-6 mr-2" /> 사진 촬영하기
                 </Button>
               </div>
             </div>
