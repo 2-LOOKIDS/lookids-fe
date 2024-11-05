@@ -9,6 +9,7 @@ import { UserInfoSchema, UserInfoType } from "../../../types/auth/signup";
 
 import { Button } from "@repo/ui/components/ui/button";
 import { Input } from "@repo/ui/components/ui/input";
+import ProgressBar from "./ProgressBar";
 import React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -17,8 +18,6 @@ interface UserInfoProps {
     term1: boolean;
     term2: boolean;
     term3: boolean;
-    term4: boolean;
-    term5: boolean;
   };
   email: string;
   emailVerificationCode: string;
@@ -55,29 +54,35 @@ export default function UserInfo({
   };
 
   return (
-    <FormProvider {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
-        {formInputs.map((input, index) => (
-          <FormField
-            key={index}
-            control={form.control}
-            name={input.name}
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <Input
-                    placeholder={input.label}
-                    type={input.type}
-                    {...field}
-                  />
-                </FormControl>
-                {form.formState.errors?.[input.name] && <FormMessage />}
-              </FormItem>
-            )}
-          />
-        ))}
-        <Button>가입</Button>
-      </form>
-    </FormProvider>
+    <>
+      <ProgressBar step={2} totalStep={3} />
+      <FormProvider {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
+          {formInputs.map((input, index) => (
+            <FormField
+              key={index}
+              control={form.control}
+              name={input.name}
+              render={({ field }) => (
+                <FormItem className="mx-10 mb-6">
+                  <FormControl>
+                    <Input
+                      className="signup-input"
+                      placeholder={input.label}
+                      type={input.type}
+                      {...field}
+                    />
+                  </FormControl>
+                  {form.formState.errors?.[input.name] && <FormMessage />}
+                </FormItem>
+              )}
+            />
+          ))}
+          <Button className="fixed bottom-[41px] left-[41px] right-[41px] flex h-[59px] flex-row items-center justify-center gap-2 rounded-xl bg-[#FD9340] px-2 py-[21px] text-center text-2xl font-semibold leading-6 text-white hover:bg-[#FD9340]/90">
+            회원가입
+          </Button>
+        </form>
+      </FormProvider>
+    </>
   );
 }
