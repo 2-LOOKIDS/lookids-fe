@@ -38,7 +38,7 @@ export default function AddFeed() {
   return (
     <div className="w-full max-w-[430px] mx-auto min-h-screen bg-white">
       {/* Header */}
-      <div className="flex items-center justify-between px-4 h-[52px] border-b  mt-16">
+      <div className="flex items-center justify-between px-4 h-[52px] border-b  ">
         <Link href="/" className="p-2">
           <ChevronLeft className="w-6 h-6" />
         </Link>
@@ -98,14 +98,14 @@ export default function AddFeed() {
       {/* Form */}
       <div className="p-4 space-y-6">
         <Input
-          placeholder="Enter title"
+          placeholder="제목을 입력해주세요"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           className="border-gray-300"
         />
 
         <Textarea
-          placeholder="Write your content..."
+          placeholder="내용을 입력해주세요"
           value={content}
           onChange={(e) => setContent(e.target.value)}
           className="min-h-[150px] border-gray-300"
