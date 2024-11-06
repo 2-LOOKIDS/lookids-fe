@@ -1,8 +1,14 @@
 "use client";
 
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "@repo/ui/components/ui/avatar";
+import { Badge } from "@repo/ui/components/ui/badge";
+import { ScrollArea } from "@repo/ui/components/ui/scroll-area";
 import { Search } from "lucide-react";
 import * as React from "react";
-
 interface ChatMessage {
   id: string;
   username: string;
@@ -56,9 +62,7 @@ export default function Component() {
             <Badge
               variant="destructive"
               className="rounded-full h-5 min-w-[20px] px-1.5"
-            >
-              2
-            </Badge>
+            ></Badge>
           </div>
         </div>
       </header>
