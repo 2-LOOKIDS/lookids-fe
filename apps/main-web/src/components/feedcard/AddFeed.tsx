@@ -1,15 +1,19 @@
 "use client";
+
 import { Button } from "@repo/ui/components/ui/button";
 import { Checkbox } from "@repo/ui/components/ui/checkbox";
 import { Input } from "@repo/ui/components/ui/input";
 import { Textarea } from "@repo/ui/components/ui/textarea";
-import { Check, ChevronLeft, Plus, X } from "lucide-react";
+import { ChevronLeft, Plus, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRef, useState } from "react";
+import { uploadToS3 } from "../../actions/feed/FeedCard";
 
-export default function AddFeed() {
-  const [image, setImage] = useState<string | null>(null);
+// Assuming you have an S3 upload function
+
+export default function MultiImageUpload() {
+  const [images, setImages] = useState<string[]>([]);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [isDraft, setIsDraft] = useState(false);
@@ -18,15 +22,23 @@ export default function AddFeed() {
 
   const tags = ["디자인", "배고프다", "집가고 싶다"];
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImage(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files) {
+      const newImages = Array.from(files).slice(0, 5 - images.length);
+      for (const file of newImages) {
+        try {
+          const url = await uploadToS3(file);
+          setImages((prev) => [...prev, url]);
+        } catch (error) {
+          console.error("Failed to upload image:", error);
+        }
+      }
     }
+  };
+
+  const removeImage = (index: number) => {
+    setImages((prev) => prev.filter((_, i) => i !== index));
   };
 
   const toggleTag = (tag: string) => {
@@ -38,14 +50,14 @@ export default function AddFeed() {
   return (
     <div className="w-full max-w-[430px] mx-auto min-h-screen bg-white">
       {/* Header */}
-      <div className="flex items-center justify-between px-4 h-[52px] border-b  mt-16">
+      <div className="flex items-center justify-between px-4 h-[52px] border-b mt-16">
         <Link href="/" className="p-2">
           <ChevronLeft className="w-6 h-6" />
         </Link>
         <h1 className="text-center font-semibold">FEED</h1>
         <div className="w-10 h-10 rounded-full overflow-hidden">
           <Image
-            src="/jihunpistol.jpg"
+            src="/placeholder.svg?height=40&width=40"
             alt="Profile"
             width={40}
             height={40}
@@ -56,40 +68,40 @@ export default function AddFeed() {
 
       {/* Image Upload Area */}
       <div className="p-4">
-        <div className="relative w-full aspect-square bg-gray-100 rounded-2xl overflow-hidden">
-          {image ? (
-            <>
+        <div className="grid grid-cols-3 gap-2">
+          {images.map((image, index) => (
+            <div key={index} className="relative aspect-square">
               <Image
                 src={image}
-                alt="Upload preview"
+                alt={`Upload ${index + 1}`}
                 fill
-                className="object-cover"
+                className="object-cover rounded-lg"
               />
               <button
-                onClick={() => setImage(null)}
-                className="absolute top-4 right-4 p-2 bg-white rounded-full"
+                onClick={() => removeImage(index)}
+                className="absolute top-1 right-1 p-1 bg-white rounded-full"
               >
                 <X className="w-4 h-4" />
               </button>
-            </>
-          ) : (
-            <div className="absolute inset-0 flex items-center justify-center">
+            </div>
+          ))}
+          {images.length < 5 && (
+            <div className="aspect-square bg-gray-100 rounded-lg flex items-center justify-center">
               <input
                 type="file"
                 accept="image/*"
                 onChange={handleImageUpload}
                 className="hidden"
                 ref={fileInputRef}
+                multiple
               />
-              <div className="flex flex-col gap-4">
-                <Button
-                  onClick={() => fileInputRef.current?.click()}
-                  variant="outline"
-                  className="rounded-full"
-                >
-                  <Plus className="w-6 h-6 mr-2" /> 사진 선택하기
-                </Button>
-              </div>
+              <Button
+                onClick={() => fileInputRef.current?.click()}
+                variant="outline"
+                className="rounded-full"
+              >
+                <Plus className="w-6 h-6" />
+              </Button>
             </div>
           )}
         </div>
@@ -128,7 +140,20 @@ export default function AddFeed() {
               >
                 {selectedTags.includes(tag) && (
                   <div className="w-4 h-4 bg-[#FD9340] rounded-full flex items-center justify-center">
-                    <Check className="w-3 h-3 text-white" />
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                      className="w-3 h-3 text-white"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M5 13l4 4L19 7"
+                      />
+                    </svg>
                   </div>
                 )}
                 {tag}

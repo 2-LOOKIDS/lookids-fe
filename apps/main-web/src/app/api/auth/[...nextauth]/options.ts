@@ -16,12 +16,13 @@ export const options: NextAuthOptions = {
         password: { label: "password", type: "password" },
       },
       async authorize(credentials) {
+        console.log(credentials);
         if (!credentials?.loginId || !credentials?.password) {
           return null;
         }
         // 로그인 요청을 보낼 URL
         const res = await fetch(
-          `${process.env.BACKEND_URL}/auth-service/api/v1/auth/sign-in`,
+          `${process.env.BACKEND_URL}/auth-service/auth/sign-in`,
           {
             method: "POST",
             body: JSON.stringify(credentials),
@@ -30,7 +31,7 @@ export const options: NextAuthOptions = {
         );
         if (res.ok) {
           const user = await res.json();
-          return user.data;
+          return user.result;
         }
         return null;
       },
@@ -56,7 +57,7 @@ export const options: NextAuthOptions = {
         account?.provider === "google"
       ) {
         const res = await fetch(
-          `${process.env.BACKEND_URL}/auth-service/api/v1/auth/social-sign-in`,
+          `${process.env.BACKEND_URL}/auth-service/auth/social-sign-in`,
           {
             method: "POST",
             body: JSON.stringify({
@@ -72,7 +73,6 @@ export const options: NextAuthOptions = {
           user.accessToken = data.result.accessToken;
           user.refreshToken = data.result.refreshToken;
           user.uuid = data.result.uuid;
-          console.log("유저값", user);
           return true;
         } else {
           return false;
