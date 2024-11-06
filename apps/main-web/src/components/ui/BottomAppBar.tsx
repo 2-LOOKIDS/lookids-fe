@@ -33,7 +33,7 @@ export default function BottomAppBar() {
       <li className="flex-1 flex justify-center border-l border-gray-200">
         <button
           onClick={() => {
-            router.push("/diary");
+            router.push("/addfeed");
           }}
         >
           <BottomAddIcon />
