@@ -19,7 +19,7 @@ export default function LoginForm() {
       loginId: formData.get("id") as string,
       password: formData.get("password") as string,
       callbackUrl: "/",
-      redirect: true, // 에러 핸들링을 위해 redirect를 false로 설정
+      redirect: false, // 에러 핸들링을 위해 redirect를 false로 설정
     });
 
     if (result?.error) {
@@ -34,12 +34,8 @@ export default function LoginForm() {
     <div className="bg-white p-8 rounded-lg  w-96 mx-auto mt-2">
       <form className="space-y-2" onSubmit={handleSubmit}>
         <div className="space-y-2">
-          <Label htmlFor="userEmail">이메일</Label>
-          <Input
-            id="userEmail"
-            placeholder="이메일을 입력하세요"
-            type="email"
-          />
+          <Label htmlFor="userEmail">아이디</Label>
+          <Input id="id" placeholder="아이디를 입력하세요" type="id" />
         </div>
         <div className="space-y-2">
           <Label htmlFor="password">비밀번호</Label>
