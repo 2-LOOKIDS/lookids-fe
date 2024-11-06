@@ -3,6 +3,13 @@
 import "./styles.css";
 
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+  DialogTrigger,
+} from "@repo/ui/components/ui/dialog";
+import {
   FormControl,
   FormField,
   FormItem,
@@ -32,15 +39,15 @@ const termList: Array<{
   title: string;
   content: React.ReactNode;
 }> = [
-  { name: "term1", title: "lookids(루키즈) 이용 약관", content: <Term1 /> },
+  { name: "term1", title: "[필수] 이용 약관 동의", content: <Term1 /> },
   {
     name: "term2",
-    title: "lookids(루키즈) 개인정보처리방침",
+    title: "[필수] 개인정보처리방침 동의",
     content: <Term2 />,
   },
   {
     name: "term3",
-    title: "lookids(루키즈) 위치기반 서비스 이용약관",
+    title: "[필수] 위치기반 서비스 동의",
     content: <Term3 />,
   },
 ];
@@ -65,28 +72,44 @@ export default function TermsConsent({ onNext }: TermsConsentProps) {
     <>
       <ProgressBar step={0} totalStep={3} />
       <FormProvider {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="flex flex-col gap-6"
+        >
           {termList.map((term, index) => (
             <FormField
               key={index}
               control={form.control}
               name={`terms.${term.name}`}
               render={({ field }) => (
-                <FormItem className="mb-8 mx-8">
-                  <div className="flex gap-2">
-                    <div className="flex flex-col gap-2">
-                      <h1>{term.title}</h1>
-                      <div className="max-h-40 overflow-y-auto">
-                        {term.content}
-                      </div>
+                <FormItem className="flex flex-col mx-7">
+                  <div className="flex justify-between">
+                    <div className="flex gap-3">
+                      <FormControl>
+                        <Checkbox
+                          checked={field.value}
+                          onCheckedChange={(checked) => field.onChange(checked)}
+                          className="signup-checkbox"
+                        />
+                      </FormControl>
+                      <p className="text-[13px]">{term.title}</p>
                     </div>
-                    <FormControl>
-                      <Checkbox
-                        checked={field.value}
-                        onCheckedChange={(checked) => field.onChange(checked)}
-                        className="signup-checkbox"
-                      />
-                    </FormControl>
+                    <Dialog>
+                      <DialogTrigger asChild className="!mt-0">
+                        <p className="text-[12px]">약관 보기</p>
+                      </DialogTrigger>
+                      <DialogContent
+                        className="w-4/5 rounded-sm"
+                        aria-describedby={undefined}
+                      >
+                        <DialogTitle></DialogTitle>
+                        <DialogDescription>
+                          <div className="max-h-96 overflow-y-auto">
+                            {term.content}
+                          </div>
+                        </DialogDescription>
+                      </DialogContent>
+                    </Dialog>
                   </div>
                   {form.formState.errors.terms?.[term.name] && <FormMessage />}
                 </FormItem>

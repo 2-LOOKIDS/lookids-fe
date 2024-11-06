@@ -108,3 +108,10 @@ export interface Step3 {
 export interface VerificationResponse {
   verification: boolean;
 }
+
+export interface RegisterUserInfo {
+  loginId: string;
+  password: string;
+  email: string;
+  nickname: string;
+}

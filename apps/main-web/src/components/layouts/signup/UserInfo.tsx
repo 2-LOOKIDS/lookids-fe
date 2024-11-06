@@ -5,12 +5,22 @@ import {
   FormMessage,
 } from "@repo/ui/components/ui/form";
 import { FormProvider, useForm } from "react-hook-form";
-import { UserInfoSchema, UserInfoType } from "../../../types/auth/signup";
+import {
+  RegisterUserInfo,
+  UserInfoSchema,
+  UserInfoType,
+} from "../../../types/auth/signup";
+import {
+  checkCredentialsAvailabilityApi,
+  registerUserApi,
+} from "../../../actions/auth/sign-up";
 
 import { Button } from "@repo/ui/components/ui/button";
+import { CommonResponse } from "../../../types/responseType";
 import { Input } from "@repo/ui/components/ui/input";
 import ProgressBar from "./ProgressBar";
 import React from "react";
+import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 interface UserInfoProps {
@@ -39,6 +49,7 @@ export default function UserInfo({
   email,
   emailVerificationCode,
 }: UserInfoProps) {
+  const router = useRouter();
   const form = useForm<UserInfoType>({
     resolver: zodResolver(UserInfoSchema),
     defaultValues: {
@@ -49,8 +60,47 @@ export default function UserInfo({
     },
   });
 
-  const onSubmit = (values: UserInfoType) => {
-    console.log(email, emailVerificationCode, values);
+  const checkLoginIdAvailability = async (
+    loginId: string,
+  ): Promise<boolean> => {
+    const response = await checkCredentialsAvailabilityApi(loginId, "loginid");
+    return response;
+  };
+
+  const registerUser = async (
+    values: RegisterUserInfo,
+  ): Promise<CommonResponse<null>> => {
+    const response = await registerUserApi(values);
+    return response;
+  };
+
+  const onSubmit = async (values: UserInfoType) => {
+    const response = await checkLoginIdAvailability(values.loginId);
+    if (!response) {
+      form.setError("loginId", {
+        type: "manual",
+        message: "이미 사용중인 아이디입니다.",
+      });
+      return;
+    }
+
+    const body = {
+      loginId: values.loginId,
+      password: values.password,
+      email: email,
+      nickname: values.nickname,
+    };
+
+    const register = await registerUser(body);
+
+    if (!register.isSuccess) {
+      form.setError("nickname", {
+        type: "manual",
+        message: "서버 오류 입니다. 관리자에게 문의해 주세요",
+      });
+    } else {
+      router.push("/sign-in");
+    }
   };
 
   return (
