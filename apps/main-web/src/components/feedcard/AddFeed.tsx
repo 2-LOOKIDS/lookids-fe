@@ -87,7 +87,7 @@ export default function AddFeed() {
                   variant="outline"
                   className="rounded-full"
                 >
-                  <Plus className="w-6 h-6 mr-2" /> 사진 선택하기
+                  <Plus className="w-6 h-6 mr-2" /> 사진 선택/촬영하기
                 </Button>
               </div>
             </div>
