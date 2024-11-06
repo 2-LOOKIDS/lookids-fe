@@ -10,6 +10,7 @@ export const getFeedCardList = async () => {
 export const uploadToS3 = async (file: File) => {
   const session = await getServerSession(options);
   const user_uuid = session?.user?.uuid;
+  console.log("파일 업로드할껀데  uuid가?", user_uuid);
   // const formData = new FormData();
   // formData.append("file", file);
   // const res = await fetch("https://image.lookids.online", {

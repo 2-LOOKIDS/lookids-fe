@@ -4,11 +4,11 @@ import { Button } from "@repo/ui/components/ui/button";
 import { Checkbox } from "@repo/ui/components/ui/checkbox";
 import { Input } from "@repo/ui/components/ui/input";
 import { Textarea } from "@repo/ui/components/ui/textarea";
-import { ChevronLeft, Plus, X } from "lucide-react";
+import { Plus, X } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
 import { useRef, useState } from "react";
 import { uploadToS3 } from "../../actions/feed/FeedCard";
+import AddFeedHeader from "./AddFeedHeader";
 
 // Assuming you have an S3 upload function
 
@@ -50,21 +50,7 @@ export default function MultiImageUpload() {
   return (
     <div className="w-full max-w-[430px] mx-auto min-h-screen bg-white">
       {/* Header */}
-      <div className="flex items-center justify-between px-4 h-[52px] border-b mt-16">
-        <Link href="/" className="p-2">
-          <ChevronLeft className="w-6 h-6" />
-        </Link>
-        <h1 className="text-center font-semibold">FEED</h1>
-        <div className="w-10 h-10 rounded-full overflow-hidden">
-          <Image
-            src="/placeholder.svg?height=40&width=40"
-            alt="Profile"
-            width={40}
-            height={40}
-            className="object-cover"
-          />
-        </div>
-      </div>
+      <AddFeedHeader />
 
       {/* Image Upload Area */}
       <div className="p-4">
@@ -110,14 +96,14 @@ export default function MultiImageUpload() {
       {/* Form */}
       <div className="p-4 space-y-6">
         <Input
-          placeholder="Enter title"
+          placeholder="제목을 입력해주세요"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           className="border-gray-300"
         />
 
         <Textarea
-          placeholder="Write your content..."
+          placeholder="내용을 입력해주세요"
           value={content}
           onChange={(e) => setContent(e.target.value)}
           className="min-h-[150px] border-gray-300"
