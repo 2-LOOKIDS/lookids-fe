@@ -1,9 +1,7 @@
-// import SignUpForm from "../../../components/layouts/signup/SignUpForm";
-
 import dynamic from "next/dynamic";
 
 const SignUpForm = dynamic(
-  () => import("../../../components/layouts/signup/SignUpForm"),
+  () => import("../../../components/forms/SignUpForm"),
   {
     ssr: false,
   },

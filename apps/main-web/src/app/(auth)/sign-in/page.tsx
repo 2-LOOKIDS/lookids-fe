@@ -1,7 +1,7 @@
 import Link from "next/link";
 import LoginForm from "../../../components/layouts/LoginForm";
-import CatJelly from "../../../components/ui/CatJelly";
-import LookidsLogo from "../../../components/ui/LookidsLogo";
+import CatJelly from "../../../components/icons/CatJelly";
+import LookidsLogo from "../../../components/icons/LookidsLogo";
 
 export default function Page() {
   // 갤럭시 인경우 mt-12정도 필요

@@ -5,9 +5,9 @@ import { Input } from "@repo/ui/components/ui/input";
 import { Label } from "@repo/ui/components/ui/label";
 import { signIn } from "next-auth/react";
 import { useState } from "react";
-import GoogleSign from "./signin/GoogleSign";
-import KakaoSign from "./signin/KakaoSign";
-import NaverSign from "./signin/NaverSign";
+import GoogleSign from "../icons/signIn/GoogleSign";
+import KakaoSign from "../icons/signIn/KakaoSign";
+import NaverSign from "../icons/signIn/NaverSign";
 export default function LoginForm() {
   const [loginError, setLoginError] = useState<string | null>(null); // 에러 메시지 상태
 
