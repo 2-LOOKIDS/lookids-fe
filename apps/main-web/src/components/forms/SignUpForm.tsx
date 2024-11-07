@@ -1,13 +1,12 @@
 "use client";
 
-import { Step1, Step2, Step3 } from "../../../types/auth/signup";
+import { Step1, Step2, Step3 } from "../../types/auth/signup";
 
-import EmailVerification from "./EmailVerification";
-import React from "react";
-import SignUpHeader from "./SignUpHeader";
-import TermsConsent from "./TermsConsent";
-import UserInfo from "./UserInfo";
 import { useFunnel } from "@use-funnel/browser";
+import CommonHeader from "../ui/SignUpHeader";
+import EmailVerificationForm from "./EmailVerificationForm";
+import TermsConsentForm from "./TermsConsentForm";
+import UserInfoForm from "./UserInfoForm";
 
 export default function SignUpForm() {
   const funnel = useFunnel<{
@@ -23,10 +22,10 @@ export default function SignUpForm() {
   });
   return (
     <section>
-      <SignUpHeader />
+      <CommonHeader title="회원가입" />
       <funnel.Render
         step1={({ history }) => (
-          <TermsConsent
+          <TermsConsentForm
             onNext={({ terms }) => {
               history.push("step2", {
                 terms,
@@ -35,7 +34,7 @@ export default function SignUpForm() {
           />
         )}
         step2={({ history, context }) => (
-          <EmailVerification
+          <EmailVerificationForm
             onNext={(email, emailVerificationCode) => {
               history.push("step3", {
                 ...context,
@@ -46,7 +45,7 @@ export default function SignUpForm() {
           />
         )}
         step3={({ context }) => (
-          <UserInfo
+          <UserInfoForm
             terms={context.terms}
             email={context.email}
             emailVerificationCode={context.emailVerificationCode}

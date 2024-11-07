@@ -11,7 +11,7 @@ import {
   Scrollbar,
 } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import SwiperCarouselCard from "./SwiperCarouselCard";
+import SwiperCarouselCard from "../../pages/main/SwiperCarouselCard";
 
 SwiperCore.use([Navigation, Scrollbar, Autoplay, EffectCoverflow]);
 

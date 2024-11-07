@@ -1,5 +1,5 @@
-import BottomAppBar from "../../components/ui/BottomAppBar";
-import TopNavBar from "../../components/ui/TopNavBar";
+import BottomAppBar from "../../components/layouts/BottomAppBar";
+import TopNavBar from "../../components/layouts/TopNavBar";
 
 import { ReactNode } from "react";
 

@@ -1,10 +1,10 @@
 "use client";
 import { usePathname, useRouter } from "next/navigation";
-import BottomAddIcon from "../mainbottom/BottomAddIcon";
-import BottomDiaryIcon from "../mainbottom/BottomDiaryIcon";
-import BottomHomeIcon from "../mainbottom/BottomHomeIcon";
-import BottomMapIcon from "../mainbottom/BottomMapIcon";
-import BottomMyPageIcon from "../mainbottom/BottomMyPageIcon";
+import BottomHomeIcon from "../icons/bottomNavBar/BottomHomeIcon";
+import BottomMapIcon from "../icons/bottomNavBar/BottomMapIcon";
+import BottomAddIcon from "../icons/bottomNavBar/BottomAddIcon";
+import BottomDiaryIcon from "../icons/bottomNavBar/BottomDiaryIcon";
+import BottomMyPageIcon from "../icons/bottomNavBar/BottomMyPageIcon";
 
 export default function BottomAppBar() {
   const router = useRouter();
