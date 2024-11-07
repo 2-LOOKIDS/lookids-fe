@@ -1,8 +1,8 @@
 "use client";
 
-import SocialCard from "../../components/feedcard/SocialCard";
-import MainSwiper from "../../components/main/MainSwiper";
-import RecommendedPet from "../../components/main/RecommendPet";
+import SocialCard from "../../components/common/feedcard/SocialCard";
+import MainSwiper from "../../components/icons/topNavBar/MainSwiper";
+import RecommendedPet from "../../components/pages/main/RecommendPet";
 
 export default function page() {
   function urlBase64ToUint8Array(base64String: string) {
@@ -30,6 +30,7 @@ export default function page() {
           {/* <FeedCard></FeedCard>
           <FeedCard></FeedCard>
           <FeedCard></FeedCard> */}
+
           <SocialCard />
           <SocialCard />
           <RecommendedPet />
