@@ -9,7 +9,7 @@ import Image from "next/image";
 import { useRef, useState } from "react";
 import { uploadToS3 } from "../../actions/feed/FeedCard";
 import AddFeedHeader from "./AddFeedHeader";
-
+import FeedTags from "./FeedTags";
 // Assuming you have an S3 upload function
 
 export default function MultiImageUpload() {
@@ -18,18 +18,23 @@ export default function MultiImageUpload() {
   const [content, setContent] = useState("");
   const [isDraft, setIsDraft] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
   const tags = ["디자인", "배고프다", "집가고 싶다"];
-
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files) {
       const newImages = Array.from(files).slice(0, 5 - images.length);
       for (const file of newImages) {
         try {
+          // S3에 파일 업로드 후 URL 반환 (이미지 미리보기용 로컬 URL 생성)
+          const objectURL = URL.createObjectURL(file);
+          setImages((prev) => [...prev, objectURL]);
+
+          // S3 업로드 후 실제 URL 반환
           const url = await uploadToS3(file);
-          setImages((prev) => [...prev, url]);
+          setImages((prev) =>
+            prev.map((img) => (img === objectURL ? url : img)),
+          );
         } catch (error) {
           console.error("Failed to upload image:", error);
         }
@@ -39,12 +44,6 @@ export default function MultiImageUpload() {
 
   const removeImage = (index: number) => {
     setImages((prev) => prev.filter((_, i) => i !== index));
-  };
-
-  const toggleTag = (tag: string) => {
-    setSelectedTags((prev) =>
-      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag],
-    );
   };
 
   return (
@@ -108,45 +107,8 @@ export default function MultiImageUpload() {
           onChange={(e) => setContent(e.target.value)}
           className="min-h-[150px] border-gray-300"
         />
-
         {/* Tags */}
-        <div className="space-y-2">
-          <h3 className="text-sm">Tags</h3>
-          <div className="flex flex-wrap gap-2">
-            {tags.map((tag) => (
-              <button
-                key={tag}
-                onClick={() => toggleTag(tag)}
-                className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm border
-                  ${
-                    selectedTags.includes(tag)
-                      ? "border-[#FD9340] bg-[#FD9340]/10 text-[#FD9340]"
-                      : "border-gray-300 text-gray-600"
-                  }`}
-              >
-                {selectedTags.includes(tag) && (
-                  <div className="w-4 h-4 bg-[#FD9340] rounded-full flex items-center justify-center">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      className="w-3 h-3 text-white"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M5 13l4 4L19 7"
-                      />
-                    </svg>
-                  </div>
-                )}
-                {tag}
-              </button>
-            ))}
-          </div>
-        </div>
+        <FeedTags tags={tags} />
 
         {/* Draft Checkbox */}
         <div className="flex items-center space-x-2">
