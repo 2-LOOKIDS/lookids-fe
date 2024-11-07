@@ -68,12 +68,13 @@ export default function EmailVerification({ onNext }: EmailVerificationProps) {
     return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
   };
 
+  // 이메일 중복 검사
   const checkEmailAvailability = async (email: string): Promise<boolean> => {
     const response = await checkCredentialsAvailabilityApi(email, "email");
     return response;
   };
 
-  //인증 코드 발송
+  // 인증 코드 발송
   const sendVerificationCodeToEmail = async (
     email: string,
   ): Promise<boolean> => {
@@ -81,6 +82,7 @@ export default function EmailVerification({ onNext }: EmailVerificationProps) {
     return response;
   };
 
+  // 이메일 중복 검사 후 인증 코드 발송
   const validateEmailAndSendVerificationCodeToEmail = async () => {
     const isEmailValid = await form.trigger("email");
     if (!isEmailValid) return;

@@ -72,6 +72,7 @@ export const verifyEmailCodeApi = async (
   return result.result?.verification;
 };
 
+// 회원가입
 export const registerUserApi = async (
   values: RegisterUserInfo,
 ): Promise<CommonResponse<null>> => {
@@ -90,6 +91,5 @@ export const registerUserApi = async (
   });
 
   const result = (await response.json()) as CommonResponse<null>;
-  console.log("🚀 ~ registerUser ~ result:", result);
   return result;
 };
