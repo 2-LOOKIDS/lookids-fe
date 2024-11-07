@@ -3,6 +3,7 @@ import React from "react";
 export default function Term3() {
   return (
     <section>
+      <h1>lookids(루키즈) 위치기반 서비스 이용약관</h1>
       <h2>제 1 조 (목적)</h2>
       <p>
         본 약관은 회사가 제공하는 위치기반 서비스의 이용과 관련하여 회사와 회원

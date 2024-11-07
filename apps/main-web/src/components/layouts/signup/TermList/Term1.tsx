@@ -5,6 +5,7 @@ import React from "react";
 export default function Term1() {
   return (
     <section>
+      <h1>lookids(루키즈) 이용 약관</h1>
       <h2>제 1 조 (목적)</h2>
       <p>
         본 약관은 lookids (이하 "서비스")가 제공하는 SNS 서비스의 이용과

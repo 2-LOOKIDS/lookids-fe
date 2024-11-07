@@ -3,6 +3,7 @@ import React from "react";
 export default function Term2() {
   return (
     <section>
+      <h1>lookids(루키즈) 개인정보처리방침</h1>
       <h2>제 1 조 (수집하는 개인정보 항목)</h2>
       <p>회사는 다음과 같은 항목의 개인정보를 수집합니다:</p>
       <ol>
