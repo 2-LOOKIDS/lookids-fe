@@ -5,17 +5,26 @@ import MainTopSearch from "../main/MainTopSearch";
 
 export default function TopNavBar() {
   return (
-    <header className="fixed top-0 bg-white left-0 w-full z-10 h-[56px] flex items-center">
-      <ul className="flex w-full justify-between ">
-        <li className="flex flex-row items-center ">
-          <MainHamburger />
-          <MainTopLogo />
-        </li>
-        <li className="flex flex-row">
-          <BellTest />
-          <MainTopSearch />
-        </li>
-      </ul>
+    <header className="fixed top-0 bg-white left-0 w-full z-10 flex items-center">
+      <nav className="flex w-full py-2 px-4 justify-between ">
+        <ul className="flex items-center gap-x-2 ">
+          <li>
+            <MainHamburger />
+          </li>
+          <li>
+            <h1 className="text-[0px]">Lookids</h1>
+            <MainTopLogo />
+          </li>
+        </ul>
+        <ul className="flex items-center justify-end gap-x-2">
+          <li>
+            <BellTest />
+          </li>
+          <li>
+            <MainTopSearch />
+          </li>
+        </ul>
+      </nav>
     </header>
   );
 }

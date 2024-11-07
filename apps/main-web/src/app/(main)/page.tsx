@@ -30,6 +30,7 @@ export default function page() {
           {/* <FeedCard></FeedCard>
           <FeedCard></FeedCard>
           <FeedCard></FeedCard> */}
+
           <SocialCard />
           <SocialCard />
           <RecommendedPet />

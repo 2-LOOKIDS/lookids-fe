@@ -16,9 +16,9 @@ export default function SocialCard() {
           alt="Cartoon cat sleeping on a green couch"
           className="w-full h-[200px] object-cover rounded-t-lg"
         />
-        <button className="absolute top-3 right-3 bg-red-500 rounded-full p-2">
+        <div className="absolute top-3 right-3 bg-red-500 rounded-full p-2">
           <Heart className="w-4 h-4 text-white" />
-        </button>
+        </div>
       </div>
       <CardContent className="p-4">
         <div className="flex items-center space-x-4 mb-4">

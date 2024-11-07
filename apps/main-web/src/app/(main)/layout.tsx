@@ -9,14 +9,12 @@ interface LayoutProps {
 
 export default function layout({ children }: LayoutProps) {
   return (
-    <div>
-      <header>
-        <TopNavBar />
-      </header>
+    <>
+      <TopNavBar />
       {children}
       <footer>
         <BottomAppBar />
       </footer>
-    </div>
+    </>
   );
 }
