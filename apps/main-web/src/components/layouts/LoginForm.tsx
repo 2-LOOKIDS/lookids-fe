@@ -8,6 +8,7 @@ import { Label } from "@repo/ui/components/ui/label";
 import NaverSign from "../icons/signIn/NaverSign";
 import { signIn } from "next-auth/react";
 import { useState } from "react";
+
 export default function LoginForm() {
   const [loginError, setLoginError] = useState<string | null>(null); // 에러 메시지 상태
 
@@ -15,11 +16,13 @@ export default function LoginForm() {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
 
+    console.log(formData.get("id"), formData.get("password"));
+
     const result = await signIn("credentials", {
       loginId: formData.get("id") as string,
       password: formData.get("password") as string,
       callbackUrl: "/",
-      redirect: false, // 에러 핸들링을 위해 redirect를 false로 설정
+      redirect: true, // 에러 핸들링을 위해 redirect를 false로 설정
     });
 
     if (result?.error) {
@@ -34,21 +37,21 @@ export default function LoginForm() {
     <div className="bg-white p-8 rounded-lg  w-96 mx-auto mt-2">
       <form className="space-y-2" onSubmit={handleSubmit}>
         <div className="space-y-2">
-          <Label htmlFor="userEmail">아이디</Label>
+          <Label htmlFor="id">아이디</Label>
           <Input
+            name="id"
             id="id"
             placeholder="아이디를 입력하세요"
-            type="id"
-            name="id"
+            type="text"
           />
         </div>
         <div className="space-y-2">
           <Label htmlFor="password">비밀번호</Label>
           <Input
+            name="password"
             id="password"
             placeholder="********"
             type="password"
-            name="password"
           />
         </div>
         {loginError && <p className="text-red-500 text-sm">{loginError}</p>}
@@ -66,7 +69,7 @@ export default function LoginForm() {
         <div className="border-t border-gray-300 flex-grow"></div>
       </div>
 
-      <section className="flex justify-around items-center rounded-md mt-2 py-3 gap-x-4">
+      <section className="flex justify-around items-center rounded-md mt-2 py-3 gap-x-2">
         <button
           onClick={() =>
             signIn("google", {
