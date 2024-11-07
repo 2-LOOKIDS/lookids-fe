@@ -16,19 +16,16 @@ import {
   FormMessage,
 } from "@repo/ui/components/ui/form";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
-import {
-  TermsConsentSchema,
-  TermsConsentType,
-} from "../../../types/auth/signup";
+import { TermsConsentSchema, TermsConsentType } from "../../types/auth/signup";
 
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@repo/ui/components/ui/button";
 import { Checkbox } from "@repo/ui/components/ui/checkbox";
-import ProgressBar from "./ProgressBar";
 import React from "react";
-import Term1 from "./TermList/Term1";
-import Term2 from "./TermList/Term2";
-import Term3 from "./TermList/Term3";
-import { zodResolver } from "@hookform/resolvers/zod";
+import ProgressBar from "../pages/signup/ProgressBar";
+import Term1 from "../pages/signup/TermList/Term1";
+import Term2 from "../pages/signup/TermList/Term2";
+import Term3 from "../pages/signup/TermList/Term3";
 
 interface TermsConsentProps {
   onNext: (terms: TermsConsentType) => void;
@@ -52,7 +49,7 @@ const termList: Array<{
   },
 ];
 
-export default function TermsConsent({ onNext }: TermsConsentProps) {
+export default function TermsConsentForm({ onNext }: TermsConsentProps) {
   const form = useForm<TermsConsentType>({
     resolver: zodResolver(TermsConsentSchema),
     defaultValues: {

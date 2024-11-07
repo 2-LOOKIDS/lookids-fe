@@ -3,40 +3,42 @@
 import "./styles.css";
 
 import {
-  EmailVerificationSchema,
-  EmailVerificationType,
-} from "../../../types/auth/signup";
-import {
   FormControl,
   FormField,
   FormItem,
   FormMessage,
 } from "@repo/ui/components/ui/form";
-import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import {
   InputOTP,
   InputOTPGroup,
   InputOTPSlot,
 } from "@repo/ui/components/ui/input-otp";
+import { useEffect, useState } from "react";
+import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import {
   checkCredentialsAvailabilityApi,
   sendVerificationCodeToEmailApi,
   verifyEmailCodeApi,
-} from "../../../actions/auth/sign-up";
-import { useEffect, useState } from "react";
+} from "../../actions/auth/sign-up";
+import {
+  EmailVerificationSchema,
+  EmailVerificationType,
+} from "../../types/auth/signup";
 
-import { Button } from "@repo/ui/components/ui/button";
-import { Clock5 } from "lucide-react";
-import { Input } from "@repo/ui/components/ui/input";
-import ProgressBar from "./ProgressBar";
-import { REGEXP_ONLY_DIGITS_AND_CHARS } from "input-otp";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Button } from "@repo/ui/components/ui/button";
+import { Input } from "@repo/ui/components/ui/input";
+import { REGEXP_ONLY_DIGITS_AND_CHARS } from "input-otp";
+import { Clock5 } from "lucide-react";
+import ProgressBar from "../pages/signup/ProgressBar";
 
 interface EmailVerificationProps {
   onNext: (email: string, emailVerificationCode: string) => void;
 }
 
-export default function EmailVerification({ onNext }: EmailVerificationProps) {
+export default function EmailVerificationForm({
+  onNext,
+}: EmailVerificationProps) {
   const VERIFICATION_CODE_EXPIRATION_TIME = 180;
   const [isInputVisible, setIsInputVisible] = useState<boolean>(false);
   const [timer, setTimer] = useState<number>(VERIFICATION_CODE_EXPIRATION_TIME);

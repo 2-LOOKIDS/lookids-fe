@@ -1,4 +1,4 @@
-import AddFeed from "../../../components/feedcard/AddFeed";
+import AddFeed from "../../../components/common/feedcard/AddFeed";
 
 export default function page() {
   return (
