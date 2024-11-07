@@ -1,13 +1,13 @@
 "use client";
 
 import { Button } from "@repo/ui/components/ui/button";
+import GoogleSign from "../icons/signIn/GoogleSign";
 import { Input } from "@repo/ui/components/ui/input";
+import KakaoSign from "../icons/signIn/KakaoSign";
 import { Label } from "@repo/ui/components/ui/label";
+import NaverSign from "../icons/signIn/NaverSign";
 import { signIn } from "next-auth/react";
 import { useState } from "react";
-import GoogleSign from "../icons/signIn/GoogleSign";
-import KakaoSign from "../icons/signIn/KakaoSign";
-import NaverSign from "../icons/signIn/NaverSign";
 export default function LoginForm() {
   const [loginError, setLoginError] = useState<string | null>(null); // 에러 메시지 상태
 
@@ -35,11 +35,21 @@ export default function LoginForm() {
       <form className="space-y-2" onSubmit={handleSubmit}>
         <div className="space-y-2">
           <Label htmlFor="userEmail">아이디</Label>
-          <Input id="id" placeholder="아이디를 입력하세요" type="id" />
+          <Input
+            id="id"
+            placeholder="아이디를 입력하세요"
+            type="id"
+            name="id"
+          />
         </div>
         <div className="space-y-2">
           <Label htmlFor="password">비밀번호</Label>
-          <Input id="password" placeholder="********" type="password" />
+          <Input
+            id="password"
+            placeholder="********"
+            type="password"
+            name="password"
+          />
         </div>
         {loginError && <p className="text-red-500 text-sm">{loginError}</p>}
 
