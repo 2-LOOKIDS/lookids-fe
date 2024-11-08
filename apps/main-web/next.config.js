@@ -6,3 +6,5 @@ module.exports = {
     domains: ["picsum.photos"], // 추가
   },
 };
+
+const { withS3Upload } = require("next-s3-upload");

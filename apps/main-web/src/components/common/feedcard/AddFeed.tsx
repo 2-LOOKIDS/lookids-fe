@@ -5,12 +5,11 @@ import { Checkbox } from "@repo/ui/components/ui/checkbox";
 import { Input } from "@repo/ui/components/ui/input";
 import { Textarea } from "@repo/ui/components/ui/textarea";
 import { Plus, X } from "lucide-react";
+import { useS3Upload } from "next-s3-upload";
 import Image from "next/image";
 import { useRef, useState } from "react";
-import { uploadToS3 } from "../../actions/feed/FeedCard";
 import AddFeedHeader from "./AddFeedHeader";
 import FeedTags from "./FeedTags";
-// Assuming you have an S3 upload function
 
 export default function MultiImageUpload() {
   const [images, setImages] = useState<string[]>([]);
@@ -18,25 +17,24 @@ export default function MultiImageUpload() {
   const [content, setContent] = useState("");
   const [isDraft, setIsDraft] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
-
+  let [imageUrl, setImageUrl] = useState<
+    { url: string; bucket: string; key: string } | undefined
+  >(undefined);
   const tags = ["디자인", "배고프다", "집가고 싶다"];
+
+  let { uploadToS3 } = useS3Upload();
+
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files) {
       const newImages = Array.from(files).slice(0, 5 - images.length);
       for (const file of newImages) {
         try {
-          // S3에 파일 업로드 후 URL 반환 (이미지 미리보기용 로컬 URL 생성)
-          const objectURL = URL.createObjectURL(file);
-          setImages((prev) => [...prev, objectURL]);
-
-          // S3 업로드 후 실제 URL 반환
-          const url = await uploadToS3(file);
-          setImages((prev) =>
-            prev.map((img) => (img === objectURL ? url : img)),
-          );
+          let url = await uploadToS3(file);
+          setImageUrl(url);
+          console.log(url);
         } catch (error) {
-          console.error("Failed to upload image:", error);
+          console.error(error);
         }
       }
     }
