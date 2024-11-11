@@ -3,7 +3,7 @@ module.exports = {
   reactStrictMode: true,
   transpilePackages: ["@repo/ui"],
   images: {
-    domains: ["picsum.photos"], // 추가
+    domains: ["picsum.photos", "media.lookids.online"], // 추가
   },
 };
 

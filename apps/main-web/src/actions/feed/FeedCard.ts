@@ -1,5 +1,6 @@
-import { getServerSession } from "next-auth";
-import { options } from "../../app/api/auth/[...nextauth]/options";
+import { FeedPostType, MediaType } from "../../types/feed/FeedType";
+import { CommonResponse } from "../../types/responseType";
+import { fetchDataforMembers } from "../common/common";
 
 export const getFeedCardList = async () => {
   const res = await fetch("https://jsonplaceholder.typicode.com/posts");
@@ -7,18 +8,30 @@ export const getFeedCardList = async () => {
   return data;
 };
 
-export const uploadToS3 = async (file: File) => {
-  console.log(File);
-  const session = await getServerSession(options);
-  const user_uuid = session?.user?.uuid;
-  console.log("파일 업로드할껀데  uuid가?", user_uuid);
-  // const formData = new FormData();
-  // formData.append("file", file);
-  // const res = await fetch("https://image.lookids.online", {
-  //   method: "POST",
-  //   body: formData,
-  // });
-  // const data = await res.json();
-  // return data.url;
-  return "";
-};
+export async function uploadMedia({
+  images,
+}: {
+  images: MediaType;
+}): Promise<any> {
+  const data = await fetchDataforMembers<CommonResponse<string[]>>(
+    `media-service/write/media`,
+    "POST",
+    images,
+    "no-cache",
+  );
+  return data.result;
+}
+
+export async function uploadFeed({
+  feed,
+}: {
+  feed: FeedPostType;
+}): Promise<any> {
+  const data = await fetchDataforMembers<CommonResponse<any>>(
+    `media-service/write/media`,
+    "POST",
+    feed,
+    "no-cache",
+  );
+  return data.result;
+}

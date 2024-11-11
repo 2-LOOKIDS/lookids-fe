@@ -1,21 +1,20 @@
-import { useState } from "react";
-
-export default function FeedTags(tags: { tags: string[] }) {
-  const toggleTag = (tag: string) => {
-    setSelectedTags((prev) =>
-      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag],
-    );
-  };
-
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+export default function FeedTags({
+  tags,
+  onTagToggle,
+  selectedTags,
+}: {
+  tags: string[];
+  onTagToggle: (tag: string) => void;
+  selectedTags: string[];
+}) {
   return (
     <div className="space-y-2">
-      <h3 className="text-sm">Tags</h3>
+      <h3 className="text-sm">인기 태그</h3>
       <div className="flex flex-wrap gap-2">
-        {tags.tags.map((tag) => (
+        {tags.map((tag) => (
           <button
             key={tag}
-            onClick={() => toggleTag(tag)}
+            onClick={() => onTagToggle(tag)}
             className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm border
           ${
             selectedTags.includes(tag)
