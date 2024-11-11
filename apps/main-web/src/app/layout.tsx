@@ -1,15 +1,18 @@
 import "@repo/ui/styles.css";
 import "./globals.css";
 
+import AuthContextProvider from "../providers/AuthContextProvider";
 import type { Metadata } from "next";
 import { getServerSession } from "next-auth";
-import AuthContextProvider from "../providers/AuthContextProvider";
 import { options } from "./api/auth/[...nextauth]/options";
 
 // import { Toaster } from "@repo/ui/components/ui/toaster";
 
 export const metadata: Metadata = {
-  title: "Lookids",
+  title: {
+    template: "%s | Lookids",
+    default: "Lookids",
+  },
   description: "루키즈 공식 홈페이지",
   icons: {
     icon: "/icons/favicon-96x96.png",

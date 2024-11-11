@@ -3,34 +3,34 @@
 import "./styles.css";
 
 import {
+  EmailVerificationSchema,
+  EmailVerificationType,
+} from "../../types/auth/signup";
+import {
   FormControl,
   FormField,
   FormItem,
   FormMessage,
 } from "@repo/ui/components/ui/form";
+import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import {
   InputOTP,
   InputOTPGroup,
   InputOTPSlot,
 } from "@repo/ui/components/ui/input-otp";
-import { useEffect, useState } from "react";
-import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import {
   checkCredentialsAvailabilityApi,
   sendVerificationCodeToEmailApi,
   verifyEmailCodeApi,
 } from "../../actions/auth/sign-up";
-import {
-  EmailVerificationSchema,
-  EmailVerificationType,
-} from "../../types/auth/signup";
+import { useEffect, useState } from "react";
 
-import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@repo/ui/components/ui/button";
-import { Input } from "@repo/ui/components/ui/input";
-import { REGEXP_ONLY_DIGITS_AND_CHARS } from "input-otp";
 import { Clock5 } from "lucide-react";
+import { Input } from "@repo/ui/components/ui/input";
 import ProgressBar from "../pages/signup/ProgressBar";
+import { REGEXP_ONLY_DIGITS_AND_CHARS } from "input-otp";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 interface EmailVerificationProps {
   onNext: (email: string, emailVerificationCode: string) => void;
