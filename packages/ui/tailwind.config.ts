@@ -1,5 +1,8 @@
 import { Config } from 'tailwindcss';
+import { Noto_Sans_KR } from 'next/font/google';
 import sharedConfig from '@repo/tailwind-config';
+
+export const notoSansKr = Noto_Sans_KR({ subsets: ['latin'], weight: ['400'] });
 
 const config: Pick<Config, 'presets' | 'theme' | 'plugins'> = {
   presets: [sharedConfig],

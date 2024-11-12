@@ -3,6 +3,7 @@ import '@repo/ui/styles.css';
 import AuthContextProvider from '../providers/AuthContextProvider';
 import type { Metadata } from 'next';
 import { getServerSession } from 'next-auth';
+import { notoSansKr } from '@repo/ui/tailwind.config';
 import { options } from './api/auth/[...nextauth]/options';
 
 // import { Toaster } from "@repo/ui/components/ui/toaster";
@@ -28,7 +29,7 @@ export default async function RootLayout({
 
   return (
     <html lang="ko">
-      <body>
+      <body className={`${notoSansKr.className} font-sans`}>
         <h1 className="text-[0px]">Lookids lookids 루키즈</h1>
         <AuthContextProvider isAuth={isAuth}>{children}</AuthContextProvider>
       </body>
