@@ -1,25 +1,33 @@
+import { cn } from '@repo/ui/lib/utils';
 import Image from 'next/image';
 
-interface ProfileAvatarProps {
+interface ProfileAvatarProps
+  extends Pick<React.HTMLAttributes<HTMLDivElement>, 'className'> {
   imgUrl: string;
-  w?: string;
-  h?: string;
-  name: string;
+  imgAlt: string;
 }
 
 export default function ProfileAvatar({
-  w,
-  h,
-  name,
+  imgAlt,
   imgUrl,
+  className,
+  // ...props
 }: ProfileAvatarProps) {
   return (
-    <div className={`relative w-${w} h-${h}`}>
+    // <div className={`relative w-${w} h-${h}`}>
+    <div className={cn('relative', className)}>
       {imgUrl ? (
-        <Image src={imgUrl} alt={name} layout="fill" className="rounded-full" />
+        <Image
+          src={imgUrl}
+          alt={imgAlt}
+          fill
+          sizes="(max-width: 400px) 50vw"
+          priority
+          className="rounded-full"
+        />
       ) : (
         <div className="flex h-full w-full items-center justify-center rounded-full">
-          <p className="text-[#838383]">{name}</p>
+          <p className="text-[#838383]">{imgAlt}</p>
         </div>
       )}
     </div>

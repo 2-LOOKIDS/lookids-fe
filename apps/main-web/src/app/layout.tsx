@@ -29,9 +29,16 @@ export default async function RootLayout({
 
   return (
     <html lang="ko">
-      <body className={`${notoSansKr.className} font-sans`}>
-        <h1 className="text-[0px]">Lookids lookids 루키즈</h1>
-        <AuthContextProvider isAuth={isAuth}>{children}</AuthContextProvider>
+      <body
+        className={`${notoSansKr.className} flex justify-center bg-[#757575] font-sans`}
+      >
+        {/* <body
+        className={`${notoSansKr.className} mx-auto min-h-screen w-full max-w-[600px] font-sans`}
+      > */}
+        <main className="min-h-screen w-full max-w-[600px] bg-white">
+          <h1 className="text-[0px]">Lookids lookids 루키즈</h1>
+          <AuthContextProvider isAuth={isAuth}>{children}</AuthContextProvider>
+        </main>
       </body>
     </html>
   );

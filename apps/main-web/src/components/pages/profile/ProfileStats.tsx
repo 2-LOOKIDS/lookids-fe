@@ -30,8 +30,8 @@ export default function ProfileStats() {
               <li className="h-8 w-[1px] bg-[#D9D9D9]" aria-hidden="true" />
             )}
             <li className="flex flex-col items-center">
-              <p className="font-semibold">{item.data}</p>
-              <p className="text-sm text-[#838383]">{item.label}</p>
+              <p className="text-base font-semibold sm:text-sm">{item.data}</p>
+              <p className="text-xs text-[#838383] sm:text-sm">{item.label}</p>
             </li>
           </Fragment>
         );

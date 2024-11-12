@@ -1,16 +1,16 @@
-import dynamic from "next/dynamic";
+import dynamic from 'next/dynamic';
 
 const SignUpForm = dynamic(
-  () => import("../../../components/forms/SignUpForm"),
+  () => import('../../../components/forms/SignUpForm'),
   {
     ssr: false,
-  },
+  }
 );
 
 export default function page() {
   return (
-    <main className="w-full">
+    <section className="w-full">
       <SignUpForm />
-    </main>
+    </section>
   );
 }

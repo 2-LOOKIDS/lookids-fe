@@ -18,9 +18,8 @@ function PetList() {
           <li key={item.id}>
             <ProfileAvatar
               imgUrl={item.imgUrl}
-              w={'12'}
-              h={'12'}
-              name={item.name}
+              className="h-12 w-12"
+              imgAlt={item.name}
             />
           </li>
         );

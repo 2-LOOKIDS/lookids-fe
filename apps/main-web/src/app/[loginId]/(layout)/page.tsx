@@ -8,7 +8,7 @@ import PetList from '../../../components/pages/profile/PetList';
 import ProfileAvatar from '../../../components/ui/ProfileAvatar';
 import ProfileDescription from '../../../components/pages/profile/ProfileDescription';
 import ProfileStats from '../../../components/pages/profile/ProfileStats';
-import React from 'react';
+import React, { Fragment } from 'react';
 import { getServerSession } from 'next-auth';
 import { options } from '../../api/auth/[...nextauth]/options';
 
@@ -30,7 +30,7 @@ export default async function page({
 }) {
   const data = await getServerSession(options);
   return (
-    <main>
+    <>
       <Header loginId={params.loginId} />
       <section>
         {/* 프로필 사진 */}
@@ -50,12 +50,12 @@ export default async function page({
 
       <section>{/* 피드 */}</section>
 
-      <section className="flex items-center justify-between  px-5 pt-8">
+      <section className="flex items-center justify-between gap-6  px-5 pt-8">
         <ProfileAvatar
+          // className="h-[80px] min-h-[80px] w-[80px] min-w-[80px] sm:h-[120px] sm:w-[120px]"
+          className="h-[120px] min-h-[120px] w-[120px] min-w-[120px]"
           imgUrl={'/pome.jpg'}
-          w="[120px]"
-          h="[120px]"
-          name={data?.user.name}
+          imgAlt={data?.user.name}
         />
         <ProfileStats />
       </section>
@@ -70,6 +70,6 @@ export default async function page({
         <PetList />
         <FeedList />
       </section>
-    </main>
+    </>
   );
 }
