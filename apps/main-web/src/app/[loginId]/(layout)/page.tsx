@@ -34,7 +34,7 @@ export default async function page({
       <Header loginId={params.loginId} />
       <section className="flex flex-col items-center pt-8">
         <ProfileAvatar
-          imgUrl={'/hunjin.png'}
+          imgUrl={'/jihunpistol.jpg'}
           w={'[120px]'}
           h={'[120px]'}
           name={data?.user.name}
