@@ -8,7 +8,9 @@
     "dist"
   ],
   "exports": {
-    "./styles.css": "./dist/index.css",
+    "./styles.css": "./src/styles.css",
+    "./tailwind.config": "./tailwind.config.ts",
+    "./postcss.config": "./postcss.config.mjs",
     "./lib/*": "./src/lib/*.ts",
     "./components/*": [
       "./src/components/*.tsx",
