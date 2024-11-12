@@ -1,3 +1,4 @@
+"use client";
 import { ChevronLeft } from "lucide-react";
 
 export default function CommonHeader({ title }: { title: string }) {

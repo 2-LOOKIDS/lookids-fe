@@ -7,9 +7,11 @@ import { Card, CardContent, CardFooter } from "@repo/ui/components/ui/card";
 
 import { Heart, Share2, ThumbsUp } from "lucide-react";
 
-export default function SocialCard() {
+export default function SocialCard({ isDetail }: { isDetail: boolean }) {
   return (
-    <Card className="m-4 p-4 h-2/5 overflow-hidden">
+    <Card
+      className={`m-4 p-4 h-2/5 overflow-hidden ${isDetail ? "border-0" : ""}`}
+    >
       <div className="relative">
         <img
           src="/pome.jpg"
@@ -31,11 +33,20 @@ export default function SocialCard() {
             <p className="text-xs text-gray-500">15/12/2023</p>
           </div>
         </div>
-        <p className="text-sm text-gray-600 mb-4">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore...
+        <p
+          className={`text-sm text-gray-600 mb-4 ${isDetail ? "" : "line-clamp-2"}`}
+        >
+          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Itaque
+          facere exercitationem odio nulla mollitia nihil quos nostrum dolor,
+          laboriosam, velit, ducimus ex officiis debitis et laudantium nemo sit.
+          Quos, molestiae doloribus maiores perferendis, a vitae officia laborum
+          illo magnam placeat culpa expedita velit quisquam obcaecati.
+          Doloribus, ratione at sunt voluptatem quas quaerat dolorum quidem.
+          Sapiente architecto facilis consequatur voluptas officiis modi illo
+          nulla vero nam molestias, maxime aperiam cupiditate quam pariatur odio
         </p>
       </CardContent>
+
       <CardFooter className="px-4 py-3 border-t border-gray-100">
         <div className="flex space-x-6 text-gray-500 text-xs">
           <div className="flex items-center">
