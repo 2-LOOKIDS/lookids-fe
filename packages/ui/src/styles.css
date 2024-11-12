@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@media (max-width: 400px) {
+  .custom-section {
+    width: 100%;
+  }
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

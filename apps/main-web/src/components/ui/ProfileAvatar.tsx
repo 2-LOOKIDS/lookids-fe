@@ -1,11 +1,4 @@
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from '@repo/ui/components/ui/avatar';
-
 import Image from 'next/image';
-import React from 'react';
 
 interface ProfileAvatarProps {
   imgUrl: string;

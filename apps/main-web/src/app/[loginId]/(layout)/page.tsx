@@ -32,16 +32,34 @@ export default async function page({
   return (
     <main>
       <Header loginId={params.loginId} />
-      <section className="flex flex-col items-center pt-8">
+      <section>
+        {/* 프로필 사진 */}
+        {/* 피드수 팔로워수 팔로잉수 */}
+      </section>
+      <section>
+        {/* 유저 이름 */}
+        {/* 유저 아이디 */}
+        {/* 소개글 */}
+      </section>
+      <section>
+        {/* 팔로우 버튼 */}
+        {/* 메세지 보내기 버튼 */}
+      </section>
+
+      <section>{/* 펫 프로필 */}</section>
+
+      <section>{/* 피드 */}</section>
+
+      <section className="flex items-center justify-between  px-5 pt-8">
         <ProfileAvatar
-          imgUrl={'/jihunpistol.jpg'}
-          w={'[120px]'}
-          h={'[120px]'}
+          imgUrl={'/pome.jpg'}
+          w="[120px]"
+          h="[120px]"
           name={data?.user.name}
         />
         <ProfileStats />
-        <ProfileDescription />
       </section>
+      <ProfileDescription />
 
       <section className="flex justify-center gap-4 px-4 pt-3.5">
         <FollowButton />

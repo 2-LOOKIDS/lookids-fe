@@ -3,11 +3,11 @@ import React from 'react';
 
 const petList = [
   { id: 0, name: '전체', imgUrl: '' },
-  { id: 1, name: '신지훈1', imgUrl: '/jihunpistol.jpg' },
+  { id: 1, name: '신지훈1', imgUrl: '/pome.jpg' },
   { id: 2, name: '신지훈2', imgUrl: '/jihunpistol.jpg' },
-  { id: 3, name: '신지훈3', imgUrl: '/jihunpistol.jpg' },
+  { id: 3, name: '신지훈3', imgUrl: '/pome.jpg' },
   { id: 4, name: '신지훈4', imgUrl: '/jihunpistol.jpg' },
-  { id: 5, name: '박상언1', imgUrl: '/jihunpistol.jpg' },
+  { id: 5, name: '박상언1', imgUrl: '/pome.jpg' },
 ];
 
 function PetList() {

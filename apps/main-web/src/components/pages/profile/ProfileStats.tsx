@@ -22,7 +22,7 @@ const stats = [
 
 export default function ProfileStats() {
   return (
-    <ul className="flex gap-7 pt-7">
+    <ul className="flex gap-4">
       {stats.map((item) => {
         return (
           <Fragment key={item.id}>
