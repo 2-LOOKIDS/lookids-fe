@@ -22,3 +22,17 @@ export interface ImageData {
   mediaType: string;
   gpsInfo?: ImageGpsInfo;
 }
+
+//피드 카드 내부의 섹션들
+export interface ContentSection {
+  petName: string;
+  petImageUrl: string;
+  userNickname: string;
+  createdAt: string;
+}
+
+export interface ReactionSection {
+  likeCount: number;
+  commentCount: number;
+  isLiked: boolean;
+}
