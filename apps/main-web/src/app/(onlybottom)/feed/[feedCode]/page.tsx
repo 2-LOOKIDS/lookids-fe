@@ -10,8 +10,9 @@ export default async function page({
     <>
       <div>
         <SocialCard isDetail={true}></SocialCard>
-        <hr />
-        <AddFeedCommentSection feedCode={"5"}></AddFeedCommentSection>
+        <section className="px-6 pb-8">
+          <AddFeedCommentSection></AddFeedCommentSection>
+        </section>
       </div>
     </>
   );

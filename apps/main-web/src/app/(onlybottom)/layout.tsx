@@ -9,7 +9,7 @@ export default function layout({ children }: LayoutProps) {
   return (
     <div>
       {children}
-      <footer>
+      <footer className="pt-20">
         <BottomAppBar />
       </footer>
     </div>
