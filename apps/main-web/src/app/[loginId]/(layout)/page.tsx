@@ -1,3 +1,5 @@
+import React, { Fragment } from 'react';
+
 import { Button } from '@repo/ui/components/ui/button';
 import FeedList from '../../../components/pages/profile/FeedList';
 import FollowButton from '../../../components/pages/profile/FollowButton';
@@ -8,7 +10,6 @@ import PetList from '../../../components/pages/profile/PetList';
 import ProfileAvatar from '../../../components/ui/ProfileAvatar';
 import ProfileDescription from '../../../components/pages/profile/ProfileDescription';
 import ProfileStats from '../../../components/pages/profile/ProfileStats';
-import React, { Fragment } from 'react';
 import { getServerSession } from 'next-auth';
 import { options } from '../../api/auth/[...nextauth]/options';
 
@@ -50,10 +51,9 @@ export default async function page({
 
       <section>{/* 피드 */}</section>
 
-      <section className="flex items-center justify-between gap-6  px-5 pt-8">
+      <section className="flex items-center justify-between px-5 pt-8">
         <ProfileAvatar
-          // className="h-[80px] min-h-[80px] w-[80px] min-w-[80px] sm:h-[120px] sm:w-[120px]"
-          className="h-[120px] min-h-[120px] w-[120px] min-w-[120px]"
+          className="xs:h-[120px] xs:w-[120px] h-[100px] min-h-[80px] w-[100px] min-w-[80px]"
           imgUrl={'/pome.jpg'}
           imgAlt={data?.user.name}
         />
@@ -66,7 +66,7 @@ export default async function page({
         <MessageButton />
       </section>
 
-      <section className="flex flex-col items-center justify-center pt-6">
+      <section className="flex flex-col items-center justify-center">
         <PetList />
         <FeedList />
       </section>

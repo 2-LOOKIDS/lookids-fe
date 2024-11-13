@@ -1,0 +1,27 @@
+/* .swiper.container {
+  display: flex;
+} */
+
+/* .swiper-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+} */
+
+.swiper-pagination {
+  /* background-color: #fd9340; */
+}
+
+.swiper-pagination-bullet {
+  background-color: #fd9340;
+}
+
+.swiper-pagination-custom {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.swiper-pagination-custom-bullet {
+  background-color: #fd9340;
+}

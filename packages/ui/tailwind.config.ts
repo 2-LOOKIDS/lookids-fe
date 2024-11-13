@@ -5,6 +5,9 @@ const config: Pick<Config, 'presets' | 'theme' | 'plugins'> = {
   presets: [sharedConfig],
   theme: {
     extend: {
+      screens: {
+        xs: '380px',
+      },
       colors: {
         lookids: {
           DEFAULT: '#FD9340',
