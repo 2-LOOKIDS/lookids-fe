@@ -16,10 +16,10 @@ export default function FeedCommentSection() {
   const maxLength = 300;
 
   return (
-    <Card className="w-full border-[rgba(18,18,18,0.2)] bg-[rgba(255,239,231,0.5)]">
+    <Card className=" w-full border-[rgba(18,18,18,0.2)] ">
       {(isCommenting || comment) && (
-        <CardContent>
-          <div className="flex items-center gap-2">
+        <CardContent className="p-2">
+          <div className="flex  items-center gap-2 py-2">
             <Avatar>
               <AvatarImage className="rounded-full" src="/jihunpistol.jpg" />
               <AvatarFallback>KB</AvatarFallback>
@@ -28,7 +28,7 @@ export default function FeedCommentSection() {
           </div>
         </CardContent>
       )}
-      <CardFooter className="bg-[rgba(255,239,231,0.5)] p-2">
+      <CardFooter className="p-2 ">
         <div className=" flex w-full flex-col gap-2">
           <Input
             value={comment}
@@ -36,7 +36,7 @@ export default function FeedCommentSection() {
             onBlur={() => setIsCommenting(false)}
             onChange={(e) => setComment(e.target.value.slice(0, maxLength))}
             placeholder="댓글을 입력하세요"
-            className="h-auto resize-none rounded border p-2 text-[16px]"
+            className="h-auto  rounded border-0 p-2 text-[16px]"
           />
 
           {(isCommenting || comment) && (

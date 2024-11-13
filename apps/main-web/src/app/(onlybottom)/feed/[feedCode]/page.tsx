@@ -7,13 +7,16 @@ export default async function page({
 }: {
   params: { feedCode: string };
 }) {
+  // 여기서 Feed에 대한 Comments Data를 받아와서 map으로 comments에 넣음
   return (
     <>
       <div>
         <SocialCard isDetail={true}></SocialCard>
         <section className="px-4 pb-8">
           <AddFeedCommentSection></AddFeedCommentSection>
-          <Comments></Comments>
+          <Comments commentCode={'12344'}></Comments>
+          <Comments commentCode={'12344'}></Comments>
+          <Comments commentCode={'12344'}></Comments>
         </section>
       </div>
     </>
