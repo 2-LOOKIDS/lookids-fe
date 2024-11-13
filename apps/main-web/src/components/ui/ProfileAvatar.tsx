@@ -2,10 +2,10 @@ import {
   Avatar,
   AvatarFallback,
   AvatarImage,
-} from "@repo/ui/components/ui/avatar";
+} from '@repo/ui/components/ui/avatar';
 
-import Image from "next/image";
-import React from "react";
+import Image from 'next/image';
+import React from 'react';
 
 interface ProfileAvatarProps {
   imgUrl: string;
@@ -25,7 +25,7 @@ export default function ProfileAvatar({
       {imgUrl ? (
         <Image src={imgUrl} alt={name} layout="fill" className="rounded-full" />
       ) : (
-        <div className="flex items-center justify-center w-full h-full rounded-full">
+        <div className="flex h-full w-full items-center justify-center rounded-full">
           <p className="text-[#838383]">{name}</p>
         </div>
       )}

@@ -1,36 +1,36 @@
-"use client";
+'use client';
 
-import "./styles.css";
+import './styles.css';
 
 import {
   EmailVerificationSchema,
   EmailVerificationType,
-} from "../../types/auth/signup";
+} from '../../types/auth/signup';
 import {
   FormControl,
   FormField,
   FormItem,
   FormMessage,
-} from "@repo/ui/components/ui/form";
-import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
+} from '@repo/ui/components/ui/form';
+import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import {
   InputOTP,
   InputOTPGroup,
   InputOTPSlot,
-} from "@repo/ui/components/ui/input-otp";
+} from '@repo/ui/components/ui/input-otp';
 import {
   checkCredentialsAvailabilityApi,
   sendVerificationCodeToEmailApi,
   verifyEmailCodeApi,
-} from "../../actions/auth/sign-up";
-import { useEffect, useState } from "react";
+} from '../../actions/auth/sign-up';
+import { useEffect, useState } from 'react';
 
-import { Button } from "@repo/ui/components/ui/button";
-import { Clock5 } from "lucide-react";
-import { Input } from "@repo/ui/components/ui/input";
-import ProgressBar from "../pages/signup/ProgressBar";
-import { REGEXP_ONLY_DIGITS_AND_CHARS } from "input-otp";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { Button } from '@repo/ui/components/ui/button';
+import { Clock5 } from 'lucide-react';
+import { Input } from '@repo/ui/components/ui/input';
+import ProgressBar from '../pages/signup/ProgressBar';
+import { REGEXP_ONLY_DIGITS_AND_CHARS } from 'input-otp';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 interface EmailVerificationProps {
   onNext: (email: string, emailVerificationCode: string) => void;
@@ -46,8 +46,8 @@ export default function EmailVerificationForm({
   const form = useForm<EmailVerificationType>({
     resolver: zodResolver(EmailVerificationSchema),
     defaultValues: {
-      email: "",
-      emailVerificationCode: "",
+      email: '',
+      emailVerificationCode: '',
     },
   });
 
@@ -67,18 +67,18 @@ export default function EmailVerificationForm({
   const formatTime = (time: number) => {
     const minutes = Math.floor(time / 60);
     const seconds = time % 60;
-    return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+    return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
   };
 
   // 이메일 중복 검사
   const checkEmailAvailability = async (email: string): Promise<boolean> => {
-    const response = await checkCredentialsAvailabilityApi(email, "email");
+    const response = await checkCredentialsAvailabilityApi(email, 'email');
     return response;
   };
 
   // 인증 코드 발송
   const sendVerificationCodeToEmail = async (
-    email: string,
+    email: string
   ): Promise<boolean> => {
     const response = await sendVerificationCodeToEmailApi(email);
     return response;
@@ -86,14 +86,14 @@ export default function EmailVerificationForm({
 
   // 이메일 중복 검사 후 인증 코드 발송
   const validateEmailAndSendVerificationCodeToEmail = async () => {
-    const isEmailValid = await form.trigger("email");
+    const isEmailValid = await form.trigger('email');
     if (!isEmailValid) return;
-    const email = form.getValues("email");
+    const email = form.getValues('email');
     const isEmailUnique = await checkEmailAvailability(email);
     if (!isEmailUnique) {
-      form.setError("email", {
-        type: "manual",
-        message: "이 이메일은 이미 사용 중입니다.",
+      form.setError('email', {
+        type: 'manual',
+        message: '이 이메일은 이미 사용 중입니다.',
       });
       setIsInputVisible(false);
     } else {
@@ -106,13 +106,13 @@ export default function EmailVerificationForm({
   const onSubmit: SubmitHandler<EmailVerificationType> = async (values) => {
     const response = await verifyEmailCodeApi(
       values.email,
-      values.emailVerificationCode,
+      values.emailVerificationCode
     );
 
     if (!response) {
-      form.setError("emailVerificationCode", {
-        type: "manual",
-        message: "인증 코드가 일치하지 않습니다.",
+      form.setError('emailVerificationCode', {
+        type: 'manual',
+        message: '인증 코드가 일치하지 않습니다.',
       });
     } else {
       onNext(values.email, values.emailVerificationCode);
@@ -153,8 +153,8 @@ export default function EmailVerificationForm({
 
           {isInputVisible ? (
             <section>
-              <div className="flex flex-col items-center gap-3 mt-7">
-                <p className="font-bold text-[25px]">인증 번호 확인</p>
+              <div className="mt-7 flex flex-col items-center gap-3">
+                <p className="text-[25px] font-bold">인증 번호 확인</p>
                 <p className="text-[14px]">아래 인증 번호를 입력해주세요.</p>
               </div>
               <FormField
@@ -170,11 +170,11 @@ export default function EmailVerificationForm({
                         {...field}
                         onComplete={form.handleSubmit(onSubmit)}
                       >
-                        <InputOTPGroup className="flex justify-center gap-1 mx-auto">
+                        <InputOTPGroup className="mx-auto flex justify-center gap-1">
                           {[...Array(6)].map((_, index) => (
                             <InputOTPSlot
                               key={index}
-                              className="h-[72px] w-[45px] rounded-xl border border-[#E5E5E5] bg-[#F4F4F4] text-2xl  font-mono text-[#FD9340] text-center"
+                              className="h-[72px] w-[45px] rounded-xl border border-[#E5E5E5] bg-[#F4F4F4] text-center  font-mono text-2xl text-[#FD9340]"
                               index={index}
                             />
                           ))}
@@ -190,11 +190,11 @@ export default function EmailVerificationForm({
                   </FormItem>
                 )}
               ></FormField>
-              <div className="flex items-center gap-1.5 justify-center text-[#FD9340]">
+              <div className="flex items-center justify-center gap-1.5 text-[#FD9340]">
                 <Clock5 size={20} />
                 <p>{formatTime(timer)}</p>
               </div>
-              <div className="mt-4 flex gap-2 justify-center">
+              <div className="mt-4 flex justify-center gap-2">
                 <p className="">인증 번호를 받지 않았다면?</p>
                 <p
                   className="font-semibold"

@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { Button } from "@repo/ui/components/ui/button";
-import GoogleSign from "../icons/signIn/GoogleSign";
-import { Input } from "@repo/ui/components/ui/input";
-import KakaoSign from "../icons/signIn/KakaoSign";
-import { Label } from "@repo/ui/components/ui/label";
-import NaverSign from "../icons/signIn/NaverSign";
-import { signIn } from "next-auth/react";
-import { useState } from "react";
+import { Button } from '@repo/ui/components/ui/button';
+import GoogleSign from '../icons/signIn/GoogleSign';
+import { Input } from '@repo/ui/components/ui/input';
+import KakaoSign from '../icons/signIn/KakaoSign';
+import { Label } from '@repo/ui/components/ui/label';
+import NaverSign from '../icons/signIn/NaverSign';
+import { signIn } from 'next-auth/react';
+import { useState } from 'react';
 
 export default function LoginForm() {
   const [loginError, setLoginError] = useState<string | null>(null); // 에러 메시지 상태
@@ -16,25 +16,25 @@ export default function LoginForm() {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
 
-    console.log(formData.get("id"), formData.get("password"));
+    console.log(formData.get('id'), formData.get('password'));
 
-    const result = await signIn("credentials", {
-      loginId: formData.get("id") as string,
-      password: formData.get("password") as string,
-      callbackUrl: "/",
+    const result = await signIn('credentials', {
+      loginId: formData.get('id') as string,
+      password: formData.get('password') as string,
+      callbackUrl: '/',
       redirect: true, // 에러 핸들링을 위해 redirect를 false로 설정
     });
 
     if (result?.error) {
-      setLoginError("아이디 혹은 비밀번호가 일치하지 않습니다."); // 에러 메시지 설정
+      setLoginError('아이디 혹은 비밀번호가 일치하지 않습니다.'); // 에러 메시지 설정
     } else {
       setLoginError(null); // 에러 없으면 초기화
-      window.location.href = "/"; // 성공 시 리다이렉트
+      window.location.href = '/'; // 성공 시 리다이렉트
     }
   };
 
   return (
-    <div className="bg-white p-8 rounded-lg  w-96 mx-auto mt-2">
+    <div className="mx-auto mt-2 w-96  rounded-lg bg-white p-8">
       <form className="space-y-2" onSubmit={handleSubmit}>
         <div className="space-y-2">
           <Label htmlFor="id">아이디</Label>
@@ -54,27 +54,27 @@ export default function LoginForm() {
             type="password"
           />
         </div>
-        {loginError && <p className="text-red-500 text-sm">{loginError}</p>}
+        {loginError && <p className="text-sm text-red-500">{loginError}</p>}
 
         <Button
-          className="w-full bg-[#FD9340] hover:bg-[#FC703F] text-white"
+          className="w-full bg-[#FD9340] text-white hover:bg-[#FC703F]"
           type="submit"
         >
           로그인
         </Button>
       </form>
       <div className="mt-4 flex items-center">
-        <div className="border-t border-gray-300 flex-grow"></div>
+        <div className="flex-grow border-t border-gray-300"></div>
         <span className="mx-4 text-gray-500">혹은</span>
-        <div className="border-t border-gray-300 flex-grow"></div>
+        <div className="flex-grow border-t border-gray-300"></div>
       </div>
 
-      <section className="flex justify-around items-center rounded-md mt-2 py-3 gap-x-2">
+      <section className="mt-2 flex items-center justify-around gap-x-2 rounded-md py-3">
         <button
           onClick={() =>
-            signIn("google", {
+            signIn('google', {
               redirect: false,
-              callbackUrl: "/",
+              callbackUrl: '/',
             })
           }
         >
@@ -82,9 +82,9 @@ export default function LoginForm() {
         </button>
         <button
           onClick={() =>
-            signIn("kakao", {
+            signIn('kakao', {
               redirect: false,
-              callbackUrl: "/",
+              callbackUrl: '/',
             })
           }
         >
@@ -92,9 +92,9 @@ export default function LoginForm() {
         </button>
         <button
           onClick={() =>
-            signIn("naver", {
+            signIn('naver', {
               redirect: false,
-              callbackUrl: "/",
+              callbackUrl: '/',
             })
           }
         >
