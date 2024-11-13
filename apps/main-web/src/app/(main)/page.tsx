@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import SocialCard from "../../components/common/feedcard/SocialCard";
-import MainSwiper from "../../components/icons/topNavBar/MainSwiper";
-import RecommendedPet from "../../components/pages/main/RecommendPet";
+import SocialCard from '../../components/common/feedcard/SocialCard';
+import MainSwiper from '../../components/icons/topNavBar/MainSwiper';
+import RecommendedPet from '../../components/pages/main/RecommendPet';
 
 export default function page() {
   return (
     <div>
       <main>
-        <div className="flex flex-col mt-20 mb-20 ">
+        <div className="mb-20 mt-20 flex flex-col ">
           <MainSwiper></MainSwiper>
           <hr />
           {/* <section className="mt-4 mx-4 h-[300px] bg-gray-200 rounded-xl " /> */}
@@ -17,11 +17,11 @@ export default function page() {
           <FeedCard></FeedCard>
           <FeedCard></FeedCard> */}
 
-          <SocialCard />
-          <SocialCard />
+          <SocialCard isDetail={false} />
+          <SocialCard isDetail={false} />
           <RecommendedPet />
-          <SocialCard />
-          <SocialCard />
+          <SocialCard isDetail={false} />
+          <SocialCard isDetail={false} />
         </div>
       </main>
     </div>
