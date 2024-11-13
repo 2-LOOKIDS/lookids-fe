@@ -22,7 +22,7 @@ export default function SocialCard({ isDetail }: { isDetail: boolean }) {
           <Heart className="w-4 h-4 text-white" />
         </div>
       </div>
-      <CardContent className="p-4">
+      <CardContent className="px-2">
         <div className="flex items-center space-x-4 mb-4">
           <Avatar>
             <AvatarImage src="/jihunpistol.jpg" alt="Robert Fox" />

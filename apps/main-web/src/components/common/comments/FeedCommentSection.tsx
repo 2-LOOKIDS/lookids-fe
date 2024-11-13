@@ -7,7 +7,7 @@ import {
 } from "@repo/ui/components/ui/avatar";
 import { Button } from "@repo/ui/components/ui/button";
 import { Card, CardContent, CardFooter } from "@repo/ui/components/ui/card";
-import { Textarea } from "@repo/ui/components/ui/textarea";
+import { Input } from "@repo/ui/components/ui/input";
 import { useState } from "react";
 
 export default function FeedCommentSection() {
@@ -18,7 +18,7 @@ export default function FeedCommentSection() {
   return (
     <Card className="w-full bg-[rgba(255,239,231,0.5)] border-[rgba(18,18,18,0.2)]">
       {(isCommenting || comment) && (
-        <CardContent className="p-2">
+        <CardContent>
           <div className="flex items-center gap-2">
             <Avatar>
               <AvatarImage className="rounded-full" src="/jihunpistol.jpg" />
@@ -30,7 +30,7 @@ export default function FeedCommentSection() {
       )}
       <CardFooter className="p-2 bg-[rgba(255,239,231,0.5)]">
         <div className=" flex flex-col w-full gap-2">
-          <Textarea
+          <Input
             value={comment}
             onFocus={() => setIsCommenting(true)}
             onBlur={() => setIsCommenting(false)}
