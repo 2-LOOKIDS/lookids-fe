@@ -6,35 +6,43 @@ import {
 import { Card, CardContent, CardFooter } from '@repo/ui/components/ui/card';
 
 import { Heart, Share2, ThumbsUp } from 'lucide-react';
+import Link from 'next/link';
 
-export default function SocialCard({ isDetail }: { isDetail: boolean }) {
+export default function SocialCard({
+  isDetail,
+  feedCode = '1',
+}: {
+  isDetail: boolean;
+  feedCode?: string;
+}) {
   return (
-    <Card
-      className={`m-4 h-2/5 overflow-hidden p-4 ${isDetail ? 'border-0' : ''}`}
-    >
-      <div className="relative">
-        <img
-          src="/pome.jpg"
-          alt="Cartoon cat sleeping on a green couch"
-          className="h-[200px] w-full rounded-t-lg object-cover"
-        />
+    <Card className={`m-4 h-2/5 overflow-hidden ${isDetail ? 'border-0' : ''}`}>
+      {/* Social Card Image */}
+      <section className="relative">
+        <Link href={`/feed/${feedCode}`}>
+          <img
+            src="/pome.jpg"
+            alt="Cartoon cat sleeping on a green couch"
+            className="w-full rounded-lg object-cover"
+          />
+        </Link>
         <div className="absolute right-3 top-3 rounded-full bg-red-500 p-2">
           <Heart className="h-4 w-4 text-white" />
         </div>
-      </div>
-      <CardContent className="px-2">
+      </section>
+      <CardContent className="mt-2 px-2">
         <div className="mb-4 flex items-center space-x-4">
           <Avatar>
-            <AvatarImage src="/jihunpistol.jpg" alt="Robert Fox" />
+            <AvatarImage src="/jihunpistol.jpg" alt="Jihun Sin" />
             <AvatarFallback>RF</AvatarFallback>
           </Avatar>
           <div className="flex-1">
-            <h3 className="text-sm font-medium text-gray-700">Robert Fox</h3>
+            <h3 className="text-sm font-medium text-gray-700">Jihun Sin</h3>
             <p className="text-xs text-gray-500">15/12/2023</p>
           </div>
         </div>
         <p
-          className={`mb-4 text-sm text-gray-600 ${isDetail ? '' : 'line-clamp-2'}`}
+          className={`text-sm text-gray-600 ${isDetail ? '' : 'line-clamp-2'}`}
         >
           Lorem ipsum dolor sit, amet consectetur adipisicing elit. Itaque
           facere exercitationem odio nulla mollitia nihil quos nostrum dolor,
@@ -47,17 +55,20 @@ export default function SocialCard({ isDetail }: { isDetail: boolean }) {
         </p>
       </CardContent>
 
-      <CardFooter className="border-t border-gray-100 px-4 py-3">
-        <div className="flex space-x-6 text-xs text-gray-500">
-          <div className="flex items-center">
-            <ThumbsUp className="mr-1 h-4 w-4 text-violet-600" />
-            <span>178 Likes</span>
-          </div>
-          <div className="flex items-center">
-            <Share2 className="mr-1 h-4 w-4 text-violet-600" />
-            <span>12 Shares</span>
-          </div>
-        </div>
+      {/* SocialCard Reaction Section */}
+      <CardFooter className="flex gap-x-3 border-t border-gray-100 px-2 py-3 text-xs text-gray-400">
+        <ul className="flex items-center gap-x-1">
+          <li>
+            <ThumbsUp className="text-lookids  h-4 w-4" />
+          </li>
+          <li>{`${178} Likes`}</li>
+        </ul>
+        <ul className="flex items-center gap-x-1">
+          <li>
+            <Share2 className="text-lookids  h-4 w-4" />
+          </li>
+          <li>{`${12} Shares`}</li>
+        </ul>
       </CardFooter>
     </Card>
   );

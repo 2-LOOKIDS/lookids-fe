@@ -1,25 +1,25 @@
-"use client";
+'use client';
 
 import {
   Avatar,
   AvatarFallback,
   AvatarImage,
-} from "@repo/ui/components/ui/avatar";
-import { Button } from "@repo/ui/components/ui/button";
-import { Card, CardContent, CardFooter } from "@repo/ui/components/ui/card";
-import { Input } from "@repo/ui/components/ui/input";
-import { useState } from "react";
+} from '@repo/ui/components/ui/avatar';
+import { Button } from '@repo/ui/components/ui/button';
+import { Card, CardContent, CardFooter } from '@repo/ui/components/ui/card';
+import { Input } from '@repo/ui/components/ui/input';
+import { useState } from 'react';
 
 export default function FeedCommentSection() {
   const [isCommenting, setIsCommenting] = useState(false);
-  const [comment, setComment] = useState("");
+  const [comment, setComment] = useState('');
   const maxLength = 300;
 
   return (
-    <Card className="w-full bg-[rgba(255,239,231,0.5)] border-[rgba(18,18,18,0.2)]">
+    <Card className=" w-full border-[rgba(18,18,18,0.2)] ">
       {(isCommenting || comment) && (
-        <CardContent>
-          <div className="flex items-center gap-2">
+        <CardContent className="p-2">
+          <div className="flex  items-center gap-2 py-2">
             <Avatar>
               <AvatarImage className="rounded-full" src="/jihunpistol.jpg" />
               <AvatarFallback>KB</AvatarFallback>
@@ -28,25 +28,25 @@ export default function FeedCommentSection() {
           </div>
         </CardContent>
       )}
-      <CardFooter className="p-2 bg-[rgba(255,239,231,0.5)]">
-        <div className=" flex flex-col w-full gap-2">
+      <CardFooter className="p-2 ">
+        <div className=" flex w-full flex-col gap-2">
           <Input
             value={comment}
             onFocus={() => setIsCommenting(true)}
             onBlur={() => setIsCommenting(false)}
             onChange={(e) => setComment(e.target.value.slice(0, maxLength))}
             placeholder="댓글을 입력하세요"
-            className="resize-none text-[16px] h-auto p-2 rounded border"
+            className="h-auto  rounded border-0 p-2 text-[16px]"
           />
 
           {(isCommenting || comment) && (
-            <div className="flex justify-between items-center">
+            <div className="flex items-center justify-between">
               <span className="text-xs text-[#838688]">
                 {comment.length}/{maxLength}
               </span>
               <Button
                 size="sm"
-                className="h-7 px-3 bg-[#FD9340] hover:bg-[#FD9340]/90 text-xs font-light"
+                className="h-7 bg-[#FD9340] px-3 text-xs font-light hover:bg-[#FD9340]/90"
               >
                 댓글 달기
               </Button>
