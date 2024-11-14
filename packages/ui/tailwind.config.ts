@@ -12,6 +12,9 @@ const config: Pick<Config, 'presets' | 'theme' | 'plugins'> = {
         lookids: {
           DEFAULT: '#FD9340',
         },
+        grey: {
+          DEFAULT: '#838383',
+        },
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         card: {
