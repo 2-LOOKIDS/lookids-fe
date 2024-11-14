@@ -17,12 +17,6 @@ export interface ImageGpsInfo {
   latitude: number;
 }
 
-export interface ImageData {
-  mediaUrl: string;
-  mediaType: string;
-  gpsInfo?: ImageGpsInfo;
-}
-
 //피드 카드 내부의 섹션들
 export interface ContentSection {
   petName: string;
