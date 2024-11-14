@@ -9,18 +9,10 @@ import { Badge } from "@repo/ui/components/ui/badge";
 import { ScrollArea } from "@repo/ui/components/ui/scroll-area";
 import { Search } from "lucide-react";
 import * as React from "react";
-interface ChatMessage {
-  id: string;
-  username: string;
-  avatar: string;
-  message: string;
-  timestamp: string;
-  unreadCount: number;
-  isOnline: boolean;
-}
+import { ChattingList } from "../../../types/chatting/ChattingType";
 
 export default function Component() {
-  const [messages, setMessages] = React.useState<ChatMessage[]>([
+  const [messages, setMessages] = React.useState<ChattingList[]>([
     {
       id: "1",
       username: "강아지 키워봐",
