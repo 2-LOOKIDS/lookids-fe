@@ -26,9 +26,11 @@ export default function SocialCard({
             className="w-full rounded-lg object-cover"
           />
         </Link>
-        <div className="absolute right-3 top-3 rounded-full bg-red-500 p-2">
-          <Heart className="h-4 w-4 text-white" />
-        </div>
+        {!isDetail && (
+          <div className="absolute right-3 top-3 rounded-full bg-red-500 p-2">
+            <Heart className="h-4 w-4 text-white" />
+          </div>
+        )}
       </section>
       <CardContent className="mt-2 px-2">
         <div className="mb-4 flex items-center space-x-4">

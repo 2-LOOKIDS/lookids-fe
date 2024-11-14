@@ -13,6 +13,7 @@ export default async function page({
       <div>
         <SocialCard isDetail={true}></SocialCard>
         <section className="px-4 pb-8">
+          <h3 className="py-4 text-xl">댓글 ( 123 )</h3>
           <AddFeedCommentSection></AddFeedCommentSection>
           <Comments commentCode={'12344'}></Comments>
           <Comments commentCode={'12344'}></Comments>
