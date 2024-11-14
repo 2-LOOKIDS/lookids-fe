@@ -113,6 +113,7 @@ export const options: NextAuthOptions = {
         refreshToken: token.refreshToken,
         accessToken: token.accessToken,
       };
+      console.log('session:', session);
       return session;
     },
   },
