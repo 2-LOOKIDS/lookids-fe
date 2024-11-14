@@ -1,7 +1,6 @@
-import BottomAppBar from "../../components/ui/BottomAppBar";
-import TopNavBar from "../../components/ui/TopNavBar";
-
-import { ReactNode } from "react";
+import BottomAppBar from '../../components/layouts/BottomAppBar';
+import { ReactNode } from 'react';
+import TopNavBar from '../../components/layouts/TopNavBar';
 
 interface LayoutProps {
   children: ReactNode;
@@ -9,14 +8,12 @@ interface LayoutProps {
 
 export default function layout({ children }: LayoutProps) {
   return (
-    <div>
-      <header>
-        <TopNavBar />
-      </header>
+    <>
+      <TopNavBar />
       {children}
       <footer>
         <BottomAppBar />
       </footer>
-    </div>
+    </>
   );
 }

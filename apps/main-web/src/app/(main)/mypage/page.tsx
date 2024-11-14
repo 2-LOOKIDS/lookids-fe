@@ -1,13 +1,5 @@
-import { getServerSession } from "next-auth";
-import { options } from "../../api/auth/[...nextauth]/options";
+import React from 'react';
 
-export default async function page() {
-  const data = await getServerSession(options);
-  console.log(data);
-  return (
-    <div className="mt-20">
-      마이페이지
-      <p>{data?.user.name}</p>
-    </div>
-  );
+export default function page() {
+  return <main>my page</main>;
 }
