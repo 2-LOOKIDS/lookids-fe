@@ -1,15 +1,12 @@
-import React, { Fragment } from 'react';
-
-import { Button } from '@repo/ui/components/ui/button';
-import FeedList from '../../../components/pages/profile/FeedList';
-import FollowButton from '../../../components/pages/profile/FollowButton';
-import Header from '../../../components/pages/profile/Header';
-import MessageButton from '../../../components/pages/profile/MessageButton';
+import FeedList from '../../../components/pages/profile/main/FeedList';
+import FollowButton from '../../../components/pages/profile/main/FollowButton';
+import MessageButton from '../../../components/pages/profile/main/MessageButton';
 import { Metadata } from 'next';
-import PetList from '../../../components/pages/profile/PetList';
+import PetList from '../../../components/pages/profile/main/PetList';
 import ProfileAvatar from '../../../components/ui/ProfileAvatar';
-import ProfileDescription from '../../../components/pages/profile/ProfileDescription';
-import ProfileStats from '../../../components/pages/profile/ProfileStats';
+import ProfileDescription from '../../../components/pages/profile/main/ProfileDescription';
+import ProfileHeader from '../../../components/pages/profile/header/ProfileHeader';
+import ProfileStats from '../../../components/pages/profile/main/ProfileStats';
 import { getServerSession } from 'next-auth';
 import { options } from '../../api/auth/[...nextauth]/options';
 
@@ -19,8 +16,8 @@ export async function generateMetadata({
   params: { loginId: string };
 }): Promise<Metadata> {
   return {
-    title: params.loginId,
-    description: `${params.loginId}'s profile`,
+    title: decodeURIComponent(params.loginId),
+    description: `${decodeURIComponent(params.loginId)}'s profile`,
   };
 }
 
@@ -32,44 +29,34 @@ export default async function page({
   const data = await getServerSession(options);
   return (
     <>
-      <Header loginId={params.loginId} />
-      <section>
-        {/* 프로필 사진 */}
-        {/* 피드수 팔로워수 팔로잉수 */}
-      </section>
-      <section>
-        {/* 유저 이름 */}
-        {/* 유저 아이디 */}
-        {/* 소개글 */}
-      </section>
-      <section>
-        {/* 팔로우 버튼 */}
-        {/* 메세지 보내기 버튼 */}
-      </section>
+      <ProfileHeader loginId={decodeURIComponent(params.loginId)} />
+      <main>
+        <section>
+          <div className="flex items-center justify-between px-5 pt-8">
+            <ProfileAvatar
+              className="xs:h-[120px] xs:w-[120px] h-[100px] min-h-[80px] w-[100px] min-w-[80px]"
+              imgUrl={'/pome.jpg'}
+              imgAlt={data?.user.name}
+            />
+            <ProfileStats />
+          </div>
 
-      <section>{/* 펫 프로필 */}</section>
+          <ProfileDescription />
 
-      <section>{/* 피드 */}</section>
+          <div className="flex justify-center gap-4 px-4 pt-10">
+            <FollowButton />
+            <MessageButton />
+          </div>
+        </section>
 
-      <section className="flex items-center justify-between px-5 pt-8">
-        <ProfileAvatar
-          className="xs:h-[120px] xs:w-[120px] h-[100px] min-h-[80px] w-[100px] min-w-[80px]"
-          imgUrl={'/pome.jpg'}
-          imgAlt={data?.user.name}
-        />
-        <ProfileStats />
-      </section>
-      <ProfileDescription />
+        <section>
+          <PetList />
+        </section>
 
-      <section className="flex justify-center gap-4 px-4 pt-3.5">
-        <FollowButton />
-        <MessageButton />
-      </section>
-
-      <section className="flex flex-col items-center justify-center">
-        <PetList />
-        <FeedList />
-      </section>
+        <section className="flex flex-col items-center justify-center gap-9 pt-9">
+          <FeedList />
+        </section>
+      </main>
     </>
   );
 }

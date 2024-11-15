@@ -32,10 +32,9 @@ export default async function RootLayout({
       <body
         className={`${notoSansKr.className} flex justify-center bg-[#757575] font-sans`}
       >
-        <main className="min-h-screen w-full max-w-[430px] bg-white">
-          <h1 className="text-[0px]">Lookids lookids 루키즈</h1>
+        <div className="min-h-screen w-full max-w-[430px] bg-white">
           <AuthContextProvider isAuth={isAuth}>{children}</AuthContextProvider>
-        </main>
+        </div>
       </body>
     </html>
   );
