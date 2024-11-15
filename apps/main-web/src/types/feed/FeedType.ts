@@ -12,6 +12,14 @@ export interface MediaType {
   latitude: number;
 }
 
+export interface PinType {
+  mediaCode: string;
+  longitude: number;
+  latitude: number;
+  category: string;
+  locationScore?: number;
+}
+
 export interface ImageGpsInfo {
   longitude: number;
   latitude: number;

@@ -27,7 +27,6 @@ export default function ImageUpload() {
           let calcullong = 0,
             calculat = 0;
           let hasGpsData = false;
-          console.log(file);
           const reader = new FileReader();
           reader.onload = function (event) {
             const dataURL = event.target?.result as string;
@@ -60,6 +59,7 @@ export default function ImageUpload() {
 
           let url = await uploadToS3(file);
           const cdnurl = `https://media.lookids.online/${url.key}`;
+
           setImages((prev) => [
             ...prev,
             hasGpsData

@@ -11,6 +11,7 @@ const ImageContext = createContext<ImageContextProps | undefined>(undefined);
 
 export function ImageProvider({ children }: { children: ReactNode }) {
   const [images, setImages] = useState<MediaType[]>([]);
+
   return (
     <ImageContext.Provider value={{ images, setImages }}>
       {children}

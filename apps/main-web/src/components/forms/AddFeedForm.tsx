@@ -1,5 +1,7 @@
+'use client';
 import { Button } from '@repo/ui/components/ui/button';
 import { Textarea } from '@repo/ui/components/ui/textarea';
+import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { uploadFeedWithMedia } from '../../actions/feed/FeedCard';
 import { useImage } from '../../context/ImageContext';
@@ -11,7 +13,7 @@ export default function AddFeedForm() {
   const tags = ['#디자인', '#배고프다', '#집가고싶다'];
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const { images } = useImage();
-
+  const router = useRouter();
   const handleTagSelect = (tag: string) => {
     const hashTag = `${tag}`;
     if (!selectedTags.includes(hashTag)) {
@@ -40,18 +42,17 @@ export default function AddFeedForm() {
 
     setSelectedTags(uniqueTags); // 최종 uniqueTags 배열을 설정
 
-    // 저장 작업 수행
-    console.log('Form submitted with content:', content);
-    console.log('Selected tags:', uniqueTags);
-    console.log('images', images);
     const feedData: FeedPostType = {
       content,
       tags: uniqueTags,
     };
 
     // 여기서 serveraction 수행
-    const data = await uploadFeedWithMedia({ feed: feedData, images: images });
-    console.log(data);
+    const res = await uploadFeedWithMedia({ feed: feedData, images: images });
+    if (res.isSuccess) {
+      alert('게시물이 성공적으로 등록되었습니다.');
+      router.push('/');
+    }
   };
 
   return (
@@ -62,7 +63,7 @@ export default function AddFeedForm() {
         onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
           setContent(e.target.value)
         }
-        className="min-h-[150px] border-gray-300"
+        className="min-h-[140px] border-gray-300 text-[16px]"
       />
       {/* Tags */}
       <FeedTags
