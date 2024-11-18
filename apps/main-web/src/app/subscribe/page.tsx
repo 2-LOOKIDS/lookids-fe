@@ -1,16 +1,17 @@
-"use client";
-import { Button } from "@repo/ui/components/ui/button";
-import { Input } from "@repo/ui/components/ui/input";
-import { useEffect, useState } from "react";
+'use client';
+import { Button } from '@repo/ui/components/ui/button';
+import { Input } from '@repo/ui/components/ui/input';
+import { useEffect, useState } from 'react';
 import {
   sendNotification,
   subscribeUser,
+  transformPushSubscription,
   unsubscribeUser,
-} from "../../actions/pwaaction";
+} from '../../actions/pwaaction';
 
-function urlBase64ToUint8Array(base64String: string) {
-  const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
-  const base64 = (base64String + padding).replace(/-/g, "+").replace(/_/g, "/");
+function urlBase64ToUint8Array(base64String: string): Uint8Array {
+  const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
+  const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
 
   const rawData = window.atob(base64);
   const outputArray = new Uint8Array(rawData.length);
@@ -18,15 +19,16 @@ function urlBase64ToUint8Array(base64String: string) {
   for (let i = 0; i < rawData.length; ++i) {
     outputArray[i] = rawData.charCodeAt(i);
   }
+
   return outputArray;
 }
 
 export default function PushNotificationManager() {
   const [isSupported, setIsSupported] = useState(false);
   const [subscription, setSubscription] = useState<PushSubscription | null>(
-    null,
+    null
   );
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState('');
 
   useEffect(() => {
     const isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent);
@@ -36,7 +38,7 @@ export default function PushNotificationManager() {
       // iOS PWA에서 푸시 알림 지원
       setIsSupported(true);
       registerServiceWorker();
-    } else if ("serviceWorker" in navigator && "PushManager" in window) {
+    } else if ('serviceWorker' in navigator && 'PushManager' in window) {
       // 기타 브라우저에서 푸시 알림 지원
       setIsSupported(true);
       registerServiceWorker();
@@ -47,30 +49,34 @@ export default function PushNotificationManager() {
 
   async function registerServiceWorker() {
     try {
-      const registration = await navigator.serviceWorker.register("/sw.js", {
-        scope: "/",
-        updateViaCache: "none",
+      const registration = await navigator.serviceWorker.register('/sw.js', {
+        scope: '/',
+        updateViaCache: 'none',
       });
       const sub = await registration.pushManager.getSubscription();
       setSubscription(sub);
     } catch (error) {
-      console.error("Service Worker registration failed:", error);
+      console.error('Service Worker registration failed:', error);
     }
   }
 
   async function subscribeToPush() {
     try {
       const registration = await navigator.serviceWorker.ready;
+
       const sub = await registration.pushManager.subscribe({
         userVisibleOnly: true,
         applicationServerKey: urlBase64ToUint8Array(
-          process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!,
+          process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!
         ),
       });
-      setSubscription(sub);
-      await subscribeUser(sub);
+
+      const transformedSub = await transformPushSubscription(sub);
+
+      // 서버로 변환된 PushSubscription 객체 전달
+      await subscribeUser(transformedSub);
     } catch (error) {
-      console.error("Push subscription failed:", error);
+      console.error('Push subscription failed:', error);
     }
   }
 
@@ -80,14 +86,14 @@ export default function PushNotificationManager() {
       setSubscription(null);
       await unsubscribeUser();
     } catch (error) {
-      console.error("Unsubscribe failed:", error);
+      console.error('Unsubscribe failed:', error);
     }
   }
 
   async function sendTestNotification() {
     if (subscription) {
       await sendNotification(message);
-      setMessage("");
+      setMessage('');
     }
   }
 
