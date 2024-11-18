@@ -15,6 +15,9 @@ const config: Pick<Config, 'presets' | 'theme' | 'plugins'> = {
         grey: {
           DEFAULT: '#838383',
         },
+        lightGrey: {
+          DEFAULT: '#EDEDED',
+        },
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         card: {

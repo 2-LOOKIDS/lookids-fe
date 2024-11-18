@@ -1,5 +1,5 @@
-import { cn } from '@repo/ui/lib/utils';
 import Image from 'next/image';
+import { cn } from '@repo/ui/lib/utils';
 
 interface ProfileAvatarProps
   extends Pick<React.HTMLAttributes<HTMLDivElement>, 'className'> {
@@ -11,11 +11,11 @@ export default function ProfileAvatar({
   imgAlt,
   imgUrl,
   className,
-  // ...props
+  ...props
 }: ProfileAvatarProps) {
   return (
     // <div className={`relative w-${w} h-${h}`}>
-    <div className={cn('relative', className)}>
+    <div className={cn('relative', className, { ...props })}>
       {imgUrl ? (
         <Image
           src={imgUrl}

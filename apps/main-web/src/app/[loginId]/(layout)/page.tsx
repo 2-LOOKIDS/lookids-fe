@@ -1,12 +1,12 @@
-import FeedList from '../../../components/pages/profile/main/FeedList';
-import FollowButton from '../../../components/pages/profile/main/FollowButton';
-import MessageButton from '../../../components/pages/profile/main/MessageButton';
+import FeedList from '../../../components/pages/profile/FeedList';
+import FollowButton from '../../../components/pages/profile/FollowButton';
+import MessageButton from '../../../components/pages/profile/MessageButton';
 import { Metadata } from 'next';
-import PetList from '../../../components/pages/profile/main/PetList';
+import PetList from '../../../components/pages/profile/PetList';
 import ProfileAvatar from '../../../components/ui/ProfileAvatar';
-import ProfileDescription from '../../../components/pages/profile/main/ProfileDescription';
-import ProfileHeader from '../../../components/pages/profile/header/ProfileHeader';
-import ProfileStats from '../../../components/pages/profile/main/ProfileStats';
+import ProfileDescription from '../../../components/pages/profile/ProfileDescription';
+import ProfileHeader from '../../../components/pages/profile/ProfileHeader';
+import ProfileStats from '../../../components/pages/profile/ProfileStats';
 import { getServerSession } from 'next-auth';
 import { options } from '../../api/auth/[...nextauth]/options';
 

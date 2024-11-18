@@ -3,12 +3,12 @@
 import 'swiper/css';
 import 'swiper/css/grid';
 import 'swiper/css/pagination';
-import '../style.css';
+import './style.css';
 
 import { Grid, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-import ProfileAvatar from '../../../ui/ProfileAvatar';
+import ProfileAvatar from '../../ui/ProfileAvatar';
 import React from 'react';
 
 const petList = [
