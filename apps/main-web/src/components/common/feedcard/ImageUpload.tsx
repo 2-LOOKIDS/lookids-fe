@@ -1,11 +1,11 @@
-"use client";
-import { Button } from "@repo/ui/components/ui/button";
-import EXIF from "exif-js";
-import { Plus, X } from "lucide-react";
-import { useS3Upload } from "next-s3-upload";
-import Image from "next/image";
-import { useRef } from "react";
-import { useImage } from "../../../context/ImageContext";
+'use client';
+import { Button } from '@repo/ui/components/ui/button';
+import EXIF from 'exif-js';
+import { Plus, X } from 'lucide-react';
+import { useS3Upload } from 'next-s3-upload';
+import Image from 'next/image';
+import { useRef } from 'react';
+import { useImage } from '../../../context/ImageContext';
 
 export default function ImageUpload() {
   const { images, setImages } = useImage();
@@ -27,20 +27,19 @@ export default function ImageUpload() {
           let calcullong = 0,
             calculat = 0;
           let hasGpsData = false;
-          console.log(file);
           const reader = new FileReader();
           reader.onload = function (event) {
             const dataURL = event.target?.result as string;
 
             // Blob URL을 img 요소에 로드하여 EXIF 데이터 추출
-            const img = document.createElement("img") as HTMLImageElement;
+            const img = document.createElement('img') as HTMLImageElement;
             img.src = dataURL;
 
             img.onload = function () {
               EXIF.getData(img as any, function (this: HTMLImageElement) {
-                let altitudeData = EXIF.getTag(this, "GPSAltitude");
-                let longitudeData = EXIF.getTag(this, "GPSLongitude");
-                let latitudeData = EXIF.getTag(this, "GPSLatitude");
+                let altitudeData = EXIF.getTag(this, 'GPSAltitude');
+                let longitudeData = EXIF.getTag(this, 'GPSLongitude');
+                let latitudeData = EXIF.getTag(this, 'GPSLatitude');
 
                 if (longitudeData && latitudeData) {
                   hasGpsData = true;
@@ -60,18 +59,22 @@ export default function ImageUpload() {
 
           let url = await uploadToS3(file);
           const cdnurl = `https://media.lookids.online/${url.key}`;
+
           setImages((prev) => [
             ...prev,
             hasGpsData
               ? {
                   mediaUrl: cdnurl,
-                  mediaType: "image",
-                  gpsInfo: {
-                    latitude: calculat,
-                    longitude: calcullong,
-                  },
+                  mediaType: 'image',
+                  latitude: calculat,
+                  longitude: calcullong,
                 }
-              : { mediaUrl: cdnurl, mediaType: "image" },
+              : {
+                  mediaUrl: cdnurl,
+                  mediaType: 'image',
+                  latitude: 0,
+                  longitude: 0,
+                },
           ]);
         } catch (error) {
           console.error(error);
@@ -89,24 +92,23 @@ export default function ImageUpload() {
               src={image.mediaUrl}
               alt={`Upload ${index + 1}`}
               fill
-              className="object-cover rounded-lg"
+              className="rounded-lg object-cover"
             />
             <button
               onClick={() => removeImage(index)}
-              className="absolute top-1 right-1 p-1 bg-white rounded-full"
+              className="absolute right-1 top-1 rounded-full bg-white p-1"
             >
-              <X className="w-4 h-4" />
+              <X className="h-4 w-4" />
             </button>
-            {image.gpsInfo && (
+            {image.latitude && (
               <p>
-                {" "}
-                {image.gpsInfo.latitude} {image.gpsInfo.longitude}
+                {image.latitude} {image.longitude}
               </p>
             )}
           </div>
         ))}
         {images.length < 5 && (
-          <div className="aspect-square bg-gray-100 rounded-lg flex items-center justify-center">
+          <div className="flex aspect-square items-center justify-center rounded-lg bg-gray-100">
             <input
               type="file"
               accept="image/*"
@@ -120,7 +122,7 @@ export default function ImageUpload() {
               variant="outline"
               className="rounded-full"
             >
-              <Plus className="w-6 h-6" />
+              <Plus className="h-6 w-6" />
             </Button>
           </div>
         )}

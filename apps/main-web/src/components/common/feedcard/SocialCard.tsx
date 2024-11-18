@@ -46,14 +46,8 @@ export default function SocialCard({
         <p
           className={`text-sm text-gray-600 ${isDetail ? '' : 'line-clamp-2'}`}
         >
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Itaque
-          facere exercitationem odio nulla mollitia nihil quos nostrum dolor,
-          laboriosam, velit, ducimus ex officiis debitis et laudantium nemo sit.
-          Quos, molestiae doloribus maiores perferendis, a vitae officia laborum
-          illo magnam placeat culpa expedita velit quisquam obcaecati.
-          Doloribus, ratione at sunt voluptatem quas quaerat dolorum quidem.
-          Sapiente architecto facilis consequatur voluptas officiis modi illo
-          nulla vero nam molestias, maxime aperiam cupiditate quam pariatur odio
+          지훈이가 좋아하는 랜덤게임 무슨게임 ? 게임 Start <br />
+          시멘트! 시멘트! 시멘트! 시멘트!
         </p>
       </CardContent>
 
