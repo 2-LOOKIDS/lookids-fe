@@ -7,6 +7,7 @@ const config: Pick<Config, 'presets' | 'theme' | 'plugins'> = {
     extend: {
       screens: {
         xs: '380px',
+        custom: '423px',
       },
       colors: {
         lookids: {

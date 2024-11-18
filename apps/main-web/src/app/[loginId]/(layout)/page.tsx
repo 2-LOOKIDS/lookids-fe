@@ -53,7 +53,7 @@ export default async function page({
           <PetList />
         </section>
 
-        <section className="flex flex-col items-center justify-center gap-9 pt-9">
+        <section className="flex flex-col items-center justify-center px-4 pt-9">
           <FeedList />
         </section>
       </main>
