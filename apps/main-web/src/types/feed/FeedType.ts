@@ -12,15 +12,17 @@ export interface MediaType {
   latitude: number;
 }
 
+export interface PinType {
+  mediaCode: string;
+  longitude: number;
+  latitude: number;
+  category: string;
+  locationScore?: number;
+}
+
 export interface ImageGpsInfo {
   longitude: number;
   latitude: number;
-}
-
-export interface ImageData {
-  mediaUrl: string;
-  mediaType: string;
-  gpsInfo?: ImageGpsInfo;
 }
 
 //피드 카드 내부의 섹션들
