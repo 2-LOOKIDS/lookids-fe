@@ -59,7 +59,7 @@ export default function ImageUpload() {
 
           let url = await uploadToS3(file);
           const cdnurl = `https://media.lookids.online/${url.key}`;
-
+          console.log(cdnurl);
           setImages((prev) => [
             ...prev,
             hasGpsData

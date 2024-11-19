@@ -5,3 +5,10 @@ export interface Pin {
   category: string;
   locationScore: number;
 }
+
+export interface Bounds {
+  ha: number;
+  oa: number;
+  pa: number;
+  qa: number;
+}

@@ -16,7 +16,6 @@ export const options: NextAuthOptions = {
         password: { label: 'password', type: 'password' },
       },
       async authorize(credentials) {
-        console.log(credentials);
         if (!credentials?.loginId || !credentials?.password) {
           return null;
         }
@@ -113,7 +112,6 @@ export const options: NextAuthOptions = {
         refreshToken: token.refreshToken,
         accessToken: token.accessToken,
       };
-      console.log('session:', session);
       return session;
     },
   },
