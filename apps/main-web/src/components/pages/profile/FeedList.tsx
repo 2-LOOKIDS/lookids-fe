@@ -1,9 +1,10 @@
 'use client';
 
-import { useState } from 'react';
 import FeedThumbnail from './FeedThumbnail';
+import Link from 'next/link';
 import UserLikesTab from './UserLikesTab';
 import UserPostsTab from './UserPostsTab';
+import { useSearchParams } from 'next/navigation';
 
 interface Tab {
   id: number;
@@ -11,7 +12,9 @@ interface Tab {
   component: ({ isActive }: { isActive: boolean }) => JSX.Element;
 }
 
-function FeedList() {
+export default function FeedList() {
+  const searchParams = useSearchParams();
+  const search = searchParams.get('tab');
   const tabs: Tab[] = [
     {
       id: 0,
@@ -37,18 +40,15 @@ function FeedList() {
     { id: 8, imgAlt: 'jihun', imgSrc: '/jihunpistol.jpg' },
     { id: 9, imgAlt: 'poem', imgSrc: '/pome.jpg' },
   ];
-  const [activeTab, setActiveTab] = useState<string>(tabs[0].label);
   return (
     <>
       <ul className="flex w-full justify-center gap-4">
         {tabs.map((tab) => (
-          <li
-            key={tab.id}
-            className="flex-1"
-            onClick={() => setActiveTab(tab.label)}
-          >
+          <li key={tab.id} className="flex-1">
             {/* TODO: headers()로 구현해보자! */}
-            <tab.component isActive={activeTab === tab.label} />
+            <Link href={`?tab=${tab.label}`}>
+              <tab.component isActive={search === tab.label} />
+            </Link>
           </li>
         ))}
       </ul>
@@ -66,5 +66,3 @@ function FeedList() {
     </>
   );
 }
-
-export default FeedList;
