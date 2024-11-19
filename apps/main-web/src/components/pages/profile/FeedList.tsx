@@ -46,7 +46,7 @@ export default function FeedList() {
         {tabs.map((tab) => (
           <li key={tab.id} className="flex-1">
             {/* TODO: headers()로 구현해보자! */}
-            <Link href={`?tab=${tab.label}`}>
+            <Link href={`?tab=${tab.label}`} scroll={false}>
               <tab.component isActive={search === tab.label} />
             </Link>
           </li>
