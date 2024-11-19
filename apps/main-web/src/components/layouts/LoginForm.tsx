@@ -22,7 +22,7 @@ export default function LoginForm() {
       loginId: formData.get('id') as string,
       password: formData.get('password') as string,
       callbackUrl: '/',
-      redirect: false, // 에러 핸들링을 위해 redirect를 false로 설정
+      redirect: true, // 에러 핸들링을 위해 redirect를 false로 설정
     });
 
     if (result?.error) {

@@ -2,51 +2,67 @@ import {
   Avatar,
   AvatarFallback,
   AvatarImage,
-} from "@repo/ui/components/ui/avatar";
-import { Card, CardContent, CardFooter } from "@repo/ui/components/ui/card";
+} from '@repo/ui/components/ui/avatar';
+import { Card, CardContent, CardFooter } from '@repo/ui/components/ui/card';
 
-import { Heart, Share2, ThumbsUp } from "lucide-react";
+import { Heart, Share2, ThumbsUp } from 'lucide-react';
+import Link from 'next/link';
 
-export default function SocialCard() {
+export default function SocialCard({
+  isDetail,
+  feedCode = '1',
+}: {
+  isDetail: boolean;
+  feedCode?: string;
+}) {
   return (
-    <Card className="m-4 p-4 h-2/5 overflow-hidden">
-      <div className="relative">
-        <img
-          src="/pome.jpg"
-          alt="Cartoon cat sleeping on a green couch"
-          className="w-full h-[200px] object-cover rounded-t-lg"
-        />
-        <div className="absolute top-3 right-3 bg-red-500 rounded-full p-2">
-          <Heart className="w-4 h-4 text-white" />
+    <Card className={`m-4 h-2/5 overflow-hidden ${isDetail ? 'border-0' : ''}`}>
+      {/* Social Card Image */}
+      <section className="relative">
+        <Link href={`/feed/${feedCode}`}>
+          <img
+            src="/pome.jpg"
+            alt="Cartoon cat sleeping on a green couch"
+            className="w-full rounded-lg object-cover"
+          />
+        </Link>
+        <div className="absolute right-3 top-3 rounded-full bg-red-500 p-2">
+          <Heart className="h-4 w-4 text-white" />
         </div>
-      </div>
-      <CardContent className="p-4">
-        <div className="flex items-center space-x-4 mb-4">
+      </section>
+      <CardContent className="mt-2 px-2">
+        <div className="mb-4 flex items-center space-x-4">
           <Avatar>
-            <AvatarImage src="/jihunpistol.jpg" alt="Robert Fox" />
+            <AvatarImage src="/jihunpistol.jpg" alt="Jihun Sin" />
             <AvatarFallback>RF</AvatarFallback>
           </Avatar>
           <div className="flex-1">
-            <h3 className="text-sm font-medium text-gray-700">Robert Fox</h3>
+            <h3 className="text-sm font-medium text-gray-700">Jihun Sin</h3>
             <p className="text-xs text-gray-500">15/12/2023</p>
           </div>
         </div>
-        <p className="text-sm text-gray-600 mb-4">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore...
+        <p
+          className={`text-sm text-gray-600 ${isDetail ? '' : 'line-clamp-2'}`}
+        >
+          지훈이가 좋아하는 랜덤게임 무슨게임 ? 게임 Start <br />
+          시멘트! 시멘트! 시멘트! 시멘트!
         </p>
       </CardContent>
-      <CardFooter className="px-4 py-3 border-t border-gray-100">
-        <div className="flex space-x-6 text-gray-500 text-xs">
-          <div className="flex items-center">
-            <ThumbsUp className="w-4 h-4 mr-1 text-violet-600" />
-            <span>178 Likes</span>
-          </div>
-          <div className="flex items-center">
-            <Share2 className="w-4 h-4 mr-1 text-violet-600" />
-            <span>12 Shares</span>
-          </div>
-        </div>
+
+      {/* SocialCard Reaction Section */}
+      <CardFooter className="flex gap-x-3 border-t border-gray-100 px-2 py-3 text-xs text-gray-400">
+        <ul className="flex items-center gap-x-1">
+          <li>
+            <ThumbsUp className="text-lookids  h-4 w-4" />
+          </li>
+          <li>{`${178} Likes`}</li>
+        </ul>
+        <ul className="flex items-center gap-x-1">
+          <li>
+            <Share2 className="text-lookids  h-4 w-4" />
+          </li>
+          <li>{`${12} Shares`}</li>
+        </ul>
       </CardFooter>
     </Card>
   );
