@@ -1,4 +1,4 @@
-import KaKaoMap from "../../../components/map/KaKaoMap";
+import KaKaoMap from '../../../components/map/KaKaoMap';
 
 export default function page() {
   return (

@@ -1,13 +1,12 @@
 'use client';
-
+import Image from 'next/image';
 import Script from 'next/script';
 import { useEffect, useState } from 'react';
 import { Map, MapMarker } from 'react-kakao-maps-sdk';
-import MapMarkingList from './MapMarkingList';
-
 export default function KakaoMap() {
   const [isMapLoaded, setIsMapLoaded] = useState(false);
   const [mapError, setMapError] = useState<string | null>(null);
+
   const [currentPosition, setCurrentPosition] = useState<{
     lat: number;
     lng: number;
@@ -18,10 +17,14 @@ export default function KakaoMap() {
   const handleScriptLoad = () => {
     console.log('Kakao SDK 로드 완료');
     if (window.kakao) {
-      window.kakao.maps.load(() => {
-        console.log('Kakao Maps 로드 완료');
-        setIsMapLoaded(true);
-      });
+      try {
+        window.kakao.maps.load(() => {
+          console.log('Kakao Maps 로드 완료');
+          setIsMapLoaded(true);
+        });
+      } catch (error) {
+        setMapError('Kakao Maps SDK failed to load.');
+      }
     } else {
       setMapError('Kakao Maps SDK failed to load.');
     }
@@ -80,11 +83,10 @@ export default function KakaoMap() {
           style={{ width: '100%', height: '100%' }}
           level={3} // 맵 확대 수준 설정
         >
-          <MapMarkingList />
-
           {currentPosition && (
             <MapMarker position={currentPosition}>
-              <div style={{ color: '#000' }}>현재 위치</div>
+              <Image src="/pome.jpg" width={100} height={100} alt={''}></Image>
+              <div style={{ color: 'black' }}>현재 위치</div>
             </MapMarker>
           )}
         </Map>
