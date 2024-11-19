@@ -21,7 +21,7 @@ export default function SignUpForm() {
     },
   });
   return (
-    <section>
+    <>
       <CommonHeader title="회원가입" />
       <funnel.Render
         step1={({ history }) => (
@@ -52,6 +52,6 @@ export default function SignUpForm() {
           />
         )}
       />
-    </section>
+    </>
   );
 }

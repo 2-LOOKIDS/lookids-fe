@@ -140,7 +140,7 @@ export default function EmailVerificationForm({
                 <div className="flex justify-center">
                   <Button
                     type="button"
-                    className="fixed bottom-[41px] left-[41px] right-[41px] flex h-[59px] flex-row items-center justify-center gap-2 rounded-xl bg-[#FD9340] px-2 py-[21px] text-center text-2xl font-semibold leading-6 text-white hover:bg-[#FD9340]/90"
+                    className="signup-button"
                     onClick={validateEmailAndSendVerificationCodeToEmail}
                   >
                     <p className="text-[20px]">인증 코드 받기</p>

@@ -4,7 +4,7 @@ import React from 'react';
 
 function FollowButton() {
   return (
-    <Button className="w-2/5 rounded-[12px] bg-[#FD9340] py-5 text-white hover:bg-[#FD9340]/90">
+    <Button className="bg-lookids hover:bg-lookids/90 w-3/5 rounded-[12px] py-5 text-white">
       <p className="font-poppins text-base font-semibold leading-6">Follow</p>
       <PlusIcon className="h-5 w-5" />
     </Button>
