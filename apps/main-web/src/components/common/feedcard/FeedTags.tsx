@@ -12,7 +12,7 @@ export default function FeedTags({
       <h3 className="text-sm">인기 태그</h3>
       <div className="flex flex-wrap gap-2">
         {tags.map((tag) => (
-          <button
+          <div
             key={tag}
             onClick={() => onTagToggle(tag)}
             className={`flex items-center gap-2 rounded-full border px-4 py-2 text-sm
@@ -41,7 +41,7 @@ export default function FeedTags({
               </div>
             )}
             {tag}
-          </button>
+          </div>
         ))}
       </div>
     </div>

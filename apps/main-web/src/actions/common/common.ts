@@ -33,7 +33,7 @@ export const fetchDataforMembers = async <T>(
   if (tag) {
     fetchOptions.next = { tags: [tag] };
   }
-  const res = await fetch(apiUrl, fetchOptions);
+  const res = await fetch(`${process.env.BACKEND_URL}/${apiUrl}`, fetchOptions);
 
   const data = (await res.json()) as T;
   return data;

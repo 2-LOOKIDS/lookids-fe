@@ -1,4 +1,4 @@
-import { IconActiveType } from '../../types/bar/IconActiveType';
+import { IconActiveType } from '../../../types/bar/IconActiveType';
 
 export default function BottomMyPageIcon({ isActive = false }: IconActiveType) {
   return (
