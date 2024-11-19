@@ -14,7 +14,7 @@ interface Tab {
 
 export default function FeedList() {
   const searchParams = useSearchParams();
-  const search = searchParams.get('tab');
+  const search = searchParams.get('tab') ?? 'posts';
   const tabs: Tab[] = [
     {
       id: 0,
@@ -40,6 +40,7 @@ export default function FeedList() {
     { id: 8, imgAlt: 'jihun', imgSrc: '/jihunpistol.jpg' },
     { id: 9, imgAlt: 'poem', imgSrc: '/pome.jpg' },
   ];
+
   return (
     <>
       <ul className="flex w-full justify-center gap-4">

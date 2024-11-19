@@ -1,11 +1,13 @@
 'use client';
+
+import { Plus, X } from 'lucide-react';
+
 import { Button } from '@repo/ui/components/ui/button';
 import EXIF from 'exif-js';
-import { Plus, X } from 'lucide-react';
-import { useS3Upload } from 'next-s3-upload';
 import Image from 'next/image';
-import { useRef } from 'react';
 import { useImage } from '../../../context/ImageContext';
+import { useRef } from 'react';
+import { useS3Upload } from 'next-s3-upload';
 
 export default function ImageUpload() {
   const { images, setImages } = useImage();
@@ -17,6 +19,7 @@ export default function ImageUpload() {
 
   let { uploadToS3 } = useS3Upload();
 
+  //TODO: 모듈화 하기!
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files) {

@@ -2,11 +2,11 @@
 
 import { Step1, Step2, Step3 } from '../../types/auth/signup';
 
-import { useFunnel } from '@use-funnel/browser';
 import CommonHeader from '../ui/SignUpHeader';
 import EmailVerificationForm from './EmailVerificationForm';
 import TermsConsentForm from './TermsConsentForm';
 import UserInfoForm from './UserInfoForm';
+import { useFunnel } from '@use-funnel/browser';
 
 export default function SignUpForm() {
   const funnel = useFunnel<{
