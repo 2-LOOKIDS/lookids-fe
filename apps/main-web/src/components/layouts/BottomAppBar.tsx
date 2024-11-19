@@ -1,44 +1,44 @@
-"use client";
+'use client';
 
-import { usePathname, useRouter } from "next/navigation";
-import BottomAddIcon from "../icons/bottomNavBar/BottomAddIcon";
-import BottomDiaryIcon from "../icons/bottomNavBar/BottomDiaryIcon";
-import BottomHomeIcon from "../icons/bottomNavBar/BottomHomeIcon";
-import BottomMapIcon from "../icons/bottomNavBar/BottomMapIcon";
-import BottomMyPageIcon from "../icons/bottomNavBar/BottomMyPageIcon";
+import { usePathname, useRouter } from 'next/navigation';
+import BottomAddIcon from '../icons/bottomNavBar/BottomAddIcon';
+import BottomDiaryIcon from '../icons/bottomNavBar/BottomDiaryIcon';
+import BottomHomeIcon from '../icons/bottomNavBar/BottomHomeIcon';
+import BottomMapIcon from '../icons/bottomNavBar/BottomMapIcon';
+import BottomMyPageIcon from '../icons/bottomNavBar/BottomMyPageIcon';
 
 export default function BottomAppBar() {
   const router = useRouter();
   const currentPath = usePathname();
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200">
-      <nav className="max-w-md mx-auto">
+    <div className="fixed bottom-0 left-0 right-0 border-t border-gray-200 bg-white">
+      <nav className="mx-auto max-w-md">
         <ul className="flex justify-around py-4">
           <li>
             <button
               onClick={() => {
-                router.push("/");
+                router.push('/');
               }}
               className="flex flex-col items-center"
             >
-              <BottomHomeIcon isActive={currentPath === "/"} />
+              <BottomHomeIcon isActive={currentPath === '/'} />
             </button>
           </li>
           <li>
             <button
               onClick={() => {
-                router.push("/map");
+                router.push('/map');
               }}
               className="flex flex-col items-center"
             >
-              <BottomMapIcon isActive={currentPath === "/map"} />
+              <BottomMapIcon isActive={currentPath === '/map'} />
             </button>
           </li>
           <li>
             <button
               onClick={() => {
-                router.push("/addfeed");
+                router.push('/addfeed');
               }}
               className="flex flex-col items-center"
             >
@@ -48,21 +48,21 @@ export default function BottomAppBar() {
           <li>
             <button
               onClick={() => {
-                router.push("/subscribe/test");
+                router.push('/subscribe/test');
               }}
               className="flex flex-col items-center"
             >
-              <BottomDiaryIcon isActive={currentPath === "/diary"} />
+              <BottomDiaryIcon isActive={currentPath === '/diary'} />
             </button>
           </li>
           <li>
             <button
               onClick={() => {
-                router.push("/mypage");
+                router.push('/mypage');
               }}
               className="flex flex-col items-center"
             >
-              <BottomMyPageIcon isActive={currentPath === "/mypage"} />
+              <BottomMyPageIcon isActive={currentPath === '/mypage'} />
             </button>
           </li>
         </ul>

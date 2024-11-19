@@ -118,6 +118,7 @@ export default function EmailVerificationForm({
       onNext(values.email, values.emailVerificationCode);
     }
   };
+  // console.log('test :', process.env.NEXT_PUBLIC_BACKEND_URL);
 
   return (
     <>

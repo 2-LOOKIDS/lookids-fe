@@ -22,7 +22,7 @@ const stats = [
 
 export default function ProfileStats() {
   return (
-    <ul className="flex gap-7 pt-7">
+    <ul className="flex gap-4">
       {stats.map((item) => {
         return (
           <Fragment key={item.id}>
@@ -30,8 +30,8 @@ export default function ProfileStats() {
               <li className="h-8 w-[1px] bg-[#D9D9D9]" aria-hidden="true" />
             )}
             <li className="flex flex-col items-center">
-              <p className="font-semibold">{item.data}</p>
-              <p className="text-sm text-[#838383]">{item.label}</p>
+              <p className="xs:text-base text-sm font-semibold">{item.data}</p>
+              <p className="xs:text-sm text-xs text-[#838383]">{item.label}</p>
             </li>
           </Fragment>
         );

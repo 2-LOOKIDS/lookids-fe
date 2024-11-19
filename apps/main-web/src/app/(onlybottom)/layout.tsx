@@ -1,5 +1,5 @@
-import { ReactNode } from "react";
-import BottomAppBar from "../../components/layouts/BottomAppBar";
+import { ReactNode } from 'react';
+import BottomAppBar from '../../components/layouts/BottomAppBar';
 
 interface LayoutProps {
   children: ReactNode;
