@@ -13,10 +13,10 @@ export default function page() {
         {/* Header */}
         <AddFeedHeader />
 
-        <ProfileCircle />
         <hr />
         {/* Image Upload */}
         <ImageUpload />
+        <ProfileCircle />
 
         {/* Form */}
         <AddFeedForm />

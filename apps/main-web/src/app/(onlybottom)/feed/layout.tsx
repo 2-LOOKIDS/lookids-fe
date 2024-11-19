@@ -1,16 +1,16 @@
 import CommonHeader from '../../../components/ui/SignUpHeader';
 
 export default function layout({
-  modal,
+  // modal,
   children,
 }: {
-  modal: React.ReactNode;
+  // modal: React.ReactNode;
   children: React.ReactNode;
 }) {
   return (
     <>
       <CommonHeader title={'피드상세'}></CommonHeader>
-      {modal}
+      {/* {modal} */}
       {children}
     </>
   );

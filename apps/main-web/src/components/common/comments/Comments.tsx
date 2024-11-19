@@ -26,11 +26,11 @@ export default function Comments({ commentCode }: { commentCode: string }) {
           <Trash2 className="text-lookids " />
         </button>
       </div>
-      <section className="flex gap-x-4">
+      <section className="flex justify-between gap-x-4">
         <p className="text-[13px] leading-5 text-[#A2A2A2]">
-          만키로 떠와는 가격도 그렇고 상황이 달라진 부분도 있고, 또 테슬라
-          DC공급도 생긴만큼, 제가 소유하고 있는 가장 큰 전자제품인테슬라 모델Y
-          2만키로 후기 공유할게요!
+          내 이름은 신지훈. 이번 프로젝트가 끝나면 고향에 돌아가
+          <br />
+          그녀에게 고백할꺼야.
         </p>
         <div className="flex flex-col items-center  pt-2">
           <Heart className="text-lookids" strokeWidth={1} />
