@@ -1,5 +1,9 @@
 import { useState } from 'react';
-import { CustomOverlayMap, MapMarker } from 'react-kakao-maps-sdk';
+import {
+  CustomOverlayMap,
+  MapMarker,
+  MarkerClusterer,
+} from 'react-kakao-maps-sdk';
 import { Pin } from '../../types/map/MapType';
 
 export default function MapMarkingList({ PinList }: { PinList: Pin[] }) {
@@ -16,16 +20,12 @@ export default function MapMarkingList({ PinList }: { PinList: Pin[] }) {
   };
 
   return (
-    <>
+    <MarkerClusterer averageCenter={true} minLevel={10}>
       {PinList.map((pin, index) => (
         <MapMarker
           key={index}
           position={{ lat: pin.latitude, lng: pin.longitude }}
           onClick={() => handleMarkerClick(index)}
-          image={{
-            src: '/Lookidslogo.png',
-            size: { width: 35, height: 35 },
-          }}
         >
           {openMarkers[index] && (
             <CustomOverlayMap
@@ -39,6 +39,6 @@ export default function MapMarkingList({ PinList }: { PinList: Pin[] }) {
           )}
         </MapMarker>
       ))}
-    </>
+    </MarkerClusterer>
   );
 }

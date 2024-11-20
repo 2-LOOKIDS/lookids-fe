@@ -1,7 +1,12 @@
 'use client';
 import Script from 'next/script';
 import { useEffect, useState } from 'react';
-import { Map, MapMarker, useKakaoLoader } from 'react-kakao-maps-sdk';
+import {
+  Map,
+  MapMarker,
+  MarkerClusterer,
+  useKakaoLoader,
+} from 'react-kakao-maps-sdk';
 import { useDebouncedCallback } from 'use-debounce';
 import { getMyPinList } from '../../actions/map/Pin';
 import { Bounds, Pin } from '../../types/map/MapType';
