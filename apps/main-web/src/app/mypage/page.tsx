@@ -1,6 +1,7 @@
 import EditNickName from '../../components/pages/mypage/EditNickName';
 import EditProfileImage from '../../components/pages/mypage/EditProfileImage';
 import React from 'react';
+import SignOut from '../../components/pages/mypage/SignOut';
 import { getServerSession } from 'next-auth';
 import { getUserProfile } from '../../actions/user';
 import { options } from '../api/auth/[...nextauth]/options';
@@ -26,6 +27,8 @@ export default async function page() {
       <section></section>
       {/* 비밀번호 변경 페이지 이동 버튼 */}
       <section></section>
+      {/* 로그아웃 버튼 */}
+      <SignOut />
     </main>
   );
 }
