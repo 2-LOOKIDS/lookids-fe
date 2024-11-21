@@ -35,11 +35,10 @@ export default function AddFeedForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     // #태그명을 찾아서 selectedTags에 중복 없이 추가
     const extractedTags = content.match(/#\S+/g) || []; // #으로 시작하는 단어들 찾기
     const uniqueTags = [...new Set([...selectedTags, ...extractedTags])]; // 중복 제거하여 배열 합치기
-
+    console.log(uniqueTags);
     setSelectedTags(uniqueTags); // 최종 uniqueTags 배열을 설정
 
     const feedData: FeedPostType = {
@@ -48,10 +47,15 @@ export default function AddFeedForm() {
     };
 
     // 여기서 serveraction 수행
+    console.log('feedData', feedData);
+    console.log('images', images);
     const res = await uploadFeedWithMedia({ feed: feedData, images: images });
+    console.log(res);
     if (res.isSuccess) {
       alert('게시물이 성공적으로 등록되었습니다.');
       router.push('/');
+    } else {
+      console.log(res.message);
     }
   };
 
