@@ -7,11 +7,11 @@ import {
 } from '@repo/ui/components/ui/avatar';
 import { Badge } from '@repo/ui/components/ui/badge';
 import { ScrollArea } from '@repo/ui/components/ui/scroll-area';
-import { Search } from 'lucide-react';
 import * as React from 'react';
+import CommonHeader from '../../../components/ui/CommonHeader';
 import { ChattingList } from '../../../types/chatting/ChattingType';
 
-export default function Component() {
+export default function page() {
   const [messages, setMessages] = React.useState<ChattingList[]>([
     {
       id: '1',
@@ -44,20 +44,7 @@ export default function Component() {
 
   return (
     <div className="mx-auto flex h-screen w-full max-w-md flex-col bg-[#F8F8F9]">
-      <header className="sticky top-0 z-10 border-b bg-white/50 backdrop-blur-sm">
-        <div className="flex items-center justify-between px-5 py-4">
-          <h1 className="text-lg font-bold text-[#1B1F31]/80">채팅</h1>
-          <div className="flex items-center gap-4">
-            <button className="rounded-full p-2 hover:bg-gray-100">
-              <Search className="h-6 w-6 text-[#313737]" />
-            </button>
-            <Badge
-              variant="destructive"
-              className="h-5 min-w-[20px] rounded-full px-1.5"
-            ></Badge>
-          </div>
-        </div>
-      </header>
+      <CommonHeader title={'채팅'}></CommonHeader>
 
       <ScrollArea className="flex-1">
         <div className="divide-y">
