@@ -1,12 +1,12 @@
-import MainHamburger from "../icons/topNavBar/MainHamburger";
-import BellTest from "../icons/topNavBar/MainTopBell";
-import MainTopLogo from "../icons/topNavBar/MainTopLogo";
-import MainTopSearch from "../icons/topNavBar/MainTopSearch";
+import MainHamburger from '../icons/topNavBar/MainHamburger';
+import BellTest from '../icons/topNavBar/MainTopBell';
+import MainTopLogo from '../icons/topNavBar/MainTopLogo';
+import MainTopSearch from '../icons/topNavBar/MainTopSearch';
 
 export default function TopNavBar() {
   return (
-    <header className="fixed top-0 bg-white left-0 w-full z-10 flex items-center">
-      <nav className="flex w-full py-2 px-4 justify-between ">
+    <header className="fixed left-0 top-0 z-10 flex w-full items-center bg-white">
+      <nav className="flex w-full justify-between px-4 py-2 ">
         <ul className="flex items-center gap-x-2 ">
           <li>
             <MainHamburger />

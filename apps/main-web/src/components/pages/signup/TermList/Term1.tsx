@@ -1,6 +1,6 @@
-import "./styles.css";
+import './styles.css';
 
-import React from "react";
+import React from 'react';
 
 export default function Term1() {
   return (

@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from 'next/image';
 
 export default function CardMainImage() {
   return (
@@ -6,7 +6,7 @@ export default function CardMainImage() {
       <div>
         <div
           className="relative mx-auto w-full rounded-xl" // 여기서 rounded-xl 추가
-          style={{ aspectRatio: "1 / 1" }}
+          style={{ aspectRatio: '1 / 1' }}
         >
           <Image
             src="/pome.jpg"

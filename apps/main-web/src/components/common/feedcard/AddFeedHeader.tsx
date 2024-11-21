@@ -1,14 +1,14 @@
-import { ChevronLeft } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
+import { ChevronLeft } from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
 export default function AddFeedHeader() {
   return (
-    <div className="flex items-center justify-between px-4 h-[52px] border-b  ">
+    <div className="flex h-[52px] items-center justify-between border-b px-4  ">
       <Link href="/" className="p-2">
-        <ChevronLeft className="w-6 h-6" />
+        <ChevronLeft className="h-6 w-6" />
       </Link>
       <h1 className="text-center font-semibold">FEED</h1>
-      <div className="w-10 h-10 rounded-full overflow-hidden">
+      <div className="h-10 w-10 overflow-hidden rounded-full">
         <Image
           src="/jihunpistol.jpg"
           alt="Profile"

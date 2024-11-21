@@ -1,11 +1,11 @@
-import { Ellipsis } from "lucide-react";
-import Image from "next/image";
+import { Ellipsis } from 'lucide-react';
+import Image from 'next/image';
 
 export default function CardTopSection() {
   return (
-    <div className="flex flew-row justify-between items-center mb-2">
+    <div className="flew-row mb-2 flex items-center justify-between">
       <section className="flex flex-row items-center gap-2">
-        <div className="relative aspect-square w-8 h-8 rounded-full overflow-hidden">
+        <div className="relative aspect-square h-8 w-8 overflow-hidden rounded-full">
           <Image
             src="/jihunpistol.jpg"
             alt="지훈지훈피스톨"
@@ -15,7 +15,7 @@ export default function CardTopSection() {
           />
         </div>
         <div>
-          <p className="text-lg bold">KingJihun</p>
+          <p className="bold text-lg">KingJihun</p>
           <p className="text-xs text-gray-500">Tokyo-Japan</p>
         </div>
       </section>
