@@ -8,7 +8,7 @@ import {
 import { CommonResponse } from '../../types/responseType';
 
 // auth-service BASE_URL
-const BASE_URL = `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth-service/auth`;
+const BASE_URL = `${process.env.BACKEND_URL}/auth-service/auth`;
 
 // 이메일, 아이디, 비밀번호 유효성 체크
 export const checkCredentialsAvailabilityApi = async (

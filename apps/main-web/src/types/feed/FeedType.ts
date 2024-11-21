@@ -2,7 +2,7 @@ export interface FeedPostType {
   petCode?: string;
   content: string;
   tags?: string[];
-  mediaCode?: string[];
+  mediaUrl?: string[];
 }
 
 export interface MediaType {
@@ -13,7 +13,7 @@ export interface MediaType {
 }
 
 export interface PinType {
-  mediaCode: string;
+  mediaUrl: string;
   longitude: number;
   latitude: number;
   category: string;

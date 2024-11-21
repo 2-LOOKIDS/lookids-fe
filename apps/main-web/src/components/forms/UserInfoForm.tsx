@@ -127,9 +127,9 @@ export default function UserInfoForm({
               )}
             />
           ))}
-          <Button className="fixed bottom-[41px] left-[41px] right-[41px] flex h-[59px] flex-row items-center justify-center gap-2 rounded-xl bg-[#FD9340] px-2 py-[21px] text-center text-2xl font-semibold leading-6 text-white hover:bg-[#FD9340]/90">
-            회원가입
-          </Button>
+          <div className="flex justify-center">
+            <Button className="signup-button">회원가입</Button>
+          </div>
         </form>
       </FormProvider>
     </>
