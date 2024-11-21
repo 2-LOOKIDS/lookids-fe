@@ -7,6 +7,7 @@ import 'swiper/css/pagination';
 import { Grid, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
+import EditDialog from '../mypage/EditDialog';
 import ProfileAvatar from '../../ui/ProfileAvatar';
 import React from 'react';
 
@@ -18,7 +19,11 @@ const petList = [
   { id: 4, name: '신지훈5', imgUrl: '/pome.jpg' },
 ];
 
-function PetList() {
+interface PetListProps {
+  isEdit?: boolean;
+}
+
+function PetList({ isEdit }: PetListProps) {
   return (
     <>
       <Swiper
@@ -37,7 +42,8 @@ function PetList() {
                 className="h-[77px] min-h-[77px] w-[77px] min-w-[77px]"
                 imgAlt={item.name}
               />
-              <div className="flex max-w-[297px] flex-col gap-1">
+
+              <div className="relative flex max-w-[297px] flex-col gap-1">
                 <p className="font-semibold">{item.name}</p>
                 <p className="text-grey text-sm">허스키 2살 남자아이</p>
                 <p className="text-grey text-xs">
@@ -46,6 +52,11 @@ function PetList() {
                 </p>
                 <p className="text-grey text-xs">허수키 견생 2회차..</p>
               </div>
+              {isEdit && (
+                <div className="absolute right-1 top-0">
+                  <EditDialog />
+                </div>
+              )}
             </SwiperSlide>
           );
         })}

@@ -49,7 +49,7 @@ export default async function page({
           </div>
         </section>
 
-        <section>
+        <section className="pt-10">
           <PetList />
         </section>
 

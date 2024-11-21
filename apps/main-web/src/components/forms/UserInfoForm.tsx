@@ -6,6 +6,7 @@ import {
 } from '@repo/ui/components/ui/form';
 import { FormProvider, useForm } from 'react-hook-form';
 import {
+  RefinedUserSchema,
   RegisterUserInfo,
   UserInfoSchema,
   UserInfoType,
@@ -50,7 +51,7 @@ export default function UserInfoForm({
 }: UserInfoProps) {
   const router = useRouter();
   const form = useForm<UserInfoType>({
-    resolver: zodResolver(UserInfoSchema),
+    resolver: zodResolver(RefinedUserSchema),
     defaultValues: {
       loginId: '',
       password: '',

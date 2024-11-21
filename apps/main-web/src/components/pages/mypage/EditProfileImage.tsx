@@ -14,7 +14,10 @@ export default function EditProfileImage({
   imgUrl,
   imgAlt,
 }: EditProfileImageProps) {
-  // const [url, setUrl] = useState<string>('');
+  if (imgUrl === '기본 이미지') {
+    imgUrl = '/jihunpistol.jpg';
+  }
+  const [newImgUrl, setNewimgUrl] = useState<string>(imgUrl);
   const { uploadToS3 } = useS3Upload();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -26,20 +29,25 @@ export default function EditProfileImage({
 
     let url = await uploadToS3(newImage);
     const cdnurl = `https://media.lookids.online/${url.key}`;
-    console.log('🚀 ~ handleImageUpload ~ cdnurl:', cdnurl);
+    setNewimgUrl(cdnurl);
   };
-  if (imgUrl === '기본 이미지') {
-    imgUrl = '/jihunpistol.jpg';
-  }
+  const handleIconClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
 
   return (
     <div className="relative">
       <ProfileAvatar
         className="h-[162px] w-[162px]"
-        imgUrl={imgUrl}
+        imgUrl={newImgUrl}
         imgAlt={imgAlt}
       />
-      <div className="bg-lookids absolute bottom-1 right-1 z-[1] flex h-11 w-11 flex-row items-center justify-center gap-2.5 rounded-[16.5px] p-[5px]">
+      <div
+        className="bg-lookids absolute bottom-1 right-1 z-[1] flex h-11 w-11 flex-row items-center justify-center gap-2.5 rounded-[16.5px] p-[5px]"
+        onClick={handleIconClick}
+      >
         <input
           type="file"
           accept="image/*"
