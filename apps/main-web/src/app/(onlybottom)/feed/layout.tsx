@@ -1,4 +1,4 @@
-import CommonHeader from '../../../components/ui/SignUpHeader';
+import CommonHeader from '../../../components/ui/CommonHeader';
 
 export default function layout({
   // modal,
