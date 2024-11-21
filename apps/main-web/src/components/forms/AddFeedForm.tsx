@@ -39,16 +39,11 @@ export default function AddFeedForm() {
     const extractedTags = content.match(/#\S+/g) || []; // #으로 시작하는 단어들 찾기
     const uniqueTags = [...new Set([...selectedTags, ...extractedTags])]; // 중복 제거하여 배열 합치기
     console.log(uniqueTags);
-    setSelectedTags(uniqueTags); // 최종 uniqueTags 배열을 설정
 
     const feedData: FeedPostType = {
       content,
       tags: uniqueTags,
     };
-
-    // 여기서 serveraction 수행
-    console.log('feedData', feedData);
-    console.log('images', images);
     const res = await uploadFeedWithMedia({ feed: feedData, images: images });
     console.log(res);
     if (res.isSuccess) {
