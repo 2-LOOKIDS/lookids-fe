@@ -43,6 +43,7 @@ export default async function page() {
         <EditPassword />
       </section>
       {/* 로그아웃 버튼 */}
+      <SignOut />
     </main>
   );
 }
