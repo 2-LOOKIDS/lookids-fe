@@ -1,8 +1,10 @@
 import AddPet from '../../components/pages/mypage/AddPet';
 import EditDescription from '../../components/pages/mypage/EditDescription';
 import EditNickName from '../../components/pages/mypage/EditNickName';
+import EditPassword from '../../components/pages/mypage/EditPassword';
 import EditPets from '../../components/pages/mypage/EditPets';
 import EditProfileImage from '../../components/pages/mypage/EditProfileImage';
+import Hr from '../../components/common/Hr';
 import React from 'react';
 import SignOut from '../../components/pages/mypage/SignOut';
 import { getServerSession } from 'next-auth';
@@ -24,22 +26,23 @@ export default async function page() {
         />
         <EditNickName nickname={userProfile.nickname} tag={userProfile.tag} />
       </section>
-      <div className="h-3 w-full bg-[#EBEBEB]"></div>
+      <Hr />
       {/* 소개글 변경 */}
       <section className="px-5 py-5">
         <EditDescription />
       </section>
-      <div className="h-3 w-full bg-[#EBEBEB]"></div>
+      <Hr />
       {/* 마이펫 관리 */}
-      <section className="flex flex-col gap-10 px-5 py-5">
+      <section className="flex flex-col gap-1 px-5 py-5">
         <EditPets />
         <AddPet />
       </section>
-      <div className="h-3 w-full bg-[#EBEBEB]"></div>
+      <Hr />
       {/* 비밀번호 변경 페이지 이동 버튼 */}
-      <section className="px-5 py-5"></section>
+      <section className="px-5 py-5">
+        <EditPassword />
+      </section>
       {/* 로그아웃 버튼 */}
-      {/* <SignOut /> */}
     </main>
   );
 }

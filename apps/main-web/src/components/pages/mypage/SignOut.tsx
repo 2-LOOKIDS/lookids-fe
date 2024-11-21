@@ -6,8 +6,8 @@ import { signOut } from 'next-auth/react';
 
 export default function SignOut() {
   return (
-    <div className="flex justify-center">
-      <Button className="signup-button" onClick={() => signOut()}>
+    <div className="px-5 py-5">
+      <Button className="w-full" onClick={() => signOut()}>
         로그아웃
       </Button>
     </div>
