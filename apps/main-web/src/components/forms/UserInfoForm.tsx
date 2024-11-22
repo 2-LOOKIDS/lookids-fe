@@ -8,7 +8,6 @@ import { FormProvider, useForm } from 'react-hook-form';
 import {
   RefinedUserSchema,
   RegisterUserInfo,
-  UserInfoSchema,
   UserInfoType,
 } from '../../types/auth/signup';
 import {

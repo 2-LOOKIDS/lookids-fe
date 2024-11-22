@@ -1,5 +1,5 @@
 import EditDialog from './EditDialog';
-import React from 'react';
+import { UserNicknameSchema } from '../../../types/user';
 
 interface EditNickNameProps {
   nickname: string;
@@ -11,7 +11,13 @@ export default function EditNickName({ nickname, tag }: EditNickNameProps) {
       <p className="font-semibold">
         {nickname}#{tag}
       </p>
-      <EditDialog userNickname={nickname} />
+      <EditDialog
+        fields={[{ label: '닉네임', field: nickname }]}
+        schema={UserNicknameSchema}
+        defaultValues={{
+          nickname: nickname,
+        }}
+      />
     </div>
   );
 }

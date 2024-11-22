@@ -54,7 +54,7 @@ function PetList({ isEdit }: PetListProps) {
               </div>
               {isEdit && (
                 <div className="absolute right-1 top-0">
-                  <EditDialog />
+                  {/* <EditDialog /> */}
                 </div>
               )}
             </SwiperSlide>

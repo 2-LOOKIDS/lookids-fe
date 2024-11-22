@@ -12,6 +12,6 @@ export const getUserProfile = async (uuid: string): Promise<UserInfo> => {
   });
 
   const result = (await response.json()) as CommonResponse<UserInfo>;
-  return result.result;
   console.log('🚀 ~ getUserProfile ~ result:', result);
+  return result.result;
 };

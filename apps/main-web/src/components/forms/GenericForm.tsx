@@ -1,5 +1,3 @@
-'use client';
-
 import { DefaultValues, useForm } from 'react-hook-form';
 import {
   Dialog,
@@ -7,39 +5,39 @@ import {
   DialogFooter,
   DialogTrigger,
 } from '@repo/ui/components/ui/dialog';
-import { ZodSchema, ZodType, z } from 'zod';
 
 import { Button } from '@repo/ui/components/ui/button';
 import { Input } from '@repo/ui/components/ui/input';
 import { Label } from '@repo/ui/components/ui/label';
 import { PencilLine } from 'lucide-react';
+import React from 'react';
+import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-// TObject extends z.ZodObject<z.ZodRawShape, z.UnknownKeysParam, z.ZodTypeAny>,
-
-interface EditDialogProps<
+interface GenericFormProps<
   TShape extends z.ZodRawShape,
-  TKeys extends z.UnknownKeysParam,
+  TKey extends z.UnknownKeysParam,
   TType extends z.ZodTypeAny,
-  TObject extends z.ZodObject<TShape, TKeys, TType>,
+  TObject extends z.ZodObject<TShape, TKey, TType>,
+  TSchema extends TObject | z.ZodEffects<TObject>,
 > {
   fields: { label: string; field: string }[];
-  schema: TObject | z.ZodEffects<TType>;
-  defaultValues: DefaultValues<z.infer<TObject>>;
+  schema: TSchema;
+  defaultValues: DefaultValues<z.infer<TSchema>>;
 }
 
-export default function EditDialog<
+export default function GenericForm<
   TShape extends z.ZodRawShape,
-  TKeys extends z.UnknownKeysParam,
+  TKey extends z.UnknownKeysParam,
   TType extends z.ZodTypeAny,
-  TObject extends z.ZodObject<TShape, TKeys, TType>,
+  TObject extends z.ZodObject<TShape, TKey, TType>,
+  TSchema extends TObject | z.ZodEffects<TObject>,
 >({
   fields,
   schema,
   defaultValues,
-}: EditDialogProps<TShape, TKeys, TType, TObject>) {
-  type formType = z.infer<typeof schema>;
-  const form = useForm<formType>({
+}: GenericFormProps<TShape, TKey, TType, TObject, TSchema>) {
+  const form = useForm<z.infer<typeof schema>>({
     resolver: zodResolver(schema),
     defaultValues,
   });
