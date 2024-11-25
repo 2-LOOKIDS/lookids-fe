@@ -8,7 +8,7 @@ export default function MainHamburger() {
       xmlns="http://www.w3.org/2000/svg"
     >
       <g filter="url(#filter0_d_18_14)">
-        <ellipse cx="28" cy="28" rx="19.2953" ry="19" fill="#FD9340" />{" "}
+        <ellipse cx="28" cy="28" rx="19.2953" ry="19" fill="#FD9340" />{' '}
         {/* 위치 및 크기 조정 */}
       </g>
       <path

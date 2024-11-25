@@ -1,7 +1,7 @@
-import CardMainContent from "./CardMainContent";
-import CardMainImage from "./CardMainImage";
-import CardTopSection from "./CardTopSection";
-import CardUtilSection from "./CardUtilSection";
+import CardMainContent from './CardMainContent';
+import CardMainImage from './CardMainImage';
+import CardTopSection from './CardTopSection';
+import CardUtilSection from './CardUtilSection';
 
 export default function FeedCard() {
   return (

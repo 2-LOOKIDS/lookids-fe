@@ -1,8 +1,8 @@
 import '@repo/ui/styles.css';
 
-import AuthContextProvider from '../providers/AuthContextProvider';
 import type { Metadata } from 'next';
 import { getServerSession } from 'next-auth';
+import AuthContextProvider from '../providers/AuthContextProvider';
 import { notoSansKr } from '../utils/font';
 import { options } from './api/auth/[...nextauth]/options';
 
@@ -26,14 +26,16 @@ export default async function RootLayout({
 }): Promise<JSX.Element> {
   const session = await getServerSession(options);
   const isAuth = session?.user ? true : false;
-
+  const uuid = session?.user?.uuid;
   return (
     <html lang="ko">
       <body
         className={`${notoSansKr.className} flex justify-center bg-[#757575] font-sans`}
       >
         <div className="min-h-screen w-full max-w-[430px] bg-white">
-          <AuthContextProvider isAuth={isAuth}>{children}</AuthContextProvider>
+          <AuthContextProvider isAuth={isAuth} uuid={uuid}>
+            {children}
+          </AuthContextProvider>
         </div>
       </body>
     </html>

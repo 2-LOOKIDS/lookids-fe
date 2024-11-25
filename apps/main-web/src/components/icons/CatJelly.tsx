@@ -1,8 +1,8 @@
-import Image from "next/image";
+import Image from 'next/image';
 
 export default function CatJelly() {
   return (
-    <div className="fixed bottom-0  w-full h-[130px]">
+    <div className="fixed bottom-0  h-[130px] w-full">
       <Image
         src="/catjelly.png"
         alt="냥젤리"

@@ -13,6 +13,7 @@
     "@hookform/resolvers": "^3.9.1",
     "@repo/ui": "*",
     "@use-funnel/browser": "^0.0.7",
+    "event-source-polyfill": "^1.0.31",
     "exif-js": "^2.3.0",
     "exif-reader": "^2.0.1",
     "lucide-react": "^0.454.0",
@@ -22,8 +23,10 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.53.1",
+    "react-kakao-maps-sdk": "^1.1.27",
     "sharp": "^0.33.5",
     "swiper": "^11.1.14",
+    "use-debounce": "^10.0.4",
     "web-push": "^3.6.7",
     "zod": "^3.23.8"
   },
@@ -32,6 +35,7 @@
     "@repo/eslint-config": "*",
     "@repo/tailwind-config": "*",
     "@repo/typescript-config": "*",
+    "@types/event-source-polyfill": "^1.0.5",
     "@types/node": "^20.11.24",
     "@types/react": "^18.2.61",
     "@types/react-dom": "^18.2.19",
@@ -40,5 +44,10 @@
     "postcss": "^8.4.35",
     "tailwindcss": "^3.4.1",
     "typescript": "^5.3.3"
-  }
+  },
+  "description": "First, run the development server:",
+  "main": ".eslintrc.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }

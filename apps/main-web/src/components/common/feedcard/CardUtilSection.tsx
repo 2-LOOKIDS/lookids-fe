@@ -1,4 +1,4 @@
-import { Bookmark, Heart, MessageCircle, Send } from "lucide-react";
+import { Bookmark, Heart, MessageCircle, Send } from 'lucide-react';
 
 export default function CardUtilSection() {
   return (
