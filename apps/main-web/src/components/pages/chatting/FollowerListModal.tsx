@@ -1,3 +1,4 @@
+'use client';
 import {
   Avatar,
   AvatarFallback,
@@ -12,10 +13,13 @@ import {
 } from '@repo/ui/components/ui/dialog';
 import { ScrollArea } from '@repo/ui/components/ui/scroll-area';
 import { useEffect, useState } from 'react';
+import { getFollowingList } from '../../../actions/follow/Follow';
+import { getUserProfile } from '../../../actions/user';
 import {
   FollowerListModalProps,
   Following,
 } from '../../../types/follow/FollowType';
+import { UserInfo } from '../../../types/user';
 
 export function FollowerListModal({
   isOpen,
@@ -23,30 +27,18 @@ export function FollowerListModal({
   onSelectFollower,
 }: FollowerListModalProps) {
   const [followers, setFollowers] = useState<Following[]>([]);
-
+  const [followerProfile, setFollowerProfile] = useState<UserInfo[]>([]);
   useEffect(() => {
     // Fetch followers list
     // This is a mock implementation. Replace with actual API call.
     const fetchFollowers = async () => {
-      const mockFollowers: Following[] = [
-        {
-          id: '1',
-          name: 'Alice',
-          avatar: 'https://picsum.photos/200/300?random=1',
-        },
-        {
-          id: '2',
-          name: 'Bob',
-          avatar: 'https://picsum.photos/200/300?random=2',
-        },
-        {
-          id: '3',
-          name: 'Charlie',
-          avatar: 'https://picsum.photos/200/300?random=3',
-        },
-        // Add more mock followers as needed
-      ];
-      setFollowers(mockFollowers);
+      const response = await getFollowingList();
+      const Follwers: Following[] = response.content; // Adjust according to the actual response structure
+      Follwers.map(async (follower) => {
+        const user: UserInfo = await getUserProfile(follower.followerUuid);
+        setFollowerProfile((prev) => [...(prev || []), user]);
+      });
+      setFollowers(Follwers);
     };
 
     if (isOpen) {
@@ -61,18 +53,18 @@ export function FollowerListModal({
           <DialogTitle className="text-lookids">팔로잉 목록</DialogTitle>
         </DialogHeader>
         <ScrollArea className="h-[300px] pr-4">
-          {followers.map((follower) => (
-            <div key={follower.id} className="flex items-center space-x-4 py-2">
+          {followerProfile.map((follower, index) => (
+            <div key={index} className="flex items-center space-x-4 py-2">
               <Avatar>
-                <AvatarImage src={follower.avatar} alt={follower.name} />
-                <AvatarFallback>{follower.name[0]}</AvatarFallback>
+                <AvatarImage src={follower.image} alt={follower.nickname} />
+                <AvatarFallback>{follower.nickname}</AvatarFallback>
               </Avatar>
               <div className="flex-1">
-                <p className="text-sm font-medium">{follower.name}</p>
+                <p className="text-sm font-medium">{follower.nickname}</p>
               </div>
               <Button
                 className="text-lookids bg-slate-100"
-                onClick={() => onSelectFollower(follower.id)}
+                onClick={() => onSelectFollower(followers[index].followerUuid)}
               >
                 메시지 보내기
               </Button>

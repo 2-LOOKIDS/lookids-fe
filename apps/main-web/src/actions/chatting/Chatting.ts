@@ -1,13 +1,17 @@
 'use server';
 
 import { RoomMessage } from '../../types/chatting/ChattingType';
-import { CommonResponse } from '../../types/responseType';
+import { CommonResponse, responseList } from '../../types/responseType';
 import { fetchDataforMembers } from '../common/common';
 
-export async function getChattingList(userId: string): Promise<RoomMessage[]> {
+export async function getChattingList(
+  userId: string
+): Promise<responseList<RoomMessage>> {
   try {
-    const data = await fetchDataforMembers<CommonResponse<RoomMessage[]>>(
-      `chatting-service/read/chat/rooms/${userId}`,
+    const data = await fetchDataforMembers<
+      CommonResponse<responseList<RoomMessage>>
+    >(
+      `chatting-service/read/chat/rooms/${userId}?page=0`,
       'GET',
       '',
       'no-cache'

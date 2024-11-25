@@ -13,9 +13,10 @@ import { Plus } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { getChattingList } from '../../../actions/chatting/Chatting';
-import { FollowerListModal } from '../../../components/pages/chatting/FollowerListModal';
 import CommonHeader from '../../../components/ui/CommonHeader';
 import { RoomMessage } from '../../../types/chatting/ChattingType';
+import { responseList } from '../../../types/responseType';
+import { FollowerListModal } from '../../../components/pages/chatting/FollowerListModal';
 
 export default function Page() {
   const [roomInfos, setRoomInfos] = useState<RoomMessage[]>([]);
@@ -26,12 +27,17 @@ export default function Page() {
   useEffect(() => {
     const fetchInitialRoomInfos = async () => {
       try {
-        const data = await getChattingList(
+        const data: responseList<RoomMessage> = await getChattingList(
           'normal-cc56330c-579d-4533-8930-d3ab48ce97e3'
         );
-        setRoomInfos(data);
+        if (data?.content) {
+          setRoomInfos(data.content); // content 배열 설정
+        } else {
+          setRoomInfos([]); // 빈 배열 처리
+        }
       } catch (error) {
         console.error('Failed to fetch chatting list:', error);
+        setRoomInfos([]); // 에러 발생 시 빈 배열 설정
       }
     };
 
@@ -91,62 +97,65 @@ export default function Page() {
   };
 
   const handleSelectFollower = (followerId: string) => {
-    // Handle the follower selection here
     console.log(`Selected follower: ${followerId}`);
-    // You might want to create a new chat room with this follower
-    // and navigate to that chat room
     setIsFollowerListOpen(false);
   };
 
   return (
     <div className="mx-auto flex h-screen w-full max-w-md flex-col bg-[#F8F8F9]">
-      <CommonHeader title={'채팅'} />
+      <CommonHeader title={'채팅'} ismenu={false} />
       <ScrollArea className="flex-1">
-        <div className="divide-y">
-          {roomInfos
-            .slice()
-            .reverse()
-            .map((chat) => (
-              <Link
-                key={chat.roomId}
-                className="flex items-start gap-4 p-4 transition-colors hover:bg-gray-100/50"
-                href={`/chatting/${chat.roomId}`}
-              >
-                <div className="relative">
-                  <Avatar className="h-12 w-12">
-                    <AvatarImage
-                      src="https://picsum.photos/200/300"
-                      alt={chat.userId}
-                    />
-                    <AvatarFallback>{chat.userId}</AvatarFallback>
-                  </Avatar>
-                </div>
-                <div className="min-w-0 flex-1">
-                  <div className="flex items-start justify-between gap-2">
-                    <p className="truncate text-base font-semibold">
-                      {chat.roomName}
-                    </p>
-                    <p className="whitespace-nowrap text-xs text-[#869AA9]">
-                      {chat.lastChatMessageAt}09:50 A.M.
-                    </p>
+        {roomInfos.length === 0 ? (
+          <div className="flex h-full items-center justify-center text-gray-500">
+            채팅방이 없습니다
+          </div>
+        ) : (
+          <div className="divide-y">
+            {roomInfos
+              .slice()
+              .reverse()
+              .map((chat) => (
+                <Link
+                  key={chat.roomId}
+                  className="flex items-start gap-4 p-4 transition-colors hover:bg-gray-100/50"
+                  href={`/chatting/${chat.roomId}`}
+                >
+                  <div className="relative">
+                    <Avatar className="h-12 w-12">
+                      <AvatarImage
+                        src="https://picsum.photos/200/300"
+                        alt={chat.roomId}
+                      />
+                      <AvatarFallback>{chat.roomName}</AvatarFallback>
+                    </Avatar>
                   </div>
-                  <div className="flex items-center justify-between gap-2">
-                    <p className="line-clamp-1 truncate text-sm text-gray-600">
-                      {chat.lastChatMessage}아야야야야
-                    </p>
-                    {chat.unreadCount > 0 && (
-                      <Badge
-                        variant="destructive"
-                        className="rounded-lg px-2 py-0.5 text-xs font-semibold"
-                      >
-                        {chat.unreadCount > 999 ? '999+' : chat.unreadCount}
-                      </Badge>
-                    )}
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-start justify-between gap-2">
+                      <p className="truncate text-base font-semibold">
+                        {chat.roomName}
+                      </p>
+                      <p className="whitespace-nowrap text-xs text-[#869AA9]">
+                        {chat.lastChatMessageAt ?? '방 생성일'}
+                      </p>
+                    </div>
+                    <div className="flex items-center justify-between gap-2">
+                      <p className="line-clamp-1 truncate text-sm text-gray-600">
+                        {chat.lastChatMessage ?? '메시지가 없습니다.'}
+                      </p>
+                      {chat.unreadCount > 0 && (
+                        <Badge
+                          variant="destructive"
+                          className="rounded-lg px-2 py-0.5 text-xs font-semibold"
+                        >
+                          {chat.unreadCount > 999 ? '999+' : chat.unreadCount}
+                        </Badge>
+                      )}
+                    </div>
                   </div>
-                </div>
-              </Link>
-            ))}
-        </div>
+                </Link>
+              ))}
+          </div>
+        )}
       </ScrollArea>
       <Button
         className="fixed bottom-6 right-6 h-14 w-14 rounded-full shadow-lg"
