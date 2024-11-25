@@ -23,7 +23,7 @@ export default function SignUpForm() {
   });
   return (
     <>
-      <CommonHeader title="회원가입" />
+      <CommonHeader title="회원가입" ismenu={false} />
       <funnel.Render
         step1={({ history }) => (
           <TermsConsentForm
