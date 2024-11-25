@@ -19,7 +19,11 @@
 }
 
 .signup-button {
-  @apply bg-lookids hover:bg-lookids/90 fixed bottom-10 flex h-[59px] w-4/5 max-w-[348px] flex-row items-center justify-center gap-2 rounded-xl px-2 py-[21px] text-center text-2xl font-semibold leading-6 text-white;
+  @apply bg-lookids fixed bottom-10 flex h-[59px] w-4/5 max-w-[348px] flex-row items-center justify-center gap-2 rounded-xl px-2 py-[21px] text-center text-2xl font-semibold leading-6 text-white;
+}
+
+.signup-button:hover {
+  @apply bg-lookids/90 !important;
 }
 
 .signup-checkbox {
@@ -30,7 +34,7 @@
 .petList {
   width: 100%;
   height: 300px;
-  padding: 2.25rem 1.25rem 0 1.25rem !important;
+  padding: 0 1.25rem 0 1.25rem !important;
 }
 
 .petList .swiper-slide {
@@ -47,6 +51,7 @@
 @layer base {
   :root {
     --background: 0 0% 100%;
+    --bg-lookids: #f0f0f0;
     --foreground: 0 0% 3.9%;
     --card: 0 0% 100%;
     --card-foreground: 0 0% 3.9%;

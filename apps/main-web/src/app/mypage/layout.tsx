@@ -1,3 +1,4 @@
+import CommonHeader from '../../components/ui/SignUpHeader';
 import { Metadata } from 'next';
 import { ReactNode } from 'react';
 
@@ -6,14 +7,14 @@ interface LayoutProps {
 }
 
 export const metadata: Metadata = {
-  title: 'signup',
+  title: 'my page',
 };
 
-export default function Layout({ children }: LayoutProps) {
+export default function layout({ children }: LayoutProps) {
   return (
     <>
       <header>
-        <h1 className="sr-only">Lookids, 루키즈 | 회원가입</h1>
+        <CommonHeader title={'MY PAGE'} />
       </header>
       {children}
     </>

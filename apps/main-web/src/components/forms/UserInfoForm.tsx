@@ -5,22 +5,18 @@ import {
   FormMessage,
 } from '@repo/ui/components/ui/form';
 import { FormProvider, useForm } from 'react-hook-form';
+import { RegisterUserInfo, UserInfoType } from '../../types/auth/signup';
 import {
   checkCredentialsAvailabilityApi,
   registerUserApi,
 } from '../../actions/auth/sign-up';
-import {
-  RegisterUserInfo,
-  UserInfoSchema,
-  UserInfoType,
-} from '../../types/auth/signup';
 
-import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@repo/ui/components/ui/button';
-import { Input } from '@repo/ui/components/ui/input';
-import { useRouter } from 'next/navigation';
 import { CommonResponse } from '../../types/responseType';
+import { Input } from '@repo/ui/components/ui/input';
 import ProgressBar from '../pages/signup/ProgressBar';
+import { useRouter } from 'next/navigation';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 interface UserInfoProps {
   terms: {
@@ -50,7 +46,7 @@ export default function UserInfoForm({
 }: UserInfoProps) {
   const router = useRouter();
   const form = useForm<UserInfoType>({
-    resolver: zodResolver(UserInfoSchema),
+    resolver: zodResolver(RefinedUserSchema),
     defaultValues: {
       loginId: '',
       password: '',
