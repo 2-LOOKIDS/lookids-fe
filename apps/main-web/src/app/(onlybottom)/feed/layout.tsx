@@ -1,5 +1,5 @@
 'use client';
-import CommonHeader from '../../../components/ui/SignUpHeader';
+import CommonHeader from '../../../components/ui/CommonHeader';
 import { MenuItem } from '../../../types/common/MenuType';
 
 export default function layout({

@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 export default function BellTest() {
   const [hasNotification, setHasNotification] = useState(true); // 알림 상태 관리
   const router = useRouter();
 
   const handleClick = () => {
-    router.push("/notifications"); // 알림 페이지로 이동
+    router.push('/notifications'); // 알림 페이지로 이동
   };
 
   return (
@@ -19,7 +19,7 @@ export default function BellTest() {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       onClick={handleClick}
-      style={{ cursor: "pointer" }}
+      style={{ cursor: 'pointer' }}
     >
       <g filter="url(#filter0_d_55_1662)">
         <ellipse cx="28" cy="28" rx="19.2953" ry="19" fill="white" />

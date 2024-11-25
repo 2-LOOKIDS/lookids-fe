@@ -5,9 +5,19 @@ const config: Pick<Config, 'presets' | 'theme' | 'plugins'> = {
   presets: [sharedConfig],
   theme: {
     extend: {
+      screens: {
+        xs: '380px',
+        custom: '423px',
+      },
       colors: {
         lookids: {
           DEFAULT: '#FD9340',
+        },
+        grey: {
+          DEFAULT: '#838383',
+        },
+        lightGrey: {
+          DEFAULT: '#EDEDED',
         },
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',

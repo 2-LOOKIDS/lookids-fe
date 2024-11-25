@@ -1,13 +1,13 @@
 'use client';
 
 import { Button } from '@repo/ui/components/ui/button';
-import GoogleSign from '../icons/signIn/GoogleSign';
 import { Input } from '@repo/ui/components/ui/input';
-import KakaoSign from '../icons/signIn/KakaoSign';
 import { Label } from '@repo/ui/components/ui/label';
-import NaverSign from '../icons/signIn/NaverSign';
 import { signIn } from 'next-auth/react';
 import { useState } from 'react';
+import GoogleSign from '../icons/signIn/GoogleSign';
+import KakaoSign from '../icons/signIn/KakaoSign';
+import NaverSign from '../icons/signIn/NaverSign';
 
 export default function LoginForm() {
   const [loginError, setLoginError] = useState<string | null>(null); // 에러 메시지 상태
@@ -16,13 +16,11 @@ export default function LoginForm() {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
 
-    console.log(formData.get('id'), formData.get('password'));
-
     const result = await signIn('credentials', {
       loginId: formData.get('id') as string,
       password: formData.get('password') as string,
       callbackUrl: '/',
-      redirect: true, // 에러 핸들링을 위해 redirect를 false로 설정
+      redirect: false, // 에러 핸들링을 위해 redirect를 false로 설정
     });
 
     if (result?.error) {

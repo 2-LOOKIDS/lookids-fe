@@ -3,24 +3,24 @@ import {
   FormField,
   FormItem,
   FormMessage,
-} from "@repo/ui/components/ui/form";
-import { FormProvider, useForm } from "react-hook-form";
+} from '@repo/ui/components/ui/form';
+import { FormProvider, useForm } from 'react-hook-form';
 import {
   checkCredentialsAvailabilityApi,
   registerUserApi,
-} from "../../actions/auth/sign-up";
+} from '../../actions/auth/sign-up';
 import {
   RegisterUserInfo,
   UserInfoSchema,
   UserInfoType,
-} from "../../types/auth/signup";
+} from '../../types/auth/signup';
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "@repo/ui/components/ui/button";
-import { Input } from "@repo/ui/components/ui/input";
-import { useRouter } from "next/navigation";
-import { CommonResponse } from "../../types/responseType";
-import ProgressBar from "../pages/signup/ProgressBar";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Button } from '@repo/ui/components/ui/button';
+import { Input } from '@repo/ui/components/ui/input';
+import { useRouter } from 'next/navigation';
+import { CommonResponse } from '../../types/responseType';
+import ProgressBar from '../pages/signup/ProgressBar';
 
 interface UserInfoProps {
   terms: {
@@ -37,10 +37,10 @@ const formInputs: Array<{
   label: string;
   type: string;
 }> = [
-  { name: "loginId", label: "아이디", type: "text" },
-  { name: "password", label: "비밀번호", type: "password" },
-  { name: "passwordConfirm", label: "비밀번호 확인", type: "password" },
-  { name: "nickname", label: "닉네임", type: "text" },
+  { name: 'loginId', label: '아이디', type: 'text' },
+  { name: 'password', label: '비밀번호', type: 'password' },
+  { name: 'passwordConfirm', label: '비밀번호 확인', type: 'password' },
+  { name: 'nickname', label: '닉네임', type: 'text' },
 ];
 
 export default function UserInfoForm({
@@ -52,22 +52,22 @@ export default function UserInfoForm({
   const form = useForm<UserInfoType>({
     resolver: zodResolver(UserInfoSchema),
     defaultValues: {
-      loginId: "",
-      password: "",
-      passwordConfirm: "",
-      nickname: "",
+      loginId: '',
+      password: '',
+      passwordConfirm: '',
+      nickname: '',
     },
   });
 
   const checkLoginIdAvailability = async (
-    loginId: string,
+    loginId: string
   ): Promise<boolean> => {
-    const response = await checkCredentialsAvailabilityApi(loginId, "loginid");
+    const response = await checkCredentialsAvailabilityApi(loginId, 'loginid');
     return response;
   };
 
   const registerUser = async (
-    values: RegisterUserInfo,
+    values: RegisterUserInfo
   ): Promise<CommonResponse<null>> => {
     const response = await registerUserApi(values);
     return response;
@@ -76,9 +76,9 @@ export default function UserInfoForm({
   const onSubmit = async (values: UserInfoType) => {
     const response = await checkLoginIdAvailability(values.loginId);
     if (!response) {
-      form.setError("loginId", {
-        type: "manual",
-        message: "이미 사용중인 아이디입니다.",
+      form.setError('loginId', {
+        type: 'manual',
+        message: '이미 사용중인 아이디입니다.',
       });
       return;
     }
@@ -93,12 +93,12 @@ export default function UserInfoForm({
     const register = await registerUser(body);
 
     if (!register.isSuccess) {
-      form.setError("nickname", {
-        type: "manual",
-        message: "서버 오류 입니다. 관리자에게 문의해 주세요",
+      form.setError('nickname', {
+        type: 'manual',
+        message: '서버 오류 입니다. 관리자에게 문의해 주세요',
       });
     } else {
-      router.push("/sign-in");
+      router.push('/sign-in');
     }
   };
 
@@ -127,9 +127,9 @@ export default function UserInfoForm({
               )}
             />
           ))}
-          <Button className="fixed bottom-[41px] left-[41px] right-[41px] flex h-[59px] flex-row items-center justify-center gap-2 rounded-xl bg-[#FD9340] px-2 py-[21px] text-center text-2xl font-semibold leading-6 text-white hover:bg-[#FD9340]/90">
-            회원가입
-          </Button>
+          <div className="flex justify-center">
+            <Button className="signup-button">회원가입</Button>
+          </div>
         </form>
       </FormProvider>
     </>

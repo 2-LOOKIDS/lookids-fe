@@ -1,5 +1,5 @@
 .signup-input {
-  @apply h-[52px] text-[20px]  placeholder:text-[#BDBDBD] focus-visible:ring-0 focus-visible:ring-offset-0 border-0 border-b rounded-none;
+  @apply h-[52px] rounded-none  border-0 border-b text-[20px] placeholder:text-[#BDBDBD] focus-visible:ring-0 focus-visible:ring-offset-0;
 }
 
 .signup-button {
@@ -7,5 +7,5 @@
 }
 
 .signup-checkbox {
-  @apply h-6 w-6 rounded data-[state=checked]:bg-[#FD9340] data-[state=checked]:border-transparent;
+  @apply h-6 w-6 rounded data-[state=checked]:border-transparent data-[state=checked]:bg-[#FD9340];
 }
