@@ -1,12 +1,17 @@
 'use client';
 
-import { DefaultValues, useForm } from 'react-hook-form';
+import { DefaultValues, Path, useForm } from 'react-hook-form';
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogFooter,
+  DialogHeader,
+  DialogTitle,
   DialogTrigger,
 } from '@repo/ui/components/ui/dialog';
+import { FormControl, FormField } from '@repo/ui/components/ui/form';
+import { UserDescriptionSchema, UserNicknameSchema } from '../../../types/user';
 import { ZodSchema, ZodType, z } from 'zod';
 
 import { Button } from '@repo/ui/components/ui/button';
@@ -22,10 +27,14 @@ interface EditDialogProps<
   TKeys extends z.UnknownKeysParam,
   TType extends z.ZodTypeAny,
   TObject extends z.ZodObject<TShape, TKeys, TType>,
+  TSchema extends TObject | z.ZodEffects<TType>,
 > {
-  fields: { label: string; field: string }[];
-  schema: TObject | z.ZodEffects<TType>;
-  defaultValues: DefaultValues<z.infer<TObject>>;
+  schema: TSchema;
+  fields: {
+    label: string;
+    field: Path<z.TypeOf<TType>>;
+  }[];
+  defaultValues: DefaultValues<z.infer<TSchema>>;
 }
 
 export default function EditDialog<
@@ -33,16 +42,25 @@ export default function EditDialog<
   TKeys extends z.UnknownKeysParam,
   TType extends z.ZodTypeAny,
   TObject extends z.ZodObject<TShape, TKeys, TType>,
+  TSchema extends TObject | z.ZodEffects<TType>,
 >({
   fields,
   schema,
   defaultValues,
-}: EditDialogProps<TShape, TKeys, TType, TObject>) {
+}: EditDialogProps<TShape, TKeys, TType, TObject, TSchema>) {
   type formType = z.infer<typeof schema>;
-  const form = useForm<formType>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<formType>({
     resolver: zodResolver(schema),
     defaultValues,
   });
+
+  const onSubmit = async (values: formType) => {
+    console.log(values);
+  };
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -54,32 +72,50 @@ export default function EditDialog<
           <p className="text-sm">수정</p>
         </Button>
       </DialogTrigger>
-      <DialogContent className="w-[90%] rounded-sm">
-        <ul className="flex w-[90%] flex-col items-end gap-4 pt-4">
-          {fields.map(
-            (field, idx) =>
-              field.field !== undefined && (
-                <li key={idx} className="flex items-center gap-4">
-                  <Label htmlFor={field.label} className="w-[50px] text-right">
-                    {field.label}
-                  </Label>
-                  <Input
-                    id={field.label}
-                    defaultValue={field.field}
-                    className="w-[90%]"
-                  />
-                </li>
-              )
-          )}
-        </ul>
-        <DialogFooter className="flex w-[90%] justify-end">
-          <Button
-            className="bg-lookids hover:bg-lookids/90 w-1/5"
-            type="submit"
-          >
-            수정
-          </Button>
-        </DialogFooter>
+      <DialogContent
+        aria-describedby={undefined}
+        className="w-[90%] rounded-sm"
+      >
+        <DialogTitle />
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="flex w-[90%] flex-col items-end gap-4 pt-4"
+        >
+          {fields &&
+            fields.map(
+              (field, idx) =>
+                field.field !== undefined && (
+                  <li key={idx} className="flex items-center gap-4">
+                    <Label
+                      htmlFor={field.label}
+                      className="w-[50px] text-right"
+                    >
+                      {field.label}
+                    </Label>
+                    <Input
+                      id={field.label}
+                      defaultValue={field.field}
+                      className="w-[90%]"
+                      {...register(field.field)}
+                    />
+
+                    {errors[field.field]?.message && (
+                      <span className="text-sm text-red-500">
+                        {errors[field.field]?.message as string}
+                      </span>
+                    )}
+                  </li>
+                )
+            )}
+          <DialogFooter className="flex w-[90%] justify-end">
+            <Button
+              className="bg-lookids hover:bg-lookids/90 w-1/5"
+              type="submit"
+            >
+              수정
+            </Button>
+          </DialogFooter>
+        </form>
       </DialogContent>
     </Dialog>
   );

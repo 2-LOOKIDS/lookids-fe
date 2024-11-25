@@ -1,16 +1,25 @@
-import EditDialog from './EditDialog';
-import React from 'react';
+'use client';
 
-export default function EditDescription() {
+import EditDialog from './EditDialog';
+import { UserDescriptionSchema } from '../../../types/user';
+
+interface EditDescriptionProps {
+  description: string;
+}
+
+export default function EditDescription({ description }: EditDescriptionProps) {
   return (
     <div className="flex flex-col gap-4">
       <p className="text-sm font-semibold">내 소개글</p>
-      <p className="text-grey text-xs">
-        소주 가온나 소주 가오라고 소주가 몇 병이고 소주 가온나 소주 가오라고
-        소주가 몇 병이고 소주 가온나 소주 가오라고 소주가 몇 병이고
-      </p>
+      <p className="text-grey text-xs">{description}</p>
       <div className="flex justify-start">
-        <EditDialog />
+        <EditDialog
+          fields={[{ label: '소개글', field: description }]}
+          schema={UserDescriptionSchema}
+          defaultValues={{
+            description: description,
+          }}
+        />
       </div>
     </div>
   );

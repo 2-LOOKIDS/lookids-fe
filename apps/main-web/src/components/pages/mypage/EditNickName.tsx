@@ -1,3 +1,5 @@
+'use client';
+
 import EditDialog from './EditDialog';
 import { UserNicknameSchema } from '../../../types/user';
 

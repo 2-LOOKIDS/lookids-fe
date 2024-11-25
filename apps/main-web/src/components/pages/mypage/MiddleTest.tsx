@@ -1,6 +1,11 @@
+import { DefaultValues, Path } from 'react-hook-form';
+
+import { UserNicknameSchema } from '../../../types/user';
+import { z } from 'zod';
+
 const schemaMap = {
-  signup: signupSchema,
-  signin: signinSchema,
+  signup: UserNicknameSchema,
+  signin: UserNicknameSchema,
 };
 interface SignupFormProps<T extends keyof typeof schemaMap> {
   type: T;

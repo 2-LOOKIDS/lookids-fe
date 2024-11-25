@@ -29,11 +29,11 @@ export default async function page() {
       <Hr />
       {/* 소개글 변경 */}
       <section className="px-5 py-5">
-        <EditDescription />
+        <EditDescription description={userProfile.comment} />
       </section>
       <Hr />
       {/* 마이펫 관리 */}
-      <section className="flex flex-col gap-1 px-5 py-5">
+      <section className="flex flex-col gap-1 py-5">
         <EditPets />
         <AddPet />
       </section>
