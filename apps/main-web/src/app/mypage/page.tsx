@@ -7,6 +7,7 @@ import EditProfileImage from '../../components/pages/mypage/EditProfileImage';
 import Hr from '../../components/common/Hr';
 import React from 'react';
 import SignOut from '../../components/pages/mypage/SignOut';
+import { getFeedList } from '../../actions/feed/feedList';
 import { getServerSession } from 'next-auth';
 import { getUserProfile } from '../../actions/user';
 import { options } from '../api/auth/[...nextauth]/options';
@@ -15,8 +16,10 @@ export default async function page() {
   const data = await getServerSession(options);
   const uuid = data?.user.uuid;
   const userProfile = await getUserProfile(uuid);
-  console.log('🚀 ~ page ~ uuid:', uuid);
-  console.log('🚀 ~ page ~ res:', userProfile);
+  const feedList = await getFeedList(uuid);
+  console.log('🚀 ~ page ~ feedList:', feedList);
+  // console.log('🚀 ~ page ~ uuid:', uuid);
+  // console.log('🚀 ~ page ~ res:', userProfile);
   return (
     <main className="">
       {/* 프로필 사진, 닉네임 변경 */}
