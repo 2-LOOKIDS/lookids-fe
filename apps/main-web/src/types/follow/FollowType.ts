@@ -1,7 +1,11 @@
+export interface getfollowingResponse {
+  size: number;
+  content: Following[];
+}
+
 export interface Following {
-  id: string;
-  name: string;
-  avatar: string;
+  followerUuid: string;
+  followingUuid: string;
 }
 
 export interface FollowerListModalProps {
