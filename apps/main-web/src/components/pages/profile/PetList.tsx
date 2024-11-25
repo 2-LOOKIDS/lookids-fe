@@ -7,7 +7,7 @@ import 'swiper/css/pagination';
 import { Grid, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-import EditDialog from '../mypage/EditDialog';
+import InternalDialog from '../mypage/EditDialog';
 import ProfileAvatar from '../../ui/ProfileAvatar';
 import React from 'react';
 

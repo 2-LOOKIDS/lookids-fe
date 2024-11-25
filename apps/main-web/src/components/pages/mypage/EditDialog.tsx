@@ -1,28 +1,24 @@
 'use client';
 
-import { DefaultValues, Path, useForm } from 'react-hook-form';
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
-  DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from '@repo/ui/components/ui/dialog';
-import { FormControl, FormField } from '@repo/ui/components/ui/form';
+import { DefaultValues, Path, useForm } from 'react-hook-form';
+import { z } from 'zod';
 import { UserDescriptionSchema, UserNicknameSchema } from '../../../types/user';
-import { ZodSchema, ZodType, z } from 'zod';
 
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@repo/ui/components/ui/button';
 import { Input } from '@repo/ui/components/ui/input';
 import { Label } from '@repo/ui/components/ui/label';
-import { PencilLine } from 'lucide-react';
-import { zodResolver } from '@hookform/resolvers/zod';
 
 // TObject extends z.ZodObject<z.ZodRawShape, z.UnknownKeysParam, z.ZodTypeAny>,
 
-interface EditDialogProps<
+interface InternalDialogProps<
   TShape extends z.ZodRawShape,
   TKeys extends z.UnknownKeysParam,
   TType extends z.ZodTypeAny,
@@ -37,7 +33,7 @@ interface EditDialogProps<
   defaultValues: DefaultValues<z.infer<TSchema>>;
 }
 
-export default function EditDialog<
+function InternalDialog<
   TShape extends z.ZodRawShape,
   TKeys extends z.UnknownKeysParam,
   TType extends z.ZodTypeAny,
@@ -47,7 +43,7 @@ export default function EditDialog<
   fields,
   schema,
   defaultValues,
-}: EditDialogProps<TShape, TKeys, TType, TObject, TSchema>) {
+}: InternalDialogProps<TShape, TKeys, TType, TObject, TSchema>) {
   type formType = z.infer<typeof schema>;
   const {
     register,
@@ -69,7 +65,7 @@ export default function EditDialog<
           variant="outline"
           className="text-lookids hover:bg-lookids/90 border-lookids flex h-7 items-center justify-center gap-1 rounded border bg-[rgba(255,233,221,0.2)] px-1 py-[6px] hover:text-white"
         >
-          <PencilLine className="h-4 w-4" />
+          {/* <PencilLine className="h-4 w-4" /> */}
           <p className="text-sm">수정</p>
         </Button>
       </DialogTrigger>
@@ -119,5 +115,29 @@ export default function EditDialog<
         </form>
       </DialogContent>
     </Dialog>
+  );
+}
+
+const schemaMap = {
+  userNickname: UserNicknameSchema,
+  userDescription: UserDescriptionSchema,
+};
+interface SignupFormProps<T extends keyof typeof schemaMap> {
+  type: T;
+  defaultValues: DefaultValues<z.infer<(typeof schemaMap)[T]>>;
+  fields: { label: string; field: Path<z.TypeOf<(typeof schemaMap)[T]>> }[];
+}
+
+export function EditDialog<T extends keyof typeof schemaMap>({
+  type,
+  defaultValues,
+  fields,
+}: SignupFormProps<T>) {
+  return (
+    <InternalDialog
+      schema={schemaMap[type]}
+      defaultValues={defaultValues}
+      fields={fields}
+    />
   );
 }

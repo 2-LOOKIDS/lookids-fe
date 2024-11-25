@@ -1,14 +1,12 @@
 'use client';
 
 import { DefaultValues, Path, useForm } from 'react-hook-form';
-import { signinSchema, signupSchema } from '@/lib/db/schema';
 
-import { GenericForm } from './signup-form';
-import { Input } from '@/components/ui/input';
-import { JSX } from 'react';
-import { Label } from '@/components/ui/label';
-import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { JSX } from 'react';
+import { z } from 'zod';
+import { Input } from '@repo/ui/components/ui/input';
+import { Label } from '@repo/ui/components/ui/label';
 
 interface FormComponentProps<
   TShape extends z.ZodRawShape,
@@ -46,11 +44,32 @@ export const InternalGenericForm = <
             ? schema.innerType().shape
             : schema.shape;
         let fieldInput: JSX.Element | null = null;
-        if (shape[field] instanceof z.ZodString) {
+        const value = shape[field];
+        if (value instanceof z.ZodString) {
           fieldInput = <Input {...register(field)} />;
         }
-        if (shape[field] instanceof z.ZodNumber) {
-          fieldInput = <Input type={'number'} {...register(field)} />;
+        if (value instanceof z.ZodNumber) {
+          const { minValue, maxValue } = value;
+
+          if (minValue !== null && maxValue !== null && value.isInt) {
+            const range = maxValue - minValue;
+            if (range < 100) {
+              fieldInput = (
+                <select {...register(field)}>
+                  {Array.from({ length: range }).map((_, i) => {
+                    return <option value={i + minValue}>{i + minValue}</option>;
+                  })}
+                </select>
+              );
+            } else {
+              fieldInput = <Input type={'number'} {...register(field)} />;
+            }
+          } else {
+            fieldInput = <Input type={'number'} {...register(field)} />;
+          }
+        }
+        if (value instanceof z.ZodEnum) {
+          value.options.map;
         }
         return (
           <div key={field}>
