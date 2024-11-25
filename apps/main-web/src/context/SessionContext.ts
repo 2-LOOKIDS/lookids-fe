@@ -1,8 +1,14 @@
-"use client";
-import { createContext, useContext } from "react";
+'use client';
+import { createContext, useContext } from 'react';
 
-// Context 생성: 기본값을 Session | null로 설정
-export const SessionContext = createContext<boolean | null>(null);
+// Context 생성: 기본값을 { isAuth: boolean | null, uuid: string | null }로 설정
+export const SessionContext = createContext<{
+  isAuth: boolean | null;
+  uuid: string | null;
+}>({
+  isAuth: null,
+  uuid: null,
+});
 
 // 커스텀 훅
 export const useSession = () => useContext(SessionContext);

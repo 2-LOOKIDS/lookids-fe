@@ -72,7 +72,7 @@ export async function uploadFeedWithMedia({
 
     const feedData: FeedPostType = {
       ...feed,
-      mediaUrl: images.map((image) => extractCommonUrl(image.mediaUrl)),
+      mediaUrlList: images.map((image) => extractCommonUrl(image.mediaUrl)),
     };
     console.log('최종 피드 데이터:', feedData);
 

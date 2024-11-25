@@ -1,11 +1,10 @@
-export interface ChattingList {
-  id: string;
-  username: string;
-  avatar: string;
-  message: string;
-  timestamp: string;
+export interface RoomMessage {
+  roomId: string;
+  userId: string;
+  roomName: string;
   unreadCount: number;
-  isOnline: boolean;
+  lastChatMessage?: string;
+  lastChatMessageAt?: string;
 }
 
 export interface MessageResponse {

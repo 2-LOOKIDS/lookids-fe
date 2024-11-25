@@ -42,7 +42,7 @@ export default function AddFeedForm() {
 
     const feedData: FeedPostType = {
       content,
-      tags: uniqueTags,
+      tagList: uniqueTags,
     };
     const res = await uploadFeedWithMedia({ feed: feedData, images: images });
     console.log(res);
