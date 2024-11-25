@@ -4,13 +4,17 @@ import { SessionContext } from '../context/SessionContext';
 
 export const AuthContextProvider = ({
   isAuth,
+  uuid,
   children,
 }: {
   isAuth: boolean;
+  uuid: string;
   children: React.ReactNode;
 }) => {
   return (
-    <SessionContext.Provider value={isAuth}>{children}</SessionContext.Provider>
+    <SessionContext.Provider value={{ isAuth, uuid }}>
+      {children}
+    </SessionContext.Provider>
   );
 };
 

@@ -1,8 +1,8 @@
 export interface FeedPostType {
   petCode?: string;
   content: string;
-  tags?: string[];
-  mediaUrl?: string[];
+  tagList?: string[];
+  mediaUrlList?: string[];
 }
 
 export interface MediaType {
