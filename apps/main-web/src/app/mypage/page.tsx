@@ -15,6 +15,7 @@ export default async function page() {
   const data = await getServerSession(options);
   const uuid = data?.user.uuid;
   const userProfile = await getUserProfile(uuid);
+  console.log('🚀 ~ page ~ uuid:', uuid);
   console.log('🚀 ~ page ~ res:', userProfile);
   return (
     <main className="">
@@ -24,12 +25,19 @@ export default async function page() {
           imgUrl={userProfile.image}
           imgAlt={userProfile.nickname}
         />
-        <EditNickName nickname={userProfile.nickname} tag={userProfile.tag} />
+        <EditNickName
+          fields={[{ label: '닉네임', field: 'nickname' }]}
+          nickname={userProfile.nickname}
+          tag={userProfile.tag}
+        />
       </section>
       <Hr />
       {/* 소개글 변경 */}
       <section className="px-5 py-5">
-        <EditDescription description={userProfile.comment} />
+        <EditDescription
+          description={userProfile.comment}
+          fields={[{ label: '소개글', field: 'description' }]}
+        />
       </section>
       <Hr />
       {/* 마이펫 관리 */}

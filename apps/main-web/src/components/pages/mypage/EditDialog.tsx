@@ -32,7 +32,7 @@ interface EditDialogProps<
   schema: TSchema;
   fields: {
     label: string;
-    field: Path<z.TypeOf<TType>>;
+    field: Path<z.TypeOf<TSchema>>;
   }[];
   defaultValues: DefaultValues<z.infer<TSchema>>;
 }
@@ -52,6 +52,7 @@ export default function EditDialog<
   const {
     register,
     handleSubmit,
+    getValues,
     formState: { errors },
   } = useForm<formType>({
     resolver: zodResolver(schema),
