@@ -1,10 +1,17 @@
 export interface RoomMessage {
   roomId: string;
-  userId: string;
   roomName: string;
   unreadCount: number;
-  lastChatMessage?: string;
+  participants: participant[];
+  updatedAt: Date;
   lastChatMessageAt?: string;
+}
+export interface participant {
+  userId: string;
+  unreadCount: number;
+  isOnline: boolean;
+  lastEnterTime: Date;
+  lastLeaveTime: Date;
 }
 
 export interface MessageResponse {
@@ -18,5 +25,6 @@ export interface MessageResponse {
 }
 
 export interface Message extends MessageResponse {
-  avatar: string;
+  image: string;
+  nickname: string;
 }

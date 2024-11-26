@@ -1,6 +1,6 @@
-import CommonHeader from '../../components/ui/SignUpHeader';
 import { Metadata } from 'next';
 import { ReactNode } from 'react';
+import CommonHeader from '../../components/ui/CommonHeader';
 
 interface LayoutProps {
   children: ReactNode;
@@ -14,7 +14,7 @@ export default function layout({ children }: LayoutProps) {
   return (
     <>
       <header>
-        <CommonHeader title={'MY PAGE'} />
+        <CommonHeader title={'MY PAGE'} ismenu={false} />
       </header>
       {children}
     </>

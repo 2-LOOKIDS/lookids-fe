@@ -13,45 +13,49 @@ import { Plus } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { getChattingList } from '../../../actions/chatting/Chatting';
+import { FollowerListModal } from '../../../components/pages/chatting/FollowerListModal';
 import CommonHeader from '../../../components/ui/CommonHeader';
+import { useSession } from '../../../context/SessionContext';
 import { RoomMessage } from '../../../types/chatting/ChattingType';
 import { responseList } from '../../../types/responseType';
-import { FollowerListModal } from '../../../components/pages/chatting/FollowerListModal';
+import { UserInfo } from '../../../types/user';
 
 export default function Page() {
+  const session = useSession();
   const [roomInfos, setRoomInfos] = useState<RoomMessage[]>([]);
   const [reconnectAttempts, setReconnectAttempts] = useState(0);
   const eventSourceRef = useRef<EventSourcePolyfill | null>(null);
   const [isFollowerListOpen, setIsFollowerListOpen] = useState(false);
-
+  const [myprofile, setMyProfile] = useState<UserInfo | null>(null);
   useEffect(() => {
+    const uuid = session?.uuid;
+    if (!uuid) {
+      console.error('UUID is missing.');
+      return;
+    }
+
+    const backendUrl =
+      process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3000';
     const fetchInitialRoomInfos = async () => {
       try {
-        const data: responseList<RoomMessage> = await getChattingList(
-          'normal-cc56330c-579d-4533-8930-d3ab48ce97e3'
-        );
-        if (data?.content) {
-          setRoomInfos(data.content); // content 배열 설정
-        } else {
-          setRoomInfos([]); // 빈 배열 처리
-        }
+        const data: responseList<RoomMessage> = await getChattingList(uuid);
+        setRoomInfos(data?.content || []);
       } catch (error) {
         console.error('Failed to fetch chatting list:', error);
-        setRoomInfos([]); // 에러 발생 시 빈 배열 설정
+        setRoomInfos([]);
       }
     };
 
     const connectEventSource = () => {
       const myAccessToken =
-        'eyJhbGciOiJIUzUxMiJ9.eyJpc3N1ZWRBdCI6MTczMjE3MDEwMzUyOCwiZXhwaXJhdGlvbiI6MTczMjI1NjUwMzUyOH0.TVN3ej02Apv2EXkeGoTeKdUs8tBCyY8KOgRi4oz1y2_cfQLbmgA7qsP27beaZfHwtA6fxTOai_wcRyswYF4i7w';
-      const uuid = 'normal-cc56330c-579d-4533-8930-d3ab48ce97e3';
-      if (!myAccessToken || !uuid) {
-        console.error('Missing accessToken or uuid');
+        'eyJhbGciOiJIUzUxMiJ9.eyJpc3N1ZWRBdCI6MTczMjYwNDM3OTk3OCwiZXhwaXJhdGlvbiI6MTczMjY5MDc3OTk3OH0.Vhy5iYOIw9FQpWy2YV3bGiBGVcYav5R0ffmMbCmERheNHd6A29zjK-vN8SPZ-uB6kjuKcn8WWIkLtZaEM0pWYQ';
+      if (!myAccessToken) {
+        console.error('Missing accessToken');
         return;
       }
 
       const eventSource = new EventSourcePolyfill(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/chatting-service/read/chat/reactive/rooms/${uuid}`,
+        `${backendUrl}/chatting-service/read/chat/reactive/rooms/${uuid}`,
         {
           headers: {
             Authorization: `Bearer ${myAccessToken}`,
@@ -60,7 +64,6 @@ export default function Page() {
       );
 
       eventSource.onmessage = (event) => {
-        console.log('EventSource message:', event.data);
         const newMessage: RoomMessage = JSON.parse(event.data);
         setRoomInfos((prevMessages) => [...prevMessages, newMessage]);
       };
@@ -69,10 +72,13 @@ export default function Page() {
         console.error('EventSource failed.');
         eventSource.close();
 
+        if (reconnectAttempts >= 10) {
+          console.error('Maximum reconnect attempts reached.');
+          return;
+        }
+
         setTimeout(
-          () => {
-            setReconnectAttempts((prev) => prev + 1);
-          },
+          () => setReconnectAttempts((prev) => prev + 1),
           Math.min(1000 * 2 ** reconnectAttempts, 30000)
         );
       };
@@ -90,7 +96,7 @@ export default function Page() {
       }
       setReconnectAttempts(0);
     };
-  }, [reconnectAttempts]);
+  }, [session, reconnectAttempts]);
 
   const handleNewChat = () => {
     setIsFollowerListOpen(true);
@@ -135,12 +141,14 @@ export default function Page() {
                         {chat.roomName}
                       </p>
                       <p className="whitespace-nowrap text-xs text-[#869AA9]">
-                        {chat.lastChatMessageAt ?? '방 생성일'}
+                        {chat.updatedAt
+                          ? chat.updatedAt.toLocaleString()
+                          : '방 생성일'}
                       </p>
                     </div>
                     <div className="flex items-center justify-between gap-2">
                       <p className="line-clamp-1 truncate text-sm text-gray-600">
-                        {chat.lastChatMessage ?? '메시지가 없습니다.'}
+                        {chat.lastChatMessageAt ?? '메시지가 없습니다.'}
                       </p>
                       {chat.unreadCount > 0 && (
                         <Badge

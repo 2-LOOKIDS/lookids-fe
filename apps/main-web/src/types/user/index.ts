@@ -1,5 +1,5 @@
-import { UserInfoSchema } from '../auth/signup';
 import { z } from 'zod';
+import { UserInfoSchema } from '../auth/signup';
 
 export const UserNicknameSchema = UserInfoSchema.pick({ nickname: true });
 export const UserDescriptionSchema = z.object({
@@ -15,4 +15,8 @@ export interface UserInfo {
   gender: string;
   comment: string;
   image: string;
+}
+
+export interface UserInfoWithUuid extends UserInfo {
+  uuid: string;
 }
