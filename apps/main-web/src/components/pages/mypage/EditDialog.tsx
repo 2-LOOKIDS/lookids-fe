@@ -1,5 +1,6 @@
 'use client';
 
+import { DefaultValues, Path, useForm } from 'react-hook-form';
 import {
   Dialog,
   DialogContent,
@@ -7,16 +8,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@repo/ui/components/ui/dialog';
-import { DefaultValues, Path, useForm } from 'react-hook-form';
-import { z } from 'zod';
 import { UserDescriptionSchema, UserNicknameSchema } from '../../../types/user';
 
-import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@repo/ui/components/ui/button';
 import { Input } from '@repo/ui/components/ui/input';
 import { Label } from '@repo/ui/components/ui/label';
-
-// TObject extends z.ZodObject<z.ZodRawShape, z.UnknownKeysParam, z.ZodTypeAny>,
+import { PencilLine } from 'lucide-react';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 interface InternalDialogProps<
   TShape extends z.ZodRawShape,
@@ -48,7 +47,6 @@ function InternalDialog<
   const {
     register,
     handleSubmit,
-    getValues,
     formState: { errors },
   } = useForm<formType>({
     resolver: zodResolver(schema),
@@ -65,7 +63,7 @@ function InternalDialog<
           variant="outline"
           className="text-lookids hover:bg-lookids/90 border-lookids flex h-7 items-center justify-center gap-1 rounded border bg-[rgba(255,233,221,0.2)] px-1 py-[6px] hover:text-white"
         >
-          {/* <PencilLine className="h-4 w-4" /> */}
+          <PencilLine className="h-4 w-4" />
           <p className="text-sm">수정</p>
         </Button>
       </DialogTrigger>
@@ -82,24 +80,25 @@ function InternalDialog<
             fields.map(
               (field, idx) =>
                 field.field !== undefined && (
-                  <li key={idx} className="flex items-center gap-4">
-                    <Label
-                      htmlFor={field.label}
-                      className="w-[50px] text-right"
-                    >
-                      {field.label}
-                    </Label>
-                    <Input
-                      id={field.label}
-                      defaultValue={field.field}
-                      className="w-[90%]"
-                      {...register(field.field)}
-                    />
-
+                  <li key={idx} className="flex flex-col items-center gap-4">
+                    <div className="flex items-center gap-4">
+                      <Label
+                        htmlFor={field.label}
+                        className="w-[50px] text-right"
+                      >
+                        {field.label}
+                      </Label>
+                      <Input
+                        id={field.label}
+                        defaultValue={field.field}
+                        className="w-[90%]"
+                        {...register(field.field)}
+                      />
+                    </div>
                     {errors[field.field]?.message && (
-                      <span className="text-sm text-red-500">
+                      <p className="text-sm text-red-500">
                         {errors[field.field]?.message as string}
-                      </span>
+                      </p>
                     )}
                   </li>
                 )
