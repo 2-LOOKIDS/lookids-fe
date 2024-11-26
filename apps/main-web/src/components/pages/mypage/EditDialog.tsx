@@ -22,7 +22,7 @@ interface InternalDialogProps<
   TKeys extends z.UnknownKeysParam,
   TType extends z.ZodTypeAny,
   TObject extends z.ZodObject<TShape, TKeys, TType>,
-  TSchema extends TObject | z.ZodEffects<TType>,
+  TSchema extends TObject | z.ZodEffects<TObject>,
 > {
   schema: TSchema;
   fields: {
@@ -37,7 +37,7 @@ function InternalDialog<
   TKeys extends z.UnknownKeysParam,
   TType extends z.ZodTypeAny,
   TObject extends z.ZodObject<TShape, TKeys, TType>,
-  TSchema extends TObject | z.ZodEffects<TType>,
+  TSchema extends TObject | z.ZodEffects<TObject>,
 >({
   fields,
   schema,
@@ -77,32 +77,52 @@ function InternalDialog<
           className="flex w-[90%] flex-col items-end gap-4 pt-4"
         >
           {fields &&
-            fields.map(
-              (field, idx) =>
-                field.field !== undefined && (
-                  <li key={idx} className="flex flex-col items-center gap-4">
+            fields.map(({ field, label }) => {
+              const shape =
+                schema instanceof z.ZodEffects
+                  ? schema.innerType().shape
+                  : schema.shape;
+              let fieldInput: JSX.Element | null = null;
+              const value = shape[field];
+              if (value instanceof z.ZodString) {
+                fieldInput = (
+                  <Input
+                    id={label}
+                    defaultValue={field}
+                    className="w-[90%]"
+                    {...register(field)}
+                  />
+                );
+              }
+              if (value instanceof z.ZodNumber) {
+                fieldInput = (
+                  <Input
+                    id={label}
+                    defaultValue={field}
+                    className="w-[90%]"
+                    type={'number'}
+                    {...register(field)}
+                  />
+                );
+              }
+              return (
+                field !== undefined && (
+                  <div key={field} className="flex flex-col items-center gap-4">
                     <div className="flex items-center gap-4">
-                      <Label
-                        htmlFor={field.label}
-                        className="w-[50px] text-right"
-                      >
-                        {field.label}
+                      <Label htmlFor={label} className="w-[50px] text-right">
+                        {label}
                       </Label>
-                      <Input
-                        id={field.label}
-                        defaultValue={field.field}
-                        className="w-[90%]"
-                        {...register(field.field)}
-                      />
+                      {fieldInput}
                     </div>
-                    {errors[field.field]?.message && (
+                    {errors[field]?.message && (
                       <p className="text-sm text-red-500">
-                        {errors[field.field]?.message as string}
+                        {errors[field]?.message as string}
                       </p>
                     )}
-                  </li>
+                  </div>
                 )
-            )}
+              );
+            })}
           <DialogFooter className="flex w-[90%] justify-end">
             <Button
               className="bg-lookids hover:bg-lookids/90 w-1/5"
