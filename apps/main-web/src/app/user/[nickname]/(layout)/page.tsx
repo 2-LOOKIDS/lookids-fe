@@ -1,14 +1,14 @@
-import FeedList from '../../../components/pages/profile/FeedList';
-import FollowButton from '../../../components/pages/profile/FollowButton';
-import MessageButton from '../../../components/pages/profile/MessageButton';
+import FeedList from '../../../../components/pages/profile/FeedList';
+import FollowButton from '../../../../components/pages/profile/FollowButton';
+import MessageButton from '../../../../components/pages/profile/MessageButton';
 import { Metadata } from 'next';
-import PetList from '../../../components/pages/profile/PetList';
-import ProfileAvatar from '../../../components/ui/ProfileAvatar';
-import ProfileDescription from '../../../components/pages/profile/ProfileDescription';
-import ProfileHeader from '../../../components/pages/profile/ProfileHeader';
-import ProfileStats from '../../../components/pages/profile/ProfileStats';
+import PetList from '../../../../components/pages/profile/PetList';
+import ProfileAvatar from '../../../../components/ui/ProfileAvatar';
+import ProfileDescription from '../../../../components/pages/profile/ProfileDescription';
+import ProfileHeader from '../../../../components/pages/profile/ProfileHeader';
+import ProfileStats from '../../../../components/pages/profile/ProfileStats';
 import { getServerSession } from 'next-auth';
-import { options } from '../../api/auth/[...nextauth]/options';
+import { options } from '../../../api/auth/[...nextauth]/options';
 
 export async function generateMetadata({
   params,

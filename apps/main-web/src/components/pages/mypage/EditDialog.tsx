@@ -4,50 +4,45 @@ import { DefaultValues, Path, useForm } from 'react-hook-form';
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
-  DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from '@repo/ui/components/ui/dialog';
-import { FormControl, FormField } from '@repo/ui/components/ui/form';
 import { UserDescriptionSchema, UserNicknameSchema } from '../../../types/user';
-import { ZodSchema, ZodType, z } from 'zod';
 
 import { Button } from '@repo/ui/components/ui/button';
 import { Input } from '@repo/ui/components/ui/input';
 import { Label } from '@repo/ui/components/ui/label';
 import { PencilLine } from 'lucide-react';
+import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-// TObject extends z.ZodObject<z.ZodRawShape, z.UnknownKeysParam, z.ZodTypeAny>,
-
-interface EditDialogProps<
+interface InternalDialogProps<
   TShape extends z.ZodRawShape,
   TKeys extends z.UnknownKeysParam,
   TType extends z.ZodTypeAny,
   TObject extends z.ZodObject<TShape, TKeys, TType>,
-  TSchema extends TObject | z.ZodEffects<TType>,
+  TSchema extends TObject | z.ZodEffects<TObject>,
 > {
   schema: TSchema;
   fields: {
     label: string;
-    field: Path<z.TypeOf<TType>>;
+    field: Path<z.TypeOf<TSchema>>;
   }[];
   defaultValues: DefaultValues<z.infer<TSchema>>;
 }
 
-export default function EditDialog<
+function InternalDialog<
   TShape extends z.ZodRawShape,
   TKeys extends z.UnknownKeysParam,
   TType extends z.ZodTypeAny,
   TObject extends z.ZodObject<TShape, TKeys, TType>,
-  TSchema extends TObject | z.ZodEffects<TType>,
+  TSchema extends TObject | z.ZodEffects<TObject>,
 >({
   fields,
   schema,
   defaultValues,
-}: EditDialogProps<TShape, TKeys, TType, TObject, TSchema>) {
+}: InternalDialogProps<TShape, TKeys, TType, TObject, TSchema>) {
   type formType = z.infer<typeof schema>;
   const {
     register,
@@ -82,31 +77,52 @@ export default function EditDialog<
           className="flex w-[90%] flex-col items-end gap-4 pt-4"
         >
           {fields &&
-            fields.map(
-              (field, idx) =>
-                field.field !== undefined && (
-                  <li key={idx} className="flex items-center gap-4">
-                    <Label
-                      htmlFor={field.label}
-                      className="w-[50px] text-right"
-                    >
-                      {field.label}
-                    </Label>
-                    <Input
-                      id={field.label}
-                      defaultValue={field.field}
-                      className="w-[90%]"
-                      {...register(field.field)}
-                    />
-
-                    {errors[field.field]?.message && (
-                      <span className="text-sm text-red-500">
-                        {errors[field.field]?.message as string}
-                      </span>
+            fields.map(({ field, label }) => {
+              const shape =
+                schema instanceof z.ZodEffects
+                  ? schema.innerType().shape
+                  : schema.shape;
+              let fieldInput: JSX.Element | null = null;
+              const value = shape[field];
+              if (value instanceof z.ZodString) {
+                fieldInput = (
+                  <Input
+                    id={label}
+                    defaultValue={field}
+                    className="w-[90%]"
+                    {...register(field)}
+                  />
+                );
+              }
+              if (value instanceof z.ZodNumber) {
+                fieldInput = (
+                  <Input
+                    id={label}
+                    defaultValue={field}
+                    className="w-[90%]"
+                    type={'number'}
+                    {...register(field)}
+                  />
+                );
+              }
+              return (
+                field !== undefined && (
+                  <div key={field} className="flex flex-col items-center gap-4">
+                    <div className="flex items-center gap-4">
+                      <Label htmlFor={label} className="w-[50px] text-right">
+                        {label}
+                      </Label>
+                      {fieldInput}
+                    </div>
+                    {errors[field]?.message && (
+                      <p className="text-sm text-red-500">
+                        {errors[field]?.message as string}
+                      </p>
                     )}
-                  </li>
+                  </div>
                 )
-            )}
+              );
+            })}
           <DialogFooter className="flex w-[90%] justify-end">
             <Button
               className="bg-lookids hover:bg-lookids/90 w-1/5"
@@ -118,5 +134,29 @@ export default function EditDialog<
         </form>
       </DialogContent>
     </Dialog>
+  );
+}
+
+const schemaMap = {
+  userNickname: UserNicknameSchema,
+  userDescription: UserDescriptionSchema,
+};
+interface SignupFormProps<T extends keyof typeof schemaMap> {
+  type: T;
+  defaultValues: DefaultValues<z.infer<(typeof schemaMap)[T]>>;
+  fields: { label: string; field: Path<z.TypeOf<(typeof schemaMap)[T]>> }[];
+}
+
+export function EditDialog<T extends keyof typeof schemaMap>({
+  type,
+  defaultValues,
+  fields,
+}: SignupFormProps<T>) {
+  return (
+    <InternalDialog
+      schema={schemaMap[type]}
+      defaultValues={defaultValues}
+      fields={fields}
+    />
   );
 }
