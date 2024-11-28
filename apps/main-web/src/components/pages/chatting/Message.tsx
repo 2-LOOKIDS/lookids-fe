@@ -42,8 +42,7 @@ export default function MessageSection({
         setMessages(initialMessages);
         scrollToBottom(); // 초기 메시지 로딩 후 스크롤 이동
 
-        const myAccessToken =
-          'eyJhbGciOiJIUzUxMiJ9.eyJpc3N1ZWRBdCI6MTczMjc1ODQ0MTA2NiwiZXhwaXJhdGlvbiI6MTczMjg0NDg0MTA2Nn0.OGX8g0fmwhU_yj1waBb5IV5Wib7DtXlr-XTlArE9do9paeo-9QLk4R2zsoMG5rbkYc4qkCdw46CMrM4I5KlESg';
+        const myAccessToken = session?.accessToken || '';
 
         eventSourceRef.current = connectEventSource(
           chatId,

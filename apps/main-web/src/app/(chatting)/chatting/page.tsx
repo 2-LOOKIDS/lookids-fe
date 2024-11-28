@@ -44,8 +44,8 @@ export default function Page() {
     };
 
     const connectEventSource = () => {
-      const myAccessToken =
-        'eyJhbGciOiJIUzUxMiJ9.eyJpc3N1ZWRBdCI6MTczMjYwNDM3OTk3OCwiZXhwaXJhdGlvbiI6MTczMjY5MDc3OTk3OH0.Vhy5iYOIw9FQpWy2YV3bGiBGVcYav5R0ffmMbCmERheNHd6A29zjK-vN8SPZ-uB6kjuKcn8WWIkLtZaEM0pWYQ';
+      const myAccessToken = session?.accessToken;
+
       if (!myAccessToken) {
         console.error('Missing accessToken');
         return;
