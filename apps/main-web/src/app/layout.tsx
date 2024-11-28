@@ -27,13 +27,18 @@ export default async function RootLayout({
   const session = await getServerSession(options);
   const isAuth = session?.user ? true : false;
   const uuid = session?.user?.uuid;
+  const accesstoken = session?.user?.accessToken;
   return (
     <html lang="ko">
       <body
         className={`${notoSansKr.className} flex justify-center bg-[#F9F9F9] font-sans`}
       >
-        <div className="min-h-screen w-full max-w-[430px]">
-          <AuthContextProvider isAuth={isAuth} uuid={uuid}>
+        <div className="min-h-screen w-full max-w-[430px] bg-white">
+          <AuthContextProvider
+            isAuth={isAuth}
+            uuid={uuid}
+            accessToken={accesstoken}
+          >
             {children}
           </AuthContextProvider>
         </div>
