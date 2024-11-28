@@ -14,6 +14,11 @@ export interface participant {
   lastLeaveTime: Date;
 }
 
+export interface roomInfo {
+  roomName: string;
+  participants: string[];
+}
+
 export interface MessageResponse {
   id: string;
   roomId: string;
@@ -27,4 +32,15 @@ export interface MessageResponse {
 export interface Message extends MessageResponse {
   image: string;
   nickname: string;
+}
+
+export interface ChattingRequest {
+  roomId: string;
+  messageType: string;
+  message: string;
+  senderId: string;
+}
+export interface MessageSectionProps {
+  chatId: string;
+  participants: string[];
 }

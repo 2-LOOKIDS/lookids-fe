@@ -18,7 +18,6 @@ import CommonHeader from '../../../components/ui/CommonHeader';
 import { useSession } from '../../../context/SessionContext';
 import { RoomMessage } from '../../../types/chatting/ChattingType';
 import { responseList } from '../../../types/responseType';
-import { UserInfo } from '../../../types/user';
 
 export default function Page() {
   const session = useSession();
@@ -26,7 +25,6 @@ export default function Page() {
   const [reconnectAttempts, setReconnectAttempts] = useState(0);
   const eventSourceRef = useRef<EventSourcePolyfill | null>(null);
   const [isFollowerListOpen, setIsFollowerListOpen] = useState(false);
-  const [myprofile, setMyProfile] = useState<UserInfo | null>(null);
   useEffect(() => {
     const uuid = session?.uuid;
     if (!uuid) {
@@ -34,8 +32,7 @@ export default function Page() {
       return;
     }
 
-    const backendUrl =
-      process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:3000';
+    const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
     const fetchInitialRoomInfos = async () => {
       try {
         const data: responseList<RoomMessage> = await getChattingList(uuid);

@@ -55,7 +55,7 @@ export const options: NextAuthOptions = {
         account?.provider === 'google'
       ) {
         const res = await fetch(
-          `${process.env.BACKEND_URL}/auth-service/auth/social-sign-in`,
+          `${process.env.BACKEND_URL}/auth-service/auth/social-sign`,
           {
             method: 'POST',
             body: JSON.stringify({

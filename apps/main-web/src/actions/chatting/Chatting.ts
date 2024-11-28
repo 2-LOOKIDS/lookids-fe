@@ -1,6 +1,11 @@
 'use server';
 
-import { RoomMessage } from '../../types/chatting/ChattingType';
+import {
+  ChattingRequest,
+  MessageResponse,
+  roomInfo,
+  RoomMessage,
+} from '../../types/chatting/ChattingType';
 import { CommonResponse, responseList } from '../../types/responseType';
 import { fetchDataforMembers } from '../common/common';
 
@@ -25,10 +30,10 @@ export async function getChattingList(
 
 export async function getChatList(
   roomId: string
-): Promise<responseList<MessageResponseList>> {
+): Promise<responseList<MessageResponse>> {
   try {
     const data = await fetchDataforMembers<
-      CommonResponse<responseList<MessageResponseList>>
+      CommonResponse<responseList<MessageResponse>>
     >(`chatting-service/read/chat/${roomId}?page=0`, 'GET', '', 'no-cache');
     console.log(data);
     return data.result;
@@ -38,12 +43,37 @@ export async function getChatList(
   }
 }
 
-export interface MessageResponseList {
-  id: 'string';
-  roomId: 'string';
-  messageType: 'string';
-  message: 'string';
-  senderId: 'string';
-  createdAt: 'string';
-  updatedAt: 'string';
+// 채팅방 입장 API
+export async function enterChatRoom(
+  roomId: string,
+  userId: string
+): Promise<roomInfo> {
+  try {
+    const data = await fetchDataforMembers<CommonResponse<roomInfo>>(
+      `chatting-service/chat/enter/${roomId}/${userId}`,
+      'PUT',
+      '',
+      'no-cache'
+    );
+    return data.result;
+  } catch (error) {
+    console.error('채팅방 입장 중 오류 발생:', error);
+    throw new Error(`채팅방 입장 실패: ${error}`);
+  }
+}
+
+export async function sendTextMessage(
+  chattingRequest: ChattingRequest
+): Promise<any> {
+  try {
+    const data = await fetchDataforMembers<CommonResponse<any>>(
+      `chatting-service/chat/messages`,
+      'POST',
+      chattingRequest,
+      'no-cache'
+    );
+  } catch (error) {
+    console.error('메시지 전송 중 오류 발생:', error);
+    throw new Error(`메시지 전송 실패: ${error}`);
+  }
 }

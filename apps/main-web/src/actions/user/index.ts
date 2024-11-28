@@ -13,7 +13,6 @@ export const getUserProfile = async (uuid: string): Promise<UserInfo> => {
   });
 
   const result = (await response.json()) as CommonResponse<UserInfo>;
-  console.log('🚀 ~ getUserProfile ~ result:', result);
   return result.result;
 };
 
@@ -28,7 +27,6 @@ export const getUserProfileByNicknameTag = async (
       '',
       'no-cache'
     );
-    console.log('🚀 ~ getUserProfileByNicknameTag ~ data', data);
     return data.result;
   } catch (error) {
     console.error('유저 프로필 조회 실패:', error);
