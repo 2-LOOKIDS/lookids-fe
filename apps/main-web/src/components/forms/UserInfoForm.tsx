@@ -5,7 +5,11 @@ import {
   FormMessage,
 } from '@repo/ui/components/ui/form';
 import { FormProvider, useForm } from 'react-hook-form';
-import { RegisterUserInfo, UserInfoType } from '../../types/auth/signup';
+import {
+  RefinedUserSchema,
+  RegisterUserInfo,
+  UserInfoType,
+} from '../../types/auth/signup';
 import {
   checkCredentialsAvailabilityApi,
   registerUserApi,
