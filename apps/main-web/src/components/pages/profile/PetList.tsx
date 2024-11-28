@@ -7,6 +7,7 @@ import 'swiper/css/pagination';
 import { Grid, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
+import { EditDialog } from '../mypage/EditDialog';
 import ProfileAvatar from '../../ui/ProfileAvatar';
 
 const petList = [
@@ -52,7 +53,23 @@ function PetList({ isEdit }: PetListProps) {
               </div>
               {isEdit && (
                 <div className="absolute right-1 top-0">
-                  {/* <EditDialog /> */}
+                  <EditDialog
+                    type={'petProfile'}
+                    fields={[
+                      { label: '이름', field: 'nickname' },
+                      { label: '종류', field: 'type' },
+                      { label: '성별', field: 'gender' },
+                      { label: '몸무게', field: 'weight' },
+                      { label: '생일', field: 'birthdate' },
+                    ]}
+                    defaultValues={{
+                      nickname: '',
+                      type: '동물 종류 선택',
+                      gender: '성별 선택',
+                      weight: '',
+                      birthdate: '',
+                    }}
+                  />
                 </div>
               )}
             </SwiperSlide>
