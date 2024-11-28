@@ -35,7 +35,6 @@ export async function getChatList(
     const data = await fetchDataforMembers<
       CommonResponse<responseList<MessageResponse>>
     >(`chatting-service/read/chat/${roomId}?page=0`, 'GET', '', 'no-cache');
-    console.log(data);
     return data.result;
   } catch (error) {
     console.error('채팅 목록 조회 중 오류 발생:', error);

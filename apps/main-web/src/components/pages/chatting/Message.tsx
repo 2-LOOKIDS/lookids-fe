@@ -12,6 +12,7 @@ import { UserInfo } from '../../../types/user';
 import { connectEventSource } from '../../../utils/chatting/eventSource';
 import { fetchInitialMessages } from '../../../utils/chatting/fetchMessages';
 import { fetchParticipantsProfile } from '../../../utils/chatting/fetchProfiles';
+import { formatDate } from '../../../utils/formatDate';
 import { getMediaUrl } from '../../../utils/media';
 
 export default function MessageSection({
@@ -120,7 +121,7 @@ export default function MessageSection({
                       {message.message}
                     </p>
                     <time className="text-xs text-[#869AA9]">
-                      {message.createdAt}
+                      {formatDate(message.createdAt)}
                     </time>
                   </div>
                 </article>
@@ -133,7 +134,7 @@ export default function MessageSection({
                   </p>
                   <footer className="flex items-center gap-1">
                     <time className="text-xs text-[#869AA9]">
-                      {message.createdAt}
+                      {formatDate(message.createdAt)}
                     </time>
                     <svg
                       width="16"

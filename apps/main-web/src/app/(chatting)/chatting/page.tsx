@@ -18,6 +18,7 @@ import CommonHeader from '../../../components/ui/CommonHeader';
 import { useSession } from '../../../context/SessionContext';
 import { RoomMessage } from '../../../types/chatting/ChattingType';
 import { responseList } from '../../../types/responseType';
+import { formatDate } from '../../../utils/formatDate';
 
 export default function Page() {
   const session = useSession();
@@ -139,7 +140,7 @@ export default function Page() {
                       </p>
                       <p className="whitespace-nowrap text-xs text-[#869AA9]">
                         {chat.updatedAt
-                          ? chat.updatedAt.toLocaleString()
+                          ? formatDate(chat.updatedAt.toLocaleString())
                           : '방 생성일'}
                       </p>
                     </div>
