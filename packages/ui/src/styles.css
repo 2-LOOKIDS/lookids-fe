@@ -113,3 +113,28 @@
     @apply bg-background text-foreground;
   }
 }
+
+.swiper-slide-custom {
+  background-color: darkgrey;
+  filter: blur(7px) grayscale(80%); /* 블러 효과 */
+  transform: scale(0.9); /* 크기를 줄임 */
+  transition: all 0.3s ease; /* 전환 애니메이션 */
+  border-radius: 20px; /* 테두리 둥글게 */
+}
+
+.swiper-slide-next,
+.swiper-slide-prev {
+  filter: blur(3px) grayscale(15%); /* 블러 효과 */
+  transform: scale(0.95); /* 크기를 줄임 */
+  transition: all 0.3s ease; /* 전환 애니메이션 */
+  border-radius: 20px; /* 테두리 둥글게 */
+}
+
+.swiper-slide-active {
+  opacity: 1; /* 활성 슬라이드는 완전 불투명 */
+  filter: blur(0); /* 블러 제거 */
+  transform: scale(1); /* 크기를 원래대로 */
+  border-top: 1px solid white; /* 테두리 추가 */
+  border-radius: 20px; /* 테두리 둥글게 */
+  z-index: 10; /* 활성 슬라이드를 앞으로 배치 */
+}
