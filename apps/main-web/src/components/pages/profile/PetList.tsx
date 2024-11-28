@@ -7,9 +7,7 @@ import 'swiper/css/pagination';
 import { Grid, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-import InternalDialog from '../mypage/EditDialog';
 import ProfileAvatar from '../../ui/ProfileAvatar';
-import React from 'react';
 
 const petList = [
   { id: 0, name: '신지훈1', imgUrl: '/pome.jpg' },
