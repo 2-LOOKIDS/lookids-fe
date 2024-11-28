@@ -8,7 +8,11 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@repo/ui/components/ui/dialog';
-import { UserDescriptionSchema, UserNicknameSchema } from '../../../types/user';
+import {
+  PetProfileSchema,
+  UserCommentSchema,
+  UserProfileSchema,
+} from '../../../types/user';
 
 import { Button } from '@repo/ui/components/ui/button';
 import { Input } from '@repo/ui/components/ui/input';
@@ -56,6 +60,7 @@ function InternalDialog<
   const onSubmit = async (values: formType) => {
     console.log(values);
   };
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -69,9 +74,11 @@ function InternalDialog<
       </DialogTrigger>
       <DialogContent
         aria-describedby={undefined}
+        onOpenAutoFocus={(e) => e.preventDefault()}
         className="w-[90%] rounded-sm"
       >
         <DialogTitle />
+
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="flex w-[90%] flex-col items-end gap-4 pt-4"
@@ -84,35 +91,50 @@ function InternalDialog<
                   : schema.shape;
               let fieldInput: JSX.Element | null = null;
               const value = shape[field];
-              if (value instanceof z.ZodString) {
+              if (value instanceof z.ZodEnum) {
+                const enumValues = Object.keys(value.enum);
+                fieldInput = (
+                  <select
+                    {...register(field)}
+                    className="focus:outline-lookids w-full rounded-sm border border-gray-300
+                    border-opacity-50 bg-white text-center
+                    "
+                  >
+                    {enumValues.map((enumValue, index) => {
+                      return (
+                        <option
+                          key={enumValue}
+                          value={enumValue}
+                          disabled={index === 0}
+                        >
+                          {enumValue}
+                        </option>
+                      );
+                    })}
+                  </select>
+                );
+              } else {
                 fieldInput = (
                   <Input
                     id={label}
                     defaultValue={field}
-                    className="w-[90%]"
                     {...register(field)}
+                    className="text-center"
                   />
                 );
               }
-              if (value instanceof z.ZodNumber) {
-                fieldInput = (
-                  <Input
-                    id={label}
-                    defaultValue={field}
-                    className="w-[90%]"
-                    type={'number'}
-                    {...register(field)}
-                  />
-                );
-              }
+
               return (
                 field !== undefined && (
-                  <div key={field} className="flex flex-col items-center gap-4">
-                    <div className="flex items-center gap-4">
-                      <Label htmlFor={label} className="w-[50px] text-right">
+                  <div
+                    key={field}
+                    className=" flex w-full flex-col items-end gap-4"
+                  >
+                    <div className="flex w-full items-center gap-4">
+                      <Label htmlFor={label} className="w-1/2 text-center">
                         {label}
                       </Label>
-                      {fieldInput}
+                      <div className="w-1/2">{fieldInput}</div>
                     </div>
                     {errors[field]?.message && (
                       <p className="text-sm text-red-500">
@@ -125,7 +147,7 @@ function InternalDialog<
             })}
           <DialogFooter className="flex w-[90%] justify-end">
             <Button
-              className="bg-lookids hover:bg-lookids/90 w-1/5"
+              className="bg-lookids hover:bg-lookids/90 w-1/4"
               type="submit"
             >
               수정
@@ -138,10 +160,11 @@ function InternalDialog<
 }
 
 const schemaMap = {
-  userNickname: UserNicknameSchema,
-  userDescription: UserDescriptionSchema,
+  userProfile: UserProfileSchema,
+  userComment: UserCommentSchema,
+  petProfile: PetProfileSchema,
 };
-interface SignupFormProps<T extends keyof typeof schemaMap> {
+interface EditDialogProps<T extends keyof typeof schemaMap> {
   type: T;
   defaultValues: DefaultValues<z.infer<(typeof schemaMap)[T]>>;
   fields: { label: string; field: Path<z.TypeOf<(typeof schemaMap)[T]>> }[];
@@ -151,7 +174,7 @@ export function EditDialog<T extends keyof typeof schemaMap>({
   type,
   defaultValues,
   fields,
-}: SignupFormProps<T>) {
+}: EditDialogProps<T>) {
   return (
     <InternalDialog
       schema={schemaMap[type]}

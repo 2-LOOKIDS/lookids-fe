@@ -29,9 +29,18 @@ export default async function page() {
             {userProfile.nickname}#{userProfile.tag}
           </p>
           <EditDialog
-            fields={[{ label: '닉네임', field: 'nickname' }]}
-            type={'userNickname'}
-            defaultValues={{ nickname: userProfile.nickname }}
+            type={'userProfile'}
+            fields={[
+              { label: '닉네임', field: 'nickname' },
+              {
+                label: '성별',
+                field: 'gender',
+              },
+            ]}
+            defaultValues={{
+              nickname: userProfile.nickname,
+              gender: '성별 선택',
+            }}
           />
         </div>
       </section>
@@ -43,9 +52,9 @@ export default async function page() {
           <p className="text-grey text-xs">{userProfile.comment}</p>
           <div className="flex justify-start">
             <EditDialog
-              type={'userDescription'}
-              defaultValues={{ description: userProfile.comment }}
-              fields={[{ label: '소개글', field: 'description' }]}
+              type={'userComment'}
+              fields={[{ label: '소개글', field: 'comment' }]}
+              defaultValues={{ comment: userProfile.comment }}
             />
           </div>
         </div>
