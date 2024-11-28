@@ -41,7 +41,7 @@ export default function BellTest() {
       </g>
       {/* 알림이 있는 경우에만 빨간 불 표시 */}
       {hasNotification && <circle cx="40" cy="16" r="4" fill="red" />}
-      <defs>
+      <defs className=" animate-spin">
         <filter
           id="filter0_d_55_1662"
           x="0"

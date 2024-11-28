@@ -30,9 +30,9 @@ export default async function RootLayout({
   return (
     <html lang="ko">
       <body
-        className={`${notoSansKr.className} flex justify-center bg-[#757575] font-sans`}
+        className={`${notoSansKr.className} flex justify-center bg-[#F9F9F9] font-sans`}
       >
-        <div className="min-h-screen w-full max-w-[430px] bg-white">
+        <div className="min-h-screen w-full max-w-[430px]">
           <AuthContextProvider isAuth={isAuth} uuid={uuid}>
             {children}
           </AuthContextProvider>
