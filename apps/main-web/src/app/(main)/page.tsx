@@ -2,6 +2,7 @@
 
 import SocialCard from '../../components/common/feedcard/SocialCard';
 import MainSwiper from '../../components/icons/topNavBar/MainSwiper';
+import PencilWrite from '../../components/lottie/PencilWrite';
 import RecommendedPet from '../../components/pages/main/RecommendPet';
 
 export default function page() {
