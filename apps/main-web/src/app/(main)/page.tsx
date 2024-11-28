@@ -1,8 +1,8 @@
 'use client';
 
-import SocialCard from '../../components/common/feedcard/SocialCard';
 import MainSwiper from '../../components/icons/topNavBar/MainSwiper';
 import RecommendedPet from '../../components/pages/main/RecommendPet';
+import SocialCard from '../../components/common/feedcard/SocialCard';
 
 export default function page() {
   return (
@@ -16,7 +16,6 @@ export default function page() {
           {/* <FeedCard></FeedCard>
           <FeedCard></FeedCard>
           <FeedCard></FeedCard> */}
-
           <SocialCard isDetail={false} />
           <SocialCard isDetail={false} />
           <RecommendedPet />
