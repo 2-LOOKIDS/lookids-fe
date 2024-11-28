@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { UserInfoSchema } from '../auth/signup';
 
 // 사람
 export const UserProfileSchema = z.object({
@@ -35,4 +36,8 @@ export interface UserInfo {
   gender: string;
   comment: string;
   image: string;
+}
+
+export interface UserInfoWithUuid extends UserInfo {
+  uuid: string;
 }

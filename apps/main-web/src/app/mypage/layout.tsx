@@ -1,6 +1,6 @@
-import CommonHeader from '../../components/ui/CommonHeader';
 import { Metadata } from 'next';
 import { ReactNode } from 'react';
+import CommonHeader from '../../components/ui/CommonHeader';
 
 interface LayoutProps {
   children: ReactNode;
