@@ -37,6 +37,11 @@ export default function ChatPage({ params }: { params: { chatId: string } }) {
     getRoomInfo();
   }, [chatId, session]);
 
+  const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+    event.preventDefault();
+    event.returnValue = '';
+  };
+
   const handleSendMessage = () => {
     if (inputMessage.trim() !== '') {
       // 여기서 input Message를 서버로 전송

@@ -20,6 +20,9 @@ export default function MessageSection({
   participants,
 }: MessageSectionProps) {
   const session = useSession();
+  const [page, setPage] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
   const [messages, setMessages] = useState<MessageResponse[] | null>(null);
   const [reconnectAttempts, setReconnectAttempts] = useState(0);
   const eventSourceRef = useRef<EventSourcePolyfill | null>(null);
