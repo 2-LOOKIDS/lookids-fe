@@ -24,6 +24,7 @@ export default function ChatPage({ params }: { params: { chatId: string } }) {
     const getRoomInfo = async () => {
       try {
         const data = await enterChatRoom(chatId, session?.uuid || '');
+        console.log('룸에 들어왔을때 data', data);
         setRoomName(data.roomName);
         setParticipants(data.participants);
         setIsRoomInfoLoaded(true); // 방 정보 로드 완료 상태 설정
@@ -36,11 +37,6 @@ export default function ChatPage({ params }: { params: { chatId: string } }) {
 
     getRoomInfo();
   }, [chatId, session]);
-
-  const handleBeforeUnload = (event: BeforeUnloadEvent) => {
-    event.preventDefault();
-    event.returnValue = '';
-  };
 
   const handleSendMessage = () => {
     if (inputMessage.trim() !== '') {
