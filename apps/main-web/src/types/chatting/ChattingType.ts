@@ -19,6 +19,11 @@ export interface roomInfo {
   participants: string[];
 }
 
+export interface isRoomExist {
+  result: boolean;
+  roomId: string;
+}
+
 export interface MessageResponse {
   id: string;
   roomId: string;

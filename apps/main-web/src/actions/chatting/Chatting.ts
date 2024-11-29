@@ -2,6 +2,7 @@
 
 import {
   ChattingRequest,
+  isRoomExist,
   MessageResponse,
   roomInfo,
   RoomMessage,
@@ -81,5 +82,42 @@ export async function sendTextMessage(
   } catch (error) {
     console.error('메시지 전송 중 오류 발생:', error);
     throw new Error(`메시지 전송 실패: ${error}`);
+  }
+}
+
+export async function checkOneOnOneChatRoom(
+  userId: string,
+  targetId: string
+): Promise<isRoomExist> {
+  try {
+    const data = await fetchDataforMembers<CommonResponse<isRoomExist>>(
+      `chatting-service/read/chat/check-one-to-one-chatroom/${userId}/${targetId}`,
+      'GET',
+      '',
+      'no-cache'
+    );
+    return data.result;
+  } catch (error) {
+    console.error('1:1 채팅방 조회 중 오류 발생:', error);
+    throw new Error(`1:1 채팅방 조회 실패: ${error}`);
+  }
+}
+
+export async function createChatRoom(
+  roomName: string,
+  userId: string,
+  targetId: string
+): Promise<any> {
+  try {
+    const participants = [{ userId: userId }, { userId: targetId }];
+    const data = await fetchDataforMembers<CommonResponse<any>>(
+      `chatting-service/chat/room`,
+      'POST',
+      { roomName, participants },
+      'no-cache'
+    );
+  } catch (error) {
+    console.error('채팅방 생성 중 오류 발생:', error);
+    throw new Error(`채팅방 생성 실패: ${error}`);
   }
 }

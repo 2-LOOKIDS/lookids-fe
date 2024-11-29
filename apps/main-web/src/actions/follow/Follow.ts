@@ -12,7 +12,6 @@ export async function getFollowingList(): Promise<responseList<Following>> {
       null,
       'no-cache'
     );
-    console.log('팔로잉 목록:', data);
     return await data.result;
   } catch (error) {
     console.error('팔로잉 목록 조회 중 오류 발생:', error);
