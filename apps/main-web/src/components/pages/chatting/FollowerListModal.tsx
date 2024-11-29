@@ -20,6 +20,7 @@ import {
   Following,
 } from '../../../types/follow/FollowType';
 import { UserInfo } from '../../../types/user';
+import { getMediaUrl } from '../../../utils/media';
 
 export function FollowerListModal({
   isOpen,
@@ -32,13 +33,26 @@ export function FollowerListModal({
     // Fetch followers list
     // This is a mock implementation. Replace with actual API call.
     const fetchFollowers = async () => {
-      const response = await getFollowingList();
-      const Follwers: Following[] = response.content; // Adjust according to the actual response structure
-      Follwers.map(async (follower) => {
-        const user: UserInfo = await getUserProfile(follower.followerUuid);
-        setFollowerProfile((prev) => [...(prev || []), user]);
-      });
-      setFollowers(Follwers);
+      try {
+        const response = await getFollowingList();
+        const Follwers: Following[] = response.content; // 서버 응답 구조에 맞게 조정
+        console.log('팔로우 목록 불러오기', response);
+
+        // 모든 프로필 데이터를 병렬로 가져오기
+        const profiles = await Promise.all(
+          Follwers.map(async (follower) => {
+            const user: UserInfo = await getUserProfile(follower.followerUuid);
+            console.log('팔로우 유저 프로필', user);
+            return user;
+          })
+        );
+
+        // 상태 업데이트
+        setFollowerProfile(profiles); // 모든 프로필 한 번에 설정
+        setFollowers(Follwers); // Follwers 배열 설정
+      } catch (error) {
+        console.error('Failed to fetch followers:', error);
+      }
     };
 
     if (isOpen) {
@@ -56,7 +70,10 @@ export function FollowerListModal({
           {followerProfile.map((follower, index) => (
             <div key={index} className="flex items-center space-x-4 py-2">
               <Avatar>
-                <AvatarImage src={follower.image} alt={follower.nickname} />
+                <AvatarImage
+                  src={getMediaUrl(follower.image)}
+                  alt={follower.nickname}
+                />
                 <AvatarFallback>{follower.nickname}</AvatarFallback>
               </Avatar>
               <div className="flex-1">

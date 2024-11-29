@@ -10,13 +10,14 @@ import { CommonResponse, responseList } from '../../types/responseType';
 import { fetchDataforMembers } from '../common/common';
 
 export async function getChattingList(
-  userId: string
+  userId: string,
+  page: number
 ): Promise<responseList<RoomMessage>> {
   try {
     const data = await fetchDataforMembers<
       CommonResponse<responseList<RoomMessage>>
     >(
-      `chatting-service/read/chat/rooms/${userId}?page=0`,
+      `chatting-service/read/chat/rooms/${userId}?page=${page}`,
       'GET',
       '',
       'no-cache'
@@ -29,13 +30,18 @@ export async function getChattingList(
 }
 
 export async function getChatList(
-  roomId: string
+  roomId: string,
+  page: number
 ): Promise<responseList<MessageResponse>> {
   try {
     const data = await fetchDataforMembers<
       CommonResponse<responseList<MessageResponse>>
-    >(`chatting-service/read/chat/${roomId}?page=0`, 'GET', '', 'no-cache');
-    console.log(data);
+    >(
+      `chatting-service/read/chat/${roomId}?page=${page}`,
+      'GET',
+      '',
+      'no-cache'
+    );
     return data.result;
   } catch (error) {
     console.error('채팅 목록 조회 중 오류 발생:', error);
