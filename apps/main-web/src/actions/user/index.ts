@@ -1,7 +1,9 @@
 'use server';
 
+import { UserInfo, UserInfoWithUuid } from '../../types/user';
+
 import { CommonResponse } from '../../types/responseType';
-import { UserInfo } from '../../types/user';
+import { fetchDataforMembers } from '../common/common';
 import { revalidatePath } from 'next/cache';
 
 const BASE_URL = `${process.env.BACKEND_URL}/user-service`;
@@ -13,7 +15,6 @@ export const getUserProfile = async (uuid: string): Promise<UserInfo> => {
   });
 
   const result = (await response.json()) as CommonResponse<UserInfo>;
-  console.log('🚀 ~ getUserProfile ~ result:', result);
   return result.result;
 };
 
@@ -26,8 +27,8 @@ export const updateProfileImage = async (
   const response = await fetch(API_URL, {
     method: 'PUT',
     headers: {
-      uuid: uuid,
-      Authorization: `Bearer ${token}`,
+      'uuid': uuid,
+      'Authorization': `Bearer ${token}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ image: imgUrl }),
@@ -47,8 +48,8 @@ export const updateProfileNickname = async (
   const response = await fetch(API_URL, {
     method: 'PUT',
     headers: {
-      uuid: uuid,
-      Authorization: `Bearer ${token}`,
+      'uuid': uuid,
+      'Authorization': `Bearer ${token}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ nickname: nickname }),
@@ -57,4 +58,22 @@ export const updateProfileNickname = async (
   const result = (await response.json()) as CommonResponse<null>;
   revalidatePath('/mypage');
   return null;
+};
+
+export const getUserProfileByNicknameTag = async (
+  nickname: string,
+  tag: string
+): Promise<UserInfoWithUuid> => {
+  try {
+    const data = await fetchDataforMembers<CommonResponse<UserInfoWithUuid>>(
+      `${BASE_URL}/read/userprofile/find/${nickname}-${tag}`,
+      'GET',
+      '',
+      'no-cache'
+    );
+    return data.result;
+  } catch (error) {
+    console.error('유저 프로필 조회 실패:', error);
+    throw new Error(`유저 프로필 조회 실패: ${error}`);
+  }
 };

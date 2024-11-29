@@ -3,12 +3,12 @@
 import { DefaultValues, Path, useForm } from 'react-hook-form';
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogFooter,
   DialogTitle,
   DialogTrigger,
 } from '@repo/ui/components/ui/dialog';
+import { PencilLine, X } from 'lucide-react';
 import {
   PetProfileSchema,
   UserCommentSchema,
@@ -18,7 +18,6 @@ import {
 import { Button } from '@repo/ui/components/ui/button';
 import { Input } from '@repo/ui/components/ui/input';
 import { Label } from '@repo/ui/components/ui/label';
-import { PencilLine } from 'lucide-react';
 import { useState } from 'react';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -86,7 +85,13 @@ function InternalDialog<
         onOpenAutoFocus={(e) => e.preventDefault()}
         className="w-[90%] rounded-sm"
       >
-        <DialogTitle />
+        <div
+          className="flex justify-end hover:cursor-pointer"
+          onClick={() => setOpen(false)}
+        >
+          <X className="h-4 w-4" />
+        </div>
+        <DialogTitle className="hidden" />
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="flex w-[90%] flex-col items-end gap-4 pt-4"

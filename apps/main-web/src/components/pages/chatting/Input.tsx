@@ -11,6 +11,14 @@ const InputSection: React.FC<InputSectionProps> = ({
   setInputMessage,
   onSendMessage,
 }) => {
+  // Enter 키 핸들러
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault(); // 기본 Enter 동작 방지
+      onSendMessage(); // 메시지 전송
+    }
+  };
+
   return (
     <div className="sticky bottom-0 border-t border-gray-200 bg-white p-4 sm:p-5">
       <div className="flex items-end justify-between gap-4">
@@ -20,7 +28,8 @@ const InputSection: React.FC<InputSectionProps> = ({
             placeholder="메시지를 입력하세요..."
             value={inputMessage}
             onChange={(e) => setInputMessage(e.target.value)}
-            className="focus:border-lookids w-full rounded-full border border-gray-300 px-4 py-2 text-[16px]  focus:outline-none"
+            onKeyDown={handleKeyDown} // Enter 키 핸들러 추가
+            className="focus:border-lookids w-full rounded-full border border-gray-300 px-4 py-2 text-[16px] focus:outline-none"
           />
         </div>
         <div className="flex gap-4 sm:gap-6">
@@ -35,7 +44,7 @@ const InputSection: React.FC<InputSectionProps> = ({
           </button>
         </div>
         <button
-          onClick={onSendMessage}
+          onClick={onSendMessage} // 수정: onSubmit -> onClick
           className="flex h-8 w-8 items-center justify-center rounded bg-gradient-to-br from-[#FD6B22] to-[#FFD381] p-2 sm:h-9 sm:w-9"
           aria-label="Send message"
         >

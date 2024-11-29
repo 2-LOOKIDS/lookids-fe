@@ -5,9 +5,11 @@ import { createContext, useContext } from 'react';
 export const SessionContext = createContext<{
   isAuth: boolean | null;
   uuid: string | null;
+  accessToken: string | null;
 }>({
   isAuth: null,
   uuid: null,
+  accessToken: null,
 });
 
 // 커스텀 훅

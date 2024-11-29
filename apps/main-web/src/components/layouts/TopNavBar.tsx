@@ -1,30 +1,57 @@
-import MainHamburger from '../icons/topNavBar/MainHamburger';
-import BellTest from '../icons/topNavBar/MainTopBell';
-import MainTopLogo from '../icons/topNavBar/MainTopLogo';
-import MainTopSearch from '../icons/topNavBar/MainTopSearch';
+'use client';
+import { useEffect, useRef, useState } from 'react';
+import NavMenus from './NavMenus';
 
-export default function TopNavBar() {
+interface HeaderProps {
+  onMenuClick: () => void;
+}
+
+export default function TopNavBar({ onMenuClick }: HeaderProps) {
+  const [isView, setIsView] = useState(true);
+  const prevScrollY = useRef(0);
+  const ticking = useRef(false);
+
+  const handleScroll = () => {
+    if (!ticking.current) {
+      ticking.current = true;
+
+      window.requestAnimationFrame(() => {
+        const currentScrollY = Math.max(0, window.scrollY);
+        const maxScrollY =
+          document.documentElement.scrollHeight - window.innerHeight;
+
+        if (currentScrollY === 0 || currentScrollY >= maxScrollY) {
+          ticking.current = false;
+          return;
+        }
+
+        if (currentScrollY > prevScrollY.current) {
+          setIsView(false);
+        } else if (currentScrollY < prevScrollY.current) {
+          setIsView(true);
+        }
+
+        prevScrollY.current = currentScrollY;
+        ticking.current = false;
+      });
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   return (
-    <header className="fixed left-0 top-0 z-10 flex w-full items-center bg-white">
-      <nav className="flex w-full justify-between px-4 py-2 ">
-        <ul className="flex items-center gap-x-2 ">
-          <li>
-            <MainHamburger />
-          </li>
-          <li>
-            <h1 className="text-[0px]">Lookids</h1>
-            <MainTopLogo />
-          </li>
-        </ul>
-        <ul className="flex items-center justify-end gap-x-2">
-          <li>
-            <BellTest />
-          </li>
-          <li>
-            <MainTopSearch />
-          </li>
-        </ul>
-      </nav>
+    <header
+      className={`flex justify-between items-center px-4 py-[0.8rem] transition-transform duration-300 
+      fixed top-0 left-0 right-0 z-[20]
+      backdrop-blur-md
+      ${isView ? 'translate-y-0' : '-translate-y-full'}`}
+    >
+      <NavMenus onMenuClick={onMenuClick} />
     </header>
   );
 }

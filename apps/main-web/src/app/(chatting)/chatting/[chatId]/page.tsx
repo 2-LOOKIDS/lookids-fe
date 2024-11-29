@@ -1,68 +1,66 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import {
+  enterChatRoom,
+  sendTextMessage,
+} from '../../../../actions/chatting/Chatting';
 import InputSection from '../../../../components/pages/chatting/Input';
-import MessageSection from '../../../../components/pages/chatting/Message';
+import MessageSection from '../../../../components/pages/chatting/Message'; // MessageSection에서 데이터 fetch
 import CommonHeader from '../../../../components/ui/CommonHeader';
-import { Message } from '../../../../types/chatting/ChattingType';
+import { useSession } from '../../../../context/SessionContext';
+import { scrollToBottom } from '../../../../utils/scroll';
 
-export default function ChatPage() {
-  const [messages] = useState<Message[]>([
-    {
-      id: '1',
-      senderId: '부산 제임스',
-      avatar: '/jihunpistol.jpg',
-      message: 'Hahaha, lol 🤣',
-      createdAt: '09:27 PM',
-      messageType: 'received',
-      roomId: '1',
-      updatedAt: '',
-    },
-    {
-      id: '2',
-      senderId: '부산 제임스',
-      avatar: '/jihunpistol.jpg',
-      message: 'How are you?',
-      createdAt: '09:27 PM',
-      messageType: 'received',
-      roomId: '1',
-      updatedAt: '',
-    },
-    {
-      id: '3',
-      senderId: '알렉스',
-      avatar: '/alex.jpg',
-      message: 'I am good, thank you!',
-      createdAt: '09:27 PM',
-      messageType: 'sent',
-      roomId: '1',
-      updatedAt: '',
-    },
-    {
-      id: '4',
-      senderId: '알렉스',
-      avatar: '/alex.jpg',
-      message: 'How about you?',
-      createdAt: '09:27 PM',
-      messageType: 'sent',
-      roomId: '1',
-      updatedAt: '',
-    },
-  ]);
-
+export default function ChatPage({ params }: { params: { chatId: string } }) {
+  const session = useSession();
+  const chatId = params.chatId;
   const [inputMessage, setInputMessage] = useState('');
+  const [roomName, setRoomName] = useState('');
+  const [participants, setParticipants] = useState<string[]>([]);
+  const [isRoomInfoLoaded, setIsRoomInfoLoaded] = useState(false); // 방 정보 로드 상태 추가
+  const messagesEndRef = useRef<HTMLDivElement | null>(null); // 스크롤 끝 지점을 참조하기 위한 ref
+
+  useEffect(() => {
+    const getRoomInfo = async () => {
+      try {
+        const data = await enterChatRoom(chatId, session?.uuid || '');
+        setRoomName(data.roomName);
+        setParticipants(data.participants);
+        setIsRoomInfoLoaded(true); // 방 정보 로드 완료 상태 설정
+        console.log(roomName, participants);
+      } catch (error) {
+        console.error('Failed to fetch room info:', error);
+        setIsRoomInfoLoaded(true); // 에러 발생 시에도 로드 완료로 설정
+      }
+    };
+
+    getRoomInfo();
+  }, [chatId, session]);
 
   const handleSendMessage = () => {
     if (inputMessage.trim() !== '') {
-      console.log('Sending message:', inputMessage);
+      // 여기서 input Message를 서버로 전송
+      sendTextMessage({
+        roomId: chatId,
+        messageType: '텍스트',
+        message: inputMessage,
+        senderId: session?.uuid || '',
+      });
+      scrollToBottom(messagesEndRef);
       setInputMessage('');
     }
   };
 
   return (
-    <div className="flex h-screen w-full flex-col bg-[#F8F8F9] sm:mx-auto sm:max-w-md sm:border-x sm:border-gray-200">
-      <CommonHeader title="채팅방 이름 들어감" />
-      <MessageSection messages={messages} />
+    <div className="flex h-screen w-full flex-col bg-gray-50 sm:mx-auto sm:max-w-md sm:border-x sm:border-gray-200">
+      <CommonHeader title={`${roomName || 'Loading...'}`} ismenu={true} />
+      {isRoomInfoLoaded && participants.length > 0 ? ( // 참여자 정보가 로드된 경우에만 MessageSection 렌더링
+        <MessageSection chatId={chatId} participants={participants} />
+      ) : (
+        <div className="flex flex-1 items-center justify-center">
+          <p>Loading chat room information...</p>
+        </div>
+      )}
       <InputSection
         inputMessage={inputMessage}
         setInputMessage={setInputMessage}
