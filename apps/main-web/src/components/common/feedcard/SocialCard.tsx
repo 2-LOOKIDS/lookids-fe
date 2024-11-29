@@ -9,16 +9,28 @@ import { Card, CardContent, CardFooter } from '@repo/ui/components/ui/card';
 import { Heart, Share2, ThumbsUp } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { getFeedDetail } from '../../../actions/feed/FeedCard';
 
 export default function SocialCard({
   isDetail,
-  feedCode = '1',
+  feedCode,
 }: {
   isDetail: boolean;
-  feedCode?: string;
+  feedCode: string;
 }) {
   const [isLiked, setIsLiked] = useState(false);
+  useEffect(() => {
+    const fetchFeedDetail = async (feedCode: string) => {
+      try {
+        const data = await getFeedDetail(feedCode);
+        console.log('피드 데이터', data);
+      } catch (error) {
+        console.log('피드 데이터 에러', error);
+      }
+    };
+    fetchFeedDetail(feedCode);
+  }, [feedCode]);
   return (
     <Card className={`h-2/5 overflow-hidden p-4 ${isDetail ? 'border-0' : ''}`}>
       {/* Social Card Image */}
