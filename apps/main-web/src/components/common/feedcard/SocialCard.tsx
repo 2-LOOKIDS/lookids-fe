@@ -10,7 +10,9 @@ import { Heart, Share2, ThumbsUp } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { getFeedDetail } from '../../../actions/feed/FeedCard';
+import { FeedDetail, getFeedDetail } from '../../../actions/feed/FeedCard';
+import { formatDate } from '../../../utils/formatDate';
+import { getMediaUrl } from '../../../utils/media';
 
 export default function SocialCard({
   isDetail,
@@ -20,11 +22,13 @@ export default function SocialCard({
   feedCode: string;
 }) {
   const [isLiked, setIsLiked] = useState(false);
+  const [feedDetail, setFeedDetail] = useState<FeedDetail>({});
   useEffect(() => {
     const fetchFeedDetail = async (feedCode: string) => {
       try {
         const data = await getFeedDetail(feedCode);
-        console.log('피드 데이터', data);
+
+        setFeedDetail(data);
       } catch (error) {
         console.log('피드 데이터 에러', error);
       }
@@ -37,7 +41,7 @@ export default function SocialCard({
       <div className="relative">
         <Link href={`/feed/${feedCode}`}>
           <Image
-            src="/pome.jpg"
+            src={`${getMediaUrl(feedDetail.mediaUrlList)}`}
             width={500}
             height={300}
             alt="Cartoon cat sleeping on a green couch"
@@ -61,25 +65,27 @@ export default function SocialCard({
           <div className="mb-4 flex items-center space-x-4">
             <Avatar>
               <AvatarImage
-                src="/jihunpistol.jpg"
-                alt="Jihun Sin"
+                src={getMediaUrl(feedDetail.image)}
+                alt={feedDetail.nickname}
                 className="object-cover"
               />
               <AvatarFallback>RF</AvatarFallback>
             </Avatar>
             <div className="flex-1">
-              <h3 className="text-md font-extrabold text-black">Jihun Sin</h3>
-              <p className="text-xs text-black">@nick**me</p>
+              <h3 className="text-md font-extrabold text-black">
+                {feedDetail.nickname}
+              </h3>
+              <p className="text-xs text-black">{`@${feedDetail.tag}`}</p>
             </div>
           </div>
-          <p className="text-xs text-gray-500">2 hours ago</p>
+          <p className="text-xs text-gray-500">
+            {formatDate(feedDetail.createdAt)}
+          </p>
         </div>
         <p
           className={`w-full text-sm text-gray-400 line-clamp-2 text-ellipsis whitespace-pre-wrap ${isDetail ? '' : 'line-clamp-2'}`}
         >
-          지훈이가 좋아하는 랜덤게임 무슨게임 ? 게임 Start 시멘트! 시멘트!
-          시멘트! 시멘트! 웃겨보려고 한건 아니지만 웃긴다... 피식... 2년동안
-          얼굴 하나로 먹고 살고 있다. 허수키 견생 2회차
+          {feedDetail.content}
         </p>
       </CardContent>
 
