@@ -42,7 +42,7 @@ export default function MessageSection({
         const profiles = await fetchParticipantsProfile(participants);
         setParticipantsProfile(profiles);
 
-        const initialMessages = await fetchInitialMessages(chatId);
+        const initialMessages = await fetchInitialMessages(chatId, 0);
         setMessages(initialMessages);
         scrollToBottom(); // 초기 메시지 로딩 후 스크롤 이동
 

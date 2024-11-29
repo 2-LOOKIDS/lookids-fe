@@ -36,7 +36,7 @@ export default function Page() {
     const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
     const fetchInitialRoomInfos = async () => {
       try {
-        const data: responseList<RoomMessage> = await getChattingList(uuid);
+        const data: responseList<RoomMessage> = await getChattingList(uuid, 0);
         setRoomInfos(data?.content || []);
       } catch (error) {
         console.error('Failed to fetch chatting list:', error);
