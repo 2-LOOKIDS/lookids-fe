@@ -3,6 +3,7 @@
 import { DefaultValues, Path, useForm } from 'react-hook-form';
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogFooter,
   DialogTitle,
@@ -18,6 +19,7 @@ import { Button } from '@repo/ui/components/ui/button';
 import { Input } from '@repo/ui/components/ui/input';
 import { Label } from '@repo/ui/components/ui/label';
 import { PencilLine } from 'lucide-react';
+import { useState } from 'react';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 
@@ -28,6 +30,8 @@ interface InternalDialogProps<
   TObject extends z.ZodObject<TShape, TKeys, TType>,
   TSchema extends TObject | z.ZodEffects<TObject>,
 > {
+  uuid?: string;
+  token?: string;
   schema: TSchema;
   fields: {
     label: string;
@@ -43,10 +47,13 @@ function InternalDialog<
   TObject extends z.ZodObject<TShape, TKeys, TType>,
   TSchema extends TObject | z.ZodEffects<TObject>,
 >({
+  uuid,
+  token,
   fields,
   schema,
   defaultValues,
 }: InternalDialogProps<TShape, TKeys, TType, TObject, TSchema>) {
+  const [open, setOpen] = useState<boolean>(false);
   type formType = z.infer<typeof schema>;
   const {
     register,
@@ -59,12 +66,14 @@ function InternalDialog<
 
   const onSubmit = async (values: formType) => {
     console.log(values);
+    setOpen(false);
   };
 
   return (
-    <Dialog>
+    <Dialog open={open}>
       <DialogTrigger asChild>
         <Button
+          onClick={() => setOpen(true)}
           variant="outline"
           className="text-lookids hover:bg-lookids/90 border-lookids flex h-7 items-center justify-center gap-1 rounded border bg-[rgba(255,233,221,0.2)] px-1 py-[6px] hover:text-white"
         >
@@ -78,7 +87,6 @@ function InternalDialog<
         className="w-[90%] rounded-sm"
       >
         <DialogTitle />
-
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="flex w-[90%] flex-col items-end gap-4 pt-4"
@@ -164,19 +172,28 @@ const schemaMap = {
   userComment: UserCommentSchema,
   petProfile: PetProfileSchema,
 };
+
+const actionMap = {};
+
 interface EditDialogProps<T extends keyof typeof schemaMap> {
+  uuid?: string;
+  token?: string;
   type: T;
   defaultValues: DefaultValues<z.infer<(typeof schemaMap)[T]>>;
   fields: { label: string; field: Path<z.TypeOf<(typeof schemaMap)[T]>> }[];
 }
 
 export function EditDialog<T extends keyof typeof schemaMap>({
+  uuid,
+  token,
   type,
   defaultValues,
   fields,
 }: EditDialogProps<T>) {
   return (
     <InternalDialog
+      uuid={uuid}
+      token={token}
       schema={schemaMap[type]}
       defaultValues={defaultValues}
       fields={fields}
