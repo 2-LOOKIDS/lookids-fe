@@ -28,6 +28,7 @@ export type UserCommentType = z.infer<typeof UserCommentSchema>;
 export type PetProfileType = z.infer<typeof PetProfileSchema>;
 
 export interface UserInfo {
+  uuid: string;
   nickname: string;
   tag: string;
   tierCode: string;
@@ -35,8 +36,4 @@ export interface UserInfo {
   gender: string;
   comment: string;
   image: string;
-}
-
-export interface UserInfoWithUuid extends UserInfo {
-  uuid: string;
 }

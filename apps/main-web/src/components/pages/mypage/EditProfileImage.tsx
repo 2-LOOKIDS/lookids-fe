@@ -19,9 +19,7 @@ export default function EditProfileImage({
   uuid,
   token,
 }: EditProfileImageProps) {
-  // if (imgUrl === 'media/default_profile.png') {
-  //   imgUrl = '/jihunpistol.jpg';
-  // }
+  imgUrl = process.env.NEXT_PUBLIC_MEDIA_BASE_URL + imgUrl;
   const { uploadToS3 } = useS3Upload();
   const fileInputRef = useRef<HTMLInputElement>(null);
 

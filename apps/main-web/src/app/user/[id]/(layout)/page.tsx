@@ -7,41 +7,50 @@ import ProfileAvatar from '../../../../components/ui/ProfileAvatar';
 import ProfileDescription from '../../../../components/pages/profile/ProfileDescription';
 import ProfileHeader from '../../../../components/pages/profile/ProfileHeader';
 import ProfileStats from '../../../../components/pages/profile/ProfileStats';
+import { getFeedThumbnailList } from '../../../../actions/feed/FeedList';
 import { getServerSession } from 'next-auth';
+import { getUserProfileByNicknameTag } from '../../../../actions/user';
 import { options } from '../../../api/auth/[...nextauth]/options';
 
 export async function generateMetadata({
   params,
 }: {
-  params: { loginId: string };
+  params: { id: string };
 }): Promise<Metadata> {
   return {
-    title: decodeURIComponent(params.loginId),
-    description: `${decodeURIComponent(params.loginId)}'s profile`,
+    title: `${decodeURIComponent(`${params.id}`)}`,
+    description: `${decodeURIComponent(`${params.id}`)}'s profile`,
   };
 }
 
-export default async function page({
-  params,
-}: {
-  params: { loginId: string };
-}) {
+export default async function page({ params }: { params: { id: string } }) {
   const data = await getServerSession(options);
+  const [nickname, tag] = params.id.split('-');
+  const userProfile = await getUserProfileByNicknameTag(nickname, tag);
+  // console.log('🚀 ~ page ~ userProfile:', userProfile);
+  const imgUrl = process.env.NEXT_PUBLIC_MEDIA_BASE_URL + userProfile.image;
+
+  const initialFeedThumbnailList = await getFeedThumbnailList(userProfile.uuid);
+  console.log(
+    '🚀 ~ page ~ initialFeedThumbnailList:',
+    initialFeedThumbnailList
+  );
+
   return (
     <>
-      <ProfileHeader loginId={decodeURIComponent(params.loginId)} />
+      <ProfileHeader loginId={decodeURIComponent(params.id)} />
       <main>
         <section>
           <div className="flex items-center justify-between px-5 pt-8">
             <ProfileAvatar
               className="xs:h-[120px] xs:w-[120px] h-[100px] min-h-[80px] w-[100px] min-w-[80px]"
-              imgUrl={'/pome.jpg'}
-              imgAlt={data?.user.name}
+              imgUrl={imgUrl}
+              imgAlt={userProfile.nickname}
             />
             <ProfileStats />
           </div>
 
-          <ProfileDescription />
+          <ProfileDescription comment={userProfile.comment} />
 
           <div className="flex justify-center gap-4 px-4 pt-10">
             <FollowButton />
@@ -54,7 +63,11 @@ export default async function page({
         </section>
 
         <section className="flex flex-col items-center justify-center px-4 pt-9">
-          <FeedList />
+          <FeedList
+            uuid={userProfile.uuid}
+            thumbnailList={initialFeedThumbnailList.content}
+            totalPages={initialFeedThumbnailList.totalPages}
+          />
         </section>
       </main>
     </>

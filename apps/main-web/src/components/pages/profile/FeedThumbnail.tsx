@@ -2,11 +2,12 @@ import Image from 'next/image';
 import React from 'react';
 
 interface FeedThumbnailProps {
+  feedCode: string;
   imgUrl: string;
   imgAlt: string;
 }
 
-function FeedThumbnail({ imgUrl, imgAlt }: FeedThumbnailProps) {
+function FeedThumbnail({ imgUrl, imgAlt, feedCode }: FeedThumbnailProps) {
   return (
     <div className="relative aspect-square">
       {imgUrl ? (
