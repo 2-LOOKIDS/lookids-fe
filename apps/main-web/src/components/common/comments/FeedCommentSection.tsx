@@ -15,6 +15,12 @@ export default function FeedCommentSection() {
   const [comment, setComment] = useState('');
   const maxLength = 300;
 
+  const handleComment = () => {
+    console.log('댓글 달기', comment);
+    setComment('');
+    setIsCommenting(false);
+    // 여기서 Revalidate Tag를 달아놓으면 될것 같기도?
+  };
   return (
     <Card className=" w-full border-[rgba(18,18,18,0.2)] ">
       {(isCommenting || comment) && (
@@ -46,6 +52,7 @@ export default function FeedCommentSection() {
               </span>
               <Button
                 size="sm"
+                onClick={handleComment}
                 className="h-7 bg-[#FD9340] px-3 text-xs font-light hover:bg-[#FD9340]/90"
               >
                 댓글 달기

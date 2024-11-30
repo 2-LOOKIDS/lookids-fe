@@ -10,7 +10,10 @@ import { Heart, Share2, ThumbsUp } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { FeedDetail, getFeedDetail } from '../../../actions/feed/FeedCard';
+import { Pagination } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { getFeedDetail } from '../../../actions/feed/FeedCard';
+import { FeedDetail } from '../../../types/feed/FeedType';
 import { formatDate } from '../../../utils/formatDate';
 import { getMediaUrl } from '../../../utils/media';
 
@@ -22,12 +25,22 @@ export default function SocialCard({
   feedCode: string;
 }) {
   const [isLiked, setIsLiked] = useState(false);
-  const [feedDetail, setFeedDetail] = useState<FeedDetail>({});
+  const [feedDetail, setFeedDetail] = useState<FeedDetail>({
+    uuid: '',
+    tag: '',
+    nickname: '',
+    image: '',
+    content: '',
+    tagList: [],
+    mediaUrlList: [],
+    createdAt: '',
+  });
+
   useEffect(() => {
     const fetchFeedDetail = async (feedCode: string) => {
       try {
         const data = await getFeedDetail(feedCode);
-
+        console.log(data);
         setFeedDetail(data);
       } catch (error) {
         console.log('피드 데이터 에러', error);
@@ -35,22 +48,26 @@ export default function SocialCard({
     };
     fetchFeedDetail(feedCode);
   }, [feedCode]);
+
   return (
     <Card className={`h-2/5 overflow-hidden p-4 ${isDetail ? 'border-0' : ''}`}>
       {/* Social Card Image */}
-      <div className="relative">
-        <Link href={`/feed/${feedCode}`}>
-          <Image
-            src={`${getMediaUrl(feedDetail.mediaUrlList)}`}
-            width={500}
-            height={300}
-            alt="Cartoon cat sleeping on a green couch"
-            className="w-full rounded-lg object-cover"
-          />
-        </Link>
-        {!isDetail && (
+      {!isDetail && (
+        <div className="relative">
+          <Link href={`/feed/${feedCode}`}>
+            <Image
+              src={`${getMediaUrl(feedDetail.mediaUrlList?.[0] || '')}`}
+              width={500}
+              height={300}
+              alt="Feed image"
+              className="w-full rounded-lg object-cover"
+            />
+          </Link>
+
           <div
-            className={`absolute right-3 top-3 rounded-full p-2 ${isLiked ? 'bg-red-500' : 'opacity-50 bg-gray-800'}`}
+            className={`absolute right-3 top-3 rounded-full p-2 ${
+              isLiked ? 'bg-red-500' : 'opacity-50 bg-gray-800'
+            }`}
             onClick={() => setIsLiked(!isLiked)}
           >
             <Heart
@@ -58,8 +75,29 @@ export default function SocialCard({
               className={`h-4 w-4 ${isLiked ? 'text-white' : 'text-gray-300'}`}
             />
           </div>
-        )}
-      </div>
+        </div>
+      )}
+
+      {isDetail && (
+        <Swiper
+          modules={[Pagination]}
+          pagination={{ clickable: true }}
+          className="rounded-lg overflow-hidden"
+        >
+          {feedDetail.mediaUrlList.map((url, index) => (
+            <SwiperSlide key={index}>
+              <Image
+                src={getMediaUrl(url)}
+                alt={`Feed image ${index + 1}`}
+                width={500}
+                height={300}
+                className="w-full object-cover"
+              />
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      )}
+
       <CardContent className="mt-4 px-2">
         <div className="flex items-start justify-between">
           <div className="mb-4 flex items-center space-x-4">
@@ -83,7 +121,9 @@ export default function SocialCard({
           </p>
         </div>
         <p
-          className={`w-full text-sm text-gray-400 line-clamp-2 text-ellipsis whitespace-pre-wrap ${isDetail ? '' : 'line-clamp-2'}`}
+          className={`w-full text-sm text-gray-400 line-clamp-2 text-ellipsis whitespace-pre-wrap ${
+            isDetail ? '' : 'line-clamp-2'
+          }`}
         >
           {feedDetail.content}
         </p>
