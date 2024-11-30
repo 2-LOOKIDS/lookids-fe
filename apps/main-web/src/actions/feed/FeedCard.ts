@@ -88,3 +88,30 @@ export async function uploadFeedWithMedia({
     throw new Error(`피드 및 미디어 업로드 실패: ${error}`);
   }
 }
+
+export interface FeedDetail {
+  uuid: string;
+  tag: string;
+  nickname: string;
+  image: string;
+  petCode?: string;
+  content: string;
+  tagList?: string[];
+  mediaUrlList: string[];
+  createdAt: string;
+}
+
+export async function getFeedDetail(feedCode: string): Promise<FeedDetail> {
+  try {
+    const data = await fetchDataforMembers<CommonResponse<FeedDetail>>(
+      `feed-read-service/read/feed/detail?feedCode=${feedCode}`,
+      'GET',
+      null,
+      'no-cache'
+    );
+    return data.result;
+  } catch (error) {
+    console.error('피드 상세 조회 중 오류 발생:', error);
+    throw new Error(`피드 상세 조회 실패: ${error}`);
+  }
+}
