@@ -156,7 +156,7 @@ export default function MessageSection({
             return (
               <li
                 key={message.id}
-                className={`flex ${isUserMessage ? 'justify-end' : 'justify-start'}`}
+                className={`flex gap-y-2 ${isUserMessage ? 'justify-end' : 'justify-start'}`}
               >
                 {!isUserMessage && (
                   <article className="flex max-w-[75%] flex-col gap-2">

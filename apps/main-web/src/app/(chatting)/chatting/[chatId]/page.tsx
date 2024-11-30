@@ -10,6 +10,7 @@ import InputSection from '../../../../components/pages/chatting/Input';
 import MessageSection from '../../../../components/pages/chatting/Message';
 import CommonHeader from '../../../../components/ui/CommonHeader';
 import { useSession } from '../../../../context/SessionContext';
+import { MenuItem } from '../../../../types/common/MenuType';
 import { scrollToBottom } from '../../../../utils/scroll';
 
 export default function ChatPage({ params }: { params: { chatId: string } }) {
@@ -20,6 +21,14 @@ export default function ChatPage({ params }: { params: { chatId: string } }) {
   const [participants, setParticipants] = useState<string[]>([]);
   const [isRoomInfoLoaded, setIsRoomInfoLoaded] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
+  const menuItems: MenuItem[] = [
+    { label: '채팅방 나가기', onClick: () => alert('어떻게 할지 고민중') },
+    // 채팅방 나가는 API 구현 필요
+    {
+      label: '대화상대 추가하기',
+      onClick: () => alert('대화상대 추가하기.'),
+    },
+  ];
 
   useEffect(() => {
     let isMounted = true;
@@ -72,7 +81,11 @@ export default function ChatPage({ params }: { params: { chatId: string } }) {
 
   return (
     <div className="flex h-screen w-full flex-col bg-gray-50 sm:mx-auto sm:max-w-md sm:border-x sm:border-gray-200">
-      <CommonHeader title={`${roomName || 'Loading...'}`} ismenu={true} />
+      <CommonHeader
+        title={`${roomName || 'Loading...'}`}
+        ismenu={true}
+        menuItems={menuItems}
+      />
       {isRoomInfoLoaded && participants.length > 0 ? (
         <MessageSection chatId={chatId} participants={participants} />
       ) : (
