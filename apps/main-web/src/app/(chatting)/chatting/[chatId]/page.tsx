@@ -3,10 +3,11 @@
 import { useEffect, useRef, useState } from 'react';
 import {
   enterChatRoom,
+  leaveChattingRoom,
   sendTextMessage,
 } from '../../../../actions/chatting/Chatting';
 import InputSection from '../../../../components/pages/chatting/Input';
-import MessageSection from '../../../../components/pages/chatting/Message'; // MessageSection에서 데이터 fetch
+import MessageSection from '../../../../components/pages/chatting/Message';
 import CommonHeader from '../../../../components/ui/CommonHeader';
 import { useSession } from '../../../../context/SessionContext';
 import { scrollToBottom } from '../../../../utils/scroll';
@@ -17,30 +18,47 @@ export default function ChatPage({ params }: { params: { chatId: string } }) {
   const [inputMessage, setInputMessage] = useState('');
   const [roomName, setRoomName] = useState('');
   const [participants, setParticipants] = useState<string[]>([]);
-  const [isRoomInfoLoaded, setIsRoomInfoLoaded] = useState(false); // 방 정보 로드 상태 추가
-  const messagesEndRef = useRef<HTMLDivElement | null>(null); // 스크롤 끝 지점을 참조하기 위한 ref
+  const [isRoomInfoLoaded, setIsRoomInfoLoaded] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
+    let isMounted = true;
+
+    const handleLeaveChatRoom = () => {
+      if (isMounted) {
+        leaveChattingRoom(chatId, session?.uuid || '');
+      }
+    };
+
+    // beforeunload 이벤트 리스너 등록
+    window.addEventListener('beforeunload', handleLeaveChatRoom);
+
     const getRoomInfo = async () => {
       try {
         const data = await enterChatRoom(chatId, session?.uuid || '');
-        console.log('룸에 들어왔을때 data', data);
-        setRoomName(data.roomName);
-        setParticipants(data.participants);
-        setIsRoomInfoLoaded(true); // 방 정보 로드 완료 상태 설정
-        console.log(roomName, participants);
+        if (isMounted) {
+          setRoomName(data.roomName);
+          setParticipants(data.participants);
+          setIsRoomInfoLoaded(true);
+        }
       } catch (error) {
         console.error('Failed to fetch room info:', error);
-        setIsRoomInfoLoaded(true); // 에러 발생 시에도 로드 완료로 설정
+        if (isMounted) setIsRoomInfoLoaded(true);
       }
     };
 
     getRoomInfo();
+
+    // 컴포넌트 언마운트 시 리스너 제거 및 leaveChattingRoom 호출
+    return () => {
+      isMounted = false;
+      leaveChattingRoom(chatId, session?.uuid || '');
+      window.removeEventListener('beforeunload', handleLeaveChatRoom);
+    };
   }, [chatId, session]);
 
   const handleSendMessage = () => {
     if (inputMessage.trim() !== '') {
-      // 여기서 input Message를 서버로 전송
       sendTextMessage({
         roomId: chatId,
         messageType: '텍스트',
@@ -55,7 +73,7 @@ export default function ChatPage({ params }: { params: { chatId: string } }) {
   return (
     <div className="flex h-screen w-full flex-col bg-gray-50 sm:mx-auto sm:max-w-md sm:border-x sm:border-gray-200">
       <CommonHeader title={`${roomName || 'Loading...'}`} ismenu={true} />
-      {isRoomInfoLoaded && participants.length > 0 ? ( // 참여자 정보가 로드된 경우에만 MessageSection 렌더링
+      {isRoomInfoLoaded && participants.length > 0 ? (
         <MessageSection chatId={chatId} participants={participants} />
       ) : (
         <div className="flex flex-1 items-center justify-center">
