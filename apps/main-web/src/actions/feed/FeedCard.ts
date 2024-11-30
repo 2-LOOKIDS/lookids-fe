@@ -1,6 +1,11 @@
 'use server';
 
-import { FeedPostType, MediaType, PinType } from '../../types/feed/FeedType';
+import {
+  FeedDetail,
+  FeedPostType,
+  MediaType,
+  PinType,
+} from '../../types/feed/FeedType';
 
 import { CommonResponse } from '../../types/responseType';
 import { extractCommonUrl } from '../../utils/media';
@@ -87,18 +92,6 @@ export async function uploadFeedWithMedia({
     console.error('uploadFeedWithMedia 실행 중 오류 발생:', error);
     throw new Error(`피드 및 미디어 업로드 실패: ${error}`);
   }
-}
-
-export interface FeedDetail {
-  uuid: string;
-  tag: string;
-  nickname: string;
-  image: string;
-  petCode?: string;
-  content: string;
-  tagList?: string[];
-  mediaUrlList: string[];
-  createdAt: string;
 }
 
 export async function getFeedDetail(feedCode: string): Promise<FeedDetail> {
