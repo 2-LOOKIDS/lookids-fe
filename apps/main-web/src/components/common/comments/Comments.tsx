@@ -3,22 +3,28 @@ import {
   AvatarFallback,
   AvatarImage,
 } from '@repo/ui/components/ui/avatar';
+import { CommentType } from '../../../types/feed/CommentType';
+import { formatDate } from '../../../utils/formatDate';
+import { getMediaUrl } from '../../../utils/media';
 import CommentLike from './CommentLike';
 
-export default function Comments({ commentCode }: { commentCode: string }) {
+export default function Comments({ comment }: { comment: CommentType }) {
   // 여기서는 commentCode를 받아와서 해당 comment에 대한 정보를 불러올 예정.
   return (
     <div className="flex w-full flex-col gap-2 px-2 py-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <Avatar>
-            <AvatarImage src="/jihunpistol.jpg" alt="User avatar" />
-            <AvatarFallback>JA</AvatarFallback>
+            <AvatarImage
+              src={getMediaUrl(comment.image)}
+              alt={comment.nickname}
+            />
+            <AvatarFallback>{comment.nickname}</AvatarFallback>
           </Avatar>
           <div className="flex flex-col">
-            <span className="text-sm font-medium">JIHOON_SHIN</span>
+            <span className="text-sm font-medium">{comment.nickname}</span>
             <span className="text-muted-foreground text-[11px]">
-              24.11.12 05:22:15
+              {formatDate(comment.createdAt)}
             </span>
           </div>
         </div>
@@ -29,13 +35,11 @@ export default function Comments({ commentCode }: { commentCode: string }) {
       <section className="flex justify-between">
         <section className="flex justify-between gap-x-4">
           <p className="text-[13px] leading-5 text-[#A2A2A2]">
-            내 이름은 신지훈. 이번 프로젝트가 끝나면 고향에 돌아가
-            <br />
-            그녀에게 고백할꺼야.
+            {comment.content}
           </p>
         </section>
 
-        <CommentLike commendCode={commentCode}></CommentLike>
+        <CommentLike commendCode={comment.commentCode}></CommentLike>
       </section>
       <div className="h-px w-full bg-[#CFCDCD] opacity-50" />
     </div>
