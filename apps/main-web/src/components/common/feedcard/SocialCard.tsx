@@ -6,7 +6,7 @@ import {
 } from '@repo/ui/components/ui/avatar';
 import { Card, CardContent, CardFooter } from '@repo/ui/components/ui/card';
 
-import { Heart, Share2, ThumbsUp } from 'lucide-react';
+import { Share2, ThumbsUp } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -16,6 +16,7 @@ import { getFeedDetail } from '../../../actions/feed/FeedCard';
 import { FeedDetail } from '../../../types/feed/FeedType';
 import { formatDate } from '../../../utils/formatDate';
 import { getMediaUrl } from '../../../utils/media';
+import LikeButton from '../LikeButton';
 
 export default function SocialCard({
   isDetail,
@@ -35,6 +36,11 @@ export default function SocialCard({
     mediaUrlList: [],
     createdAt: '',
   });
+
+  const toggleLike = () => {
+    setIsLiked(!isLiked);
+    // 추가 로직 (API 호출 등)도 이곳에 구현 가능
+  };
 
   useEffect(() => {
     const fetchFeedDetail = async (feedCode: string) => {
@@ -63,17 +69,7 @@ export default function SocialCard({
             />
           </Link>
 
-          <div
-            className={`absolute right-3 top-3 rounded-full p-2 ${
-              isLiked ? 'bg-red-500' : 'opacity-50 bg-gray-800'
-            }`}
-            onClick={() => setIsLiked(!isLiked)}
-          >
-            <Heart
-              fill="white"
-              className={`h-4 w-4 ${isLiked ? 'text-white' : 'text-gray-300'}`}
-            />
-          </div>
+          <LikeButton isLiked={isLiked} onToggle={toggleLike} />
         </div>
       )}
 

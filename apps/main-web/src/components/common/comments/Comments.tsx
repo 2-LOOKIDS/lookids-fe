@@ -74,7 +74,7 @@ export default function Comments({
           </div>
         </div>
       </div>
-      <section className="flex justify-between">
+      <section className="flex justify-between items-center">
         <section className="flex flex-col gap-y-2 w-full">
           <section className="flex items-center gap-3">
             <p className="text-[16px] leading-5 text-[#A2A2A2]">
@@ -167,7 +167,7 @@ export default function Comments({
             </div>
           )}
         </section>
-        <CommentLike commendCode={comment.commentCode} />
+        <CommentLike commentCode={comment.commentCode} />
       </section>
       <div className="h-px w-full bg-[#CFCDCD] opacity-50" />
     </div>
