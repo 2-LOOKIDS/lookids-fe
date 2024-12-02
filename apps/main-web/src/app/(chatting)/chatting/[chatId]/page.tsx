@@ -1,7 +1,10 @@
 'use client';
-
+import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 import {
+  deleteChattingRoom,
   enterChatRoom,
   leaveChattingRoom,
   sendTextMessage,
@@ -16,17 +19,57 @@ import { scrollToBottom } from '../../../../utils/scroll';
 export default function ChatPage({ params }: { params: { chatId: string } }) {
   const session = useSession();
   const chatId = params.chatId;
+  const router = useRouter();
   const [inputMessage, setInputMessage] = useState('');
   const [roomName, setRoomName] = useState('');
   const [participants, setParticipants] = useState<string[]>([]);
   const [isRoomInfoLoaded, setIsRoomInfoLoaded] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
+  const MySwal = withReactContent(Swal);
+
   const menuItems: MenuItem[] = [
-    { label: '채팅방 나가기', onClick: () => alert('어떻게 할지 고민중') },
-    // 채팅방 나가는 API 구현 필요
+    {
+      label: '채팅방 나가기',
+      onClick: async () => {
+        const result = await MySwal.fire({
+          title: '채팅방 나가기',
+          text: '채팅방을 나갈 경우 상대방의 채팅방도 함께 없어집니다. 나가시겠습니까?',
+          showCancelButton: true,
+          confirmButtonText: '네, 나가겠습니다',
+          cancelButtonText: '취소',
+        });
+
+        if (result.isConfirmed) {
+          try {
+            await deleteChattingRoom(chatId);
+            await MySwal.fire({
+              title: '완료!',
+              text: '채팅방이 성공적으로 삭제되었습니다.',
+              icon: 'success',
+              confirmButtonText: '확인',
+            });
+            router.push('/chatting');
+          } catch (error) {
+            console.error('채팅방 삭제 실패:', error);
+            await MySwal.fire({
+              title: '오류!',
+              text: '채팅방을 삭제하는 중 문제가 발생했습니다.',
+              icon: 'error',
+              confirmButtonText: '확인',
+            });
+          }
+        }
+      },
+    },
     {
       label: '대화상대 추가하기',
-      onClick: () => alert('대화상대 추가하기.'),
+      onClick: async () => {
+        await MySwal.fire({
+          text: '아직 구현중인 서비스입니다.',
+          icon: 'warning',
+          confirmButtonText: '확인',
+        });
+      },
     },
   ];
 
@@ -39,7 +82,6 @@ export default function ChatPage({ params }: { params: { chatId: string } }) {
       }
     };
 
-    // beforeunload 이벤트 리스너 등록
     window.addEventListener('beforeunload', handleLeaveChatRoom);
 
     const getRoomInfo = async () => {
@@ -58,7 +100,6 @@ export default function ChatPage({ params }: { params: { chatId: string } }) {
 
     getRoomInfo();
 
-    // 컴포넌트 언마운트 시 리스너 제거 및 leaveChattingRoom 호출
     return () => {
       isMounted = false;
       leaveChattingRoom(chatId, session?.uuid || '');

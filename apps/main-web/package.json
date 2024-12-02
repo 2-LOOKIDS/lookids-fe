@@ -25,6 +25,8 @@
     "react-hook-form": "^7.53.1",
     "react-kakao-maps-sdk": "^1.1.27",
     "sharp": "^0.33.5",
+    "sweetalert2": "^11.14.5",
+    "sweetalert2-react-content": "^5.0.7",
     "swiper": "^11.1.14",
     "use-debounce": "^10.0.4",
     "web-push": "^3.6.7",
