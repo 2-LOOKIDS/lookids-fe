@@ -1,3 +1,8 @@
+import {
+  getLikedThumbnails,
+  getPostThumbnails,
+} from '../../../../actions/feed/FeedList';
+
 import FeedList from '../../../../components/pages/profile/FeedList';
 import FollowButton from '../../../../components/pages/profile/FollowButton';
 import MessageButton from '../../../../components/pages/profile/MessageButton';
@@ -7,7 +12,6 @@ import ProfileAvatar from '../../../../components/ui/ProfileAvatar';
 import ProfileDescription from '../../../../components/pages/profile/ProfileDescription';
 import ProfileHeader from '../../../../components/pages/profile/ProfileHeader';
 import ProfileStats from '../../../../components/pages/profile/ProfileStats';
-import { getFeedThumbnailList } from '../../../../actions/feed/FeedList';
 import { getServerSession } from 'next-auth';
 import { getUserProfileByNicknameTag } from '../../../../actions/user';
 import { options } from '../../../api/auth/[...nextauth]/options';
@@ -30,11 +34,8 @@ export default async function page({ params }: { params: { id: string } }) {
   // console.log('🚀 ~ page ~ userProfile:', userProfile);
   const imgUrl = process.env.NEXT_PUBLIC_MEDIA_BASE_URL + userProfile.image;
 
-  const initialFeedThumbnailList = await getFeedThumbnailList(userProfile.uuid);
-  console.log(
-    '🚀 ~ page ~ initialFeedThumbnailList:',
-    initialFeedThumbnailList
-  );
+  const postThumbnails = await getPostThumbnails(userProfile.uuid);
+  const likedThumbnails = await getLikedThumbnails(userProfile.uuid);
 
   return (
     <>
@@ -65,8 +66,8 @@ export default async function page({ params }: { params: { id: string } }) {
         <section className="flex flex-col items-center justify-center px-4 pt-9">
           <FeedList
             uuid={userProfile.uuid}
-            thumbnailList={initialFeedThumbnailList.content}
-            totalPages={initialFeedThumbnailList.totalPages}
+            postThumbnails={postThumbnails}
+            likedThumbnails={likedThumbnails}
           />
         </section>
       </main>
