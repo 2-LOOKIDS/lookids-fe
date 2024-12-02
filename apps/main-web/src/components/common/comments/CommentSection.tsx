@@ -1,34 +1,32 @@
 'use client';
 
+import { Button } from '@repo/ui/components/ui/button';
+import { Input } from '@repo/ui/components/ui/input';
 import { throttle } from 'lodash';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import useSWRInfinite from 'swr/infinite';
-import { getComments } from '../../../actions/feed/comment';
+import { getComments, uploadReply } from '../../../actions/feed/comment';
 import Comments from './Comments';
 
-export default function CommentSection({
-  commentCode,
-}: {
-  commentCode: string;
-}) {
-  // SWR의 useSWRInfinite를 사용해 무한 스크롤 데이터 페칭
-  const { data, size, setSize, isLoading, isValidating } = useSWRInfinite(
-    (pageIndex) => `/api/comments/${commentCode}?page=${pageIndex}`,
-    (url) => getComments(commentCode, parseInt(url.split('page=')[1])),
-    { revalidateOnFocus: false } // 포커스 시 리페치 비활성화
-  );
+export default function CommentSection({ feedCode }: { feedCode: string }) {
+  const { data, size, setSize, isLoading, isValidating, mutate } =
+    useSWRInfinite(
+      (pageIndex) => `/api/comments/${feedCode}?page=${pageIndex}`,
+      (url) => getComments(feedCode, parseInt(url.split('page=')[1])),
+      { revalidateOnFocus: false }
+    );
 
-  // 가져온 데이터를 병합
   const comments = data ? data.flatMap((page) => page.content) : [];
+  const [replyInputs, setReplyInputs] = useState<Record<string, string>>({});
+  const [activeReply, setActiveReply] = useState<string | null>(null);
 
-  // 스크롤 이벤트로 페이지 증가 처리
   const handleScroll = throttle(() => {
     if (
       window.innerHeight + window.scrollY >= document.body.offsetHeight &&
       !isLoading &&
       !isValidating
     ) {
-      setSize(size + 1); // 페이지 증가
+      setSize(size + 1);
     }
   }, 200);
 
@@ -39,12 +37,71 @@ export default function CommentSection({
     };
   }, [handleScroll]);
 
+  const handleReplyChange = (commentCode: string, value: string) => {
+    setReplyInputs((prev) => ({
+      ...prev,
+      [commentCode]: value,
+    }));
+  };
+
+  const handleReplySubmit = async (
+    feedCode: string,
+    parentCommentCode: string
+  ) => {
+    if (!replyInputs[feedCode]?.trim()) return;
+
+    try {
+      await uploadReply(feedCode, parentCommentCode, replyInputs[feedCode]);
+      mutate(); // 댓글 리스트 갱신
+      setReplyInputs((prev) => ({ ...prev, [feedCode]: '' })); // 입력 초기화
+      setActiveReply(null); // 입력 필드 숨기기
+    } catch (error) {
+      console.error('Failed to submit reply:', error);
+    }
+  };
+
   return (
     <div>
       {comments.map((comment) => (
-        <Comments key={comment.commentCode} comment={comment} />
+        <div key={comment.commentCode} className="mb-4">
+          <Comments comment={comment} />
+
+          {/* 답글 작성 버튼 */}
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() =>
+              setActiveReply(
+                activeReply === comment.commentCode ? null : comment.commentCode
+              )
+            }
+            className="mt-2 text-sm text-muted-foreground"
+          >
+            {activeReply === comment.commentCode ? '취소' : '답글 작성'}
+          </Button>
+
+          {/* 대댓글 입력 필드 */}
+          {activeReply === comment.commentCode && (
+            <div className="mt-2 flex flex-col gap-2">
+              <Input
+                value={replyInputs[comment.commentCode] || ''}
+                onChange={(e) =>
+                  handleReplyChange(comment.commentCode, e.target.value)
+                }
+                placeholder="답글을 입력하세요"
+                className="h-auto rounded p-2"
+              />
+              <Button
+                size="sm"
+                onClick={() => handleReplySubmit(feedCode, comment.commentCode)}
+                className="self-end bg-[#FD9340] px-3 text-xs font-light hover:bg-[#FD9340]/90"
+              >
+                작성
+              </Button>
+            </div>
+          )}
+        </div>
       ))}
-      {/* 로딩 상태 표시 */}
       {(isLoading || isValidating) && <div>Loading...</div>}
     </div>
   );

@@ -61,3 +61,21 @@ export async function getCommentReply(
     throw new Error(`대댓글 데이터 요청 실패: ${error}`);
   }
 }
+
+export async function uploadReply(
+  feedCode: string,
+  parentCommentCode: string,
+  content: string
+): Promise<any> {
+  try {
+    const data = await fetchDataforMembers<CommonResponse<any>>(
+      `comment-service/write/comment/reply`,
+      'POST',
+      { feedCode, parentCommentCode, content },
+      'no-cache'
+    );
+  } catch (error) {
+    console.error('대댓글 업로드 중 오류 발생:', error);
+    throw new Error(`대댓글 업로드 실패: ${error}`);
+  }
+}

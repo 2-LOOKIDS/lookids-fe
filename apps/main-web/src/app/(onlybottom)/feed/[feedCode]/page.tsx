@@ -17,7 +17,7 @@ export default async function page({
           <AddFeedCommentSection
             feedCode={params.feedCode}
           ></AddFeedCommentSection>
-          <CommentSection commentCode={params.feedCode}></CommentSection>
+          <CommentSection feedCode={params.feedCode}></CommentSection>
         </section>
       </div>
     </>
