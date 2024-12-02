@@ -1,6 +1,6 @@
 export interface CommentType {
   commentCode: string;
-  userUuid: string;
+  uuid: string;
   nickname: string;
   tag: string;
   image: string;
@@ -11,11 +11,10 @@ export interface CommentType {
 
 export interface CommentReplyType {
   commentCode: string;
-  userUuid: string;
+  uuid: string;
   tag: string;
   nickname: string;
   image: string;
   content: string;
   createdAt: string;
-  replyCount: number;
 }

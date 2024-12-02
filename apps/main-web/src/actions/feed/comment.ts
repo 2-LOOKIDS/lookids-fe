@@ -49,12 +49,11 @@ export async function getCommentReply(
 ): Promise<CommentReplyType[]> {
   try {
     const data = await fetchDataforMembers<CommonResponse<CommentReplyType[]>>(
-      `comment-read-service/read/comment/reply?commendCode=${commentCode}& page = 0 & size = 20`,
+      `comment-read-service/read/comment/reply?commentCode=${commentCode}`,
       'GET',
-      {},
+      '',
       'no-cache'
     );
-    console.log('대댓글 조회 결과 : ', data.result);
     return data.result;
   } catch (error) {
     console.error('대댓글 데이터 요청 중 오류 발생:', error);
@@ -77,5 +76,24 @@ export async function uploadReply(
   } catch (error) {
     console.error('대댓글 업로드 중 오류 발생:', error);
     throw new Error(`대댓글 업로드 실패: ${error}`);
+  }
+}
+
+interface commentCount {
+  commentCount: number;
+}
+export async function getCommentCount(feedCode: string): Promise<commentCount> {
+  try {
+    const data = await fetchDataforMembers<CommonResponse<commentCount>>(
+      `comment-read-service/read/comment/count?feedCode=${feedCode}`,
+      'GET',
+      '',
+      'no-cache'
+    );
+    console.log('댓글 수 조회 결과:', data.result);
+    return data.result;
+  } catch (error) {
+    console.error('댓글 수 조회 중 오류 발생:', error);
+    throw new Error(`댓글 수 조회 실패: ${error}`);
   }
 }

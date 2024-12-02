@@ -64,21 +64,7 @@ export default function CommentSection({ feedCode }: { feedCode: string }) {
     <div>
       {comments.map((comment) => (
         <div key={comment.commentCode} className="mb-4">
-          <Comments comment={comment} />
-
-          {/* 답글 작성 버튼 */}
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() =>
-              setActiveReply(
-                activeReply === comment.commentCode ? null : comment.commentCode
-              )
-            }
-            className="mt-2 text-sm text-muted-foreground"
-          >
-            {activeReply === comment.commentCode ? '취소' : '답글 작성'}
-          </Button>
+          <Comments feedCode={feedCode} comment={comment} />
 
           {/* 대댓글 입력 필드 */}
           {activeReply === comment.commentCode && (
