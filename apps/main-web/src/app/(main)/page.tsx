@@ -17,7 +17,7 @@ export default function page() {
 
         <SocialCard
           isDetail={false}
-          feedCode={'899a50cd-c58b-4c86-8415-d2264f0d3ebd'}
+          feedCode={'a7556e00-867e-407e-a1e6-25272ee7bda7'}
         />
         <SocialCard
           isDetail={false}

@@ -140,3 +140,17 @@ export async function leaveChattingRoom(
     throw new Error(`채팅방 나가기 실패: ${error}`);
   }
 }
+
+export async function deleteChattingRoom(roomId: string): Promise<void> {
+  try {
+    const res = await fetchDataforMembers<CommonResponse<void>>(
+      `chatting-service/chat/${roomId}`,
+      'DELETE',
+      '',
+      'no-cache'
+    );
+  } catch (error) {
+    console.error('채팅방 삭제 중 오류 발생:', error);
+    throw new Error(`채팅방 삭제 실패: ${error}`);
+  }
+}
