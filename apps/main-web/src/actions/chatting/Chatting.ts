@@ -154,3 +154,20 @@ export async function deleteChattingRoom(roomId: string): Promise<void> {
     throw new Error(`채팅방 삭제 실패: ${error}`);
   }
 }
+
+export async function updateChatRoomName(
+  roomId: string,
+  roomName: string
+): Promise<void> {
+  try {
+    const res = await fetchDataforMembers<CommonResponse<void>>(
+      `chatting-service/chat/room-name`,
+      'PUT',
+      { roomId, roomName },
+      'no-cache'
+    );
+  } catch (error) {
+    console.error('채팅방 이름 변경 중 오류 발생:', error);
+    throw new Error(`채팅방 이름 변경 실패: ${error}`);
+  }
+}
