@@ -6,7 +6,7 @@ import {
   AvatarImage,
 } from '@repo/ui/components/ui/avatar';
 import { Button } from '@repo/ui/components/ui/button';
-import { ChevronDown, ChevronUp } from 'lucide-react';
+import { ChevronDown, ChevronUp, Reply } from 'lucide-react';
 import { useState } from 'react';
 import { getCommentReply, uploadReply } from '../../../actions/feed/comment';
 import { CommentReplyType, CommentType } from '../../../types/feed/CommentType';
@@ -50,6 +50,7 @@ export default function Comments({
     if (replyContent.trim()) {
       await uploadReply(feedCode, comment.commentCode, replyContent);
       setReplyContent('');
+      await getCommentReplies();
       setIsReplying(false);
     }
   };
@@ -75,9 +76,12 @@ export default function Comments({
       </div>
       <section className="flex justify-between">
         <section className="flex flex-col gap-y-2 w-full">
-          <p className="text-[13px] leading-5 text-[#A2A2A2]">
-            {comment.content}
-          </p>
+          <section className="flex items-center gap-3">
+            <p className="text-[16px] leading-5 text-[#A2A2A2]">
+              {comment.content}
+            </p>
+            <Reply size={15} color="#A2A2A2" onClick={toggleReplies}></Reply>
+          </section>
           {comment.replyCount > 0 && (
             <Button
               variant="ghost"
@@ -157,7 +161,7 @@ export default function Comments({
                   className="mt-2 text-blue-500"
                   onClick={() => setIsReplying(true)}
                 >
-                  Write a Reply
+                  답글 쓰기
                 </Button>
               )}
             </div>
