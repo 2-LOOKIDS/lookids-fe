@@ -159,7 +159,7 @@ export default function Page() {
   ];
 
   return (
-    <div className="mx-auto flex h-screen w-full max-w-md flex-col bg-[#F8F8F9]">
+    <div className="mx-auto flex h-screen w-full max-w-md flex-col ">
       <CommonHeader title={'채팅'} ismenu={true} menuItems={menuItems} />
       <ScrollArea className="flex-1">
         {roomInfos.length === 0 ? (
@@ -184,16 +184,22 @@ export default function Page() {
                   </Avatar>
                 </div>
                 <div className="min-w-0 flex-1">
-                  <div className="flex items-start justify-between gap-2">
-                    <p className="truncate text-base font-semibold">
-                      {chat.roomName}
+                  <div className="flex items-start justify-between gap-1">
+                    <p
+                      className="text-base font-semibold truncate"
+                      title={chat.roomName}
+                    >
+                      {chat.roomName.length > 16
+                        ? `${chat.roomName.slice(0, 16)}...`
+                        : chat.roomName}
                     </p>
-                    <p className="whitespace-nowrap text-xs text-[#869AA9]">
+                    <p className="text-xs text-[#869AA9] text-right">
                       {chat.updatedAt
                         ? formatDate(chat.updatedAt.toLocaleString())
                         : '방 생성일'}
                     </p>
                   </div>
+
                   <div className="flex items-center justify-between gap-2">
                     <p className="line-clamp-1 truncate text-sm text-gray-600">
                       {chat.lastChatMessageAt ?? '메시지가 없습니다.'}
