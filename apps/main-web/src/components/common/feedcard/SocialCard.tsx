@@ -40,7 +40,6 @@ export default function SocialCard({
     const fetchFeedDetail = async (feedCode: string) => {
       try {
         const data = await getFeedDetail(feedCode);
-        console.log(data);
         setFeedDetail(data);
       } catch (error) {
         console.log('피드 데이터 에러', error);

@@ -1,10 +1,9 @@
 'use client';
 
 import { throttle } from 'lodash';
-import { useEffect, useState } from 'react';
-import { getComment } from '../../../actions/comment/comment';
-import { CommentType } from '../../../types/feed/CommentType';
-import { responseList } from '../../../types/responseType';
+import { useEffect } from 'react';
+import useSWRInfinite from 'swr/infinite';
+import { getComments } from '../../../actions/feed/comment';
 import Comments from './Comments';
 
 export default function CommentSection({
@@ -12,39 +11,24 @@ export default function CommentSection({
 }: {
   commentCode: string;
 }) {
-  const [comments, setComments] = useState<CommentType[]>([]);
-  const [page, setPage] = useState<number>(0);
+  // SWR의 useSWRInfinite를 사용해 무한 스크롤 데이터 페칭
+  const { data, size, setSize, isLoading, isValidating } = useSWRInfinite(
+    (pageIndex) => `/api/comments/${commentCode}?page=${pageIndex}`,
+    (url) => getComments(commentCode, parseInt(url.split('page=')[1])),
+    { revalidateOnFocus: false } // 포커스 시 리페치 비활성화
+  );
 
-  useEffect(() => {
-    const getCommentData = async () => {
-      try {
-        const data: responseList<CommentType> = await getComment(
-          commentCode,
-          page
-        );
-        setComments((prevComments) => {
-          const newComments = data.content.filter(
-            (newComment) =>
-              !prevComments.some(
-                (comment) => comment.commentCode === newComment.commentCode
-              )
-          );
-          return [...prevComments, ...newComments];
-        });
-      } catch (error) {
-        console.error(error);
-      }
-    };
+  // 가져온 데이터를 병합
+  const comments = data ? data.flatMap((page) => page.content) : [];
 
-    getCommentData();
-  }, [commentCode, page]);
-
+  // 스크롤 이벤트로 페이지 증가 처리
   const handleScroll = throttle(() => {
     if (
       window.innerHeight + window.scrollY >= document.body.offsetHeight &&
-      comments.length > 0
+      !isLoading &&
+      !isValidating
     ) {
-      setPage((prevPage) => prevPage + 1);
+      setSize(size + 1); // 페이지 증가
     }
   }, 200);
 
@@ -53,13 +37,15 @@ export default function CommentSection({
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [comments]);
+  }, [handleScroll]);
 
   return (
     <div>
       {comments.map((comment) => (
         <Comments key={comment.commentCode} comment={comment} />
       ))}
+      {/* 로딩 상태 표시 */}
+      {(isLoading || isValidating) && <div>Loading...</div>}
     </div>
   );
 }

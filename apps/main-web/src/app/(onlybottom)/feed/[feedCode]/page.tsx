@@ -1,7 +1,6 @@
 'use server';
-import Comments from '../../../../components/common/comments/Comments';
+import AddFeedCommentSection from '../../../../components/common/comments/AddFeedCommentSection';
 import CommentSection from '../../../../components/common/comments/CommentSection';
-import AddFeedCommentSection from '../../../../components/common/comments/FeedCommentSection';
 import SocialCard from '../../../../components/common/feedcard/SocialCard';
 
 export default async function page({
@@ -15,7 +14,9 @@ export default async function page({
         <SocialCard isDetail={true} feedCode={params.feedCode}></SocialCard>
         <section className="px-4 pb-8">
           <h3 className="py-4 text-xl text-lookids">댓글 ( 123 )</h3>
-          <AddFeedCommentSection></AddFeedCommentSection>
+          <AddFeedCommentSection
+            feedCode={params.feedCode}
+          ></AddFeedCommentSection>
           <CommentSection commentCode={params.feedCode}></CommentSection>
         </section>
       </div>
