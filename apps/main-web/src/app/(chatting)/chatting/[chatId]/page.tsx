@@ -8,6 +8,7 @@ import {
   enterChatRoom,
   leaveChattingRoom,
   sendTextMessage,
+  updateChatRoomName,
 } from '../../../../actions/chatting/Chatting';
 import InputSection from '../../../../components/pages/chatting/Input';
 import MessageSection from '../../../../components/pages/chatting/Message';
@@ -69,6 +70,37 @@ export default function ChatPage({ params }: { params: { chatId: string } }) {
           icon: 'warning',
           confirmButtonText: '확인',
         });
+      },
+    },
+    {
+      label: '채팅방 이름 변경하기',
+      onClick: async () => {
+        const result = await Swal.fire({
+          title: '채팅방 이름 변경하기',
+          html: `
+          채팅방 이름을 변경할 경우<br>
+          상대방의 채팅방 이름도 같이 변경됩니다.
+        `,
+          input: 'text', // 텍스트 입력 필드 추가
+          inputPlaceholder: '변경할 채팅방 이름을 입력하세요',
+          showCancelButton: true,
+          confirmButtonText: '변경하기',
+          cancelButtonText: '취소',
+          inputValidator: (value) => {
+            if (!value) {
+              return '채팅방 이름을 입력하세요!';
+            }
+          },
+        });
+
+        if (result.isConfirmed && result.value) {
+          const newChatRoomName = result.value;
+          // 여기에 원하는 함수 실행
+          console.log('새 채팅방 이름:', newChatRoomName);
+          // 예: 채팅방 이름 업데이트 API 호출
+          await updateChatRoomName(params.chatId, newChatRoomName);
+          window.location.reload();
+        }
       },
     },
   ];
