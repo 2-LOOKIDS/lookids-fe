@@ -81,11 +81,9 @@ export async function uploadFeedWithMedia({
       ...feed,
       mediaUrlList: images.map((image) => extractCommonUrl(image.mediaUrl)),
     };
-    console.log('최종 피드 데이터:', feedData);
 
     // 피드 업로드
     const data = await uploadFeed(feedData);
-    console.log('피드 업로드 성공 응답:', data);
 
     return data;
   } catch (error) {
