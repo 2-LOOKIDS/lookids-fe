@@ -12,6 +12,7 @@ import ProfileAvatar from '../../../../components/ui/ProfileAvatar';
 import ProfileDescription from '../../../../components/pages/profile/ProfileDescription';
 import ProfileHeader from '../../../../components/pages/profile/ProfileHeader';
 import ProfileStats from '../../../../components/pages/profile/ProfileStats';
+import { getFollowStatus } from '../../../../actions/follow/Follow';
 import { getServerSession } from 'next-auth';
 import { getUserProfileByNicknameTag } from '../../../../actions/user';
 import { options } from '../../../api/auth/[...nextauth]/options';
@@ -31,9 +32,9 @@ export default async function page({ params }: { params: { id: string } }) {
   const data = await getServerSession(options);
   const [nickname, tag] = params.id.split('-');
   const userProfile = await getUserProfileByNicknameTag(nickname, tag);
-  // console.log('🚀 ~ page ~ userProfile:', userProfile);
   const imgUrl = process.env.NEXT_PUBLIC_MEDIA_BASE_URL + userProfile.image;
 
+  const followStatus = await getFollowStatus(data?.user.uuid, userProfile.uuid);
   const postThumbnails = await getPostThumbnails(userProfile.uuid);
   const likedThumbnails = await getLikedThumbnails(userProfile.uuid);
 
@@ -54,7 +55,12 @@ export default async function page({ params }: { params: { id: string } }) {
           <ProfileDescription comment={userProfile.comment} />
 
           <div className="flex justify-center gap-4 px-4 pt-10">
-            <FollowButton />
+            <FollowButton
+              token={data?.user.accessToken}
+              uuid={data?.user.uuid}
+              targetUuid={userProfile.uuid}
+              followStatus={followStatus}
+            />
             <MessageButton />
           </div>
         </section>
