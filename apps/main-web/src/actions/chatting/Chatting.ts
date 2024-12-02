@@ -6,15 +6,15 @@ import {
   roomInfo,
   RoomMessage,
 } from '../../types/chatting/ChattingType';
-import { CommonResponse, responseList } from '../../types/responseType';
+import { CommonResponse, PaginationResponse } from '../../types/responseType';
 import { fetchDataforMembers } from '../common/common';
 
 export async function getChattingList(
   userId: string
-): Promise<responseList<RoomMessage>> {
+): Promise<PaginationResponse<RoomMessage>> {
   try {
     const data = await fetchDataforMembers<
-      CommonResponse<responseList<RoomMessage>>
+      CommonResponse<PaginationResponse<RoomMessage>>
     >(
       `chatting-service/read/chat/rooms/${userId}?page=0`,
       'GET',
@@ -30,10 +30,10 @@ export async function getChattingList(
 
 export async function getChatList(
   roomId: string
-): Promise<responseList<MessageResponse>> {
+): Promise<PaginationResponse<MessageResponse>> {
   try {
     const data = await fetchDataforMembers<
-      CommonResponse<responseList<MessageResponse>>
+      CommonResponse<PaginationResponse<MessageResponse>>
     >(`chatting-service/read/chat/${roomId}?page=0`, 'GET', '', 'no-cache');
     console.log(data);
     return data.result;

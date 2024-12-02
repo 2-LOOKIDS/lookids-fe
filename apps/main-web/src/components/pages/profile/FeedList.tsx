@@ -1,19 +1,18 @@
 'use client';
 
-import { FeedThumbnailList, Thumbnail } from '../../../types/feed/FeedType';
+import { useEffect, useState } from 'react';
 import {
   getLikedThumbnails,
   getPostThumbnails,
 } from '../../../actions/feed/FeedList';
-import { useEffect, useState } from 'react';
+import { FeedThumbnailList, Thumbnail } from '../../../types/feed/FeedType';
 
-import { CommonResponse } from '../../../types/responseType';
-import FeedThumbnail from './FeedThumbnail';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
+import { useInView } from 'react-intersection-observer';
+import FeedThumbnail from './FeedThumbnail';
 import UserLikesTab from './UserLikesTab';
 import UserPostsTab from './UserPostsTab';
-import { useInView } from 'react-intersection-observer';
-import { useSearchParams } from 'next/navigation';
 
 interface Tab {
   id: number;
@@ -34,6 +33,11 @@ export default function FeedList({
 }: FeedListProps) {
   const searchParams = useSearchParams();
   const search = searchParams.get('tab') ?? 'post';
+  const [initialThumbnails, setInitialThumbnails] =
+    useState<FeedThumbnailList | null>(null);
+  const [list, setList] = useState<Thumbnail[]>([]);
+  const [pagesLoaded, setPagesLoaded] = useState<number>(0);
+  const { ref, inView } = useInView();
 
   const tabs: Tab[] = [
     {
@@ -48,37 +52,27 @@ export default function FeedList({
     },
   ];
 
-  const [initialThumbnails, setInitialThumbnails] =
-    useState<FeedThumbnailList | null>(null);
-  const [list, setList] = useState<Thumbnail[]>([]);
-  const [pagesLoaded, setPagesLoaded] = useState<number>(0);
-
-  const [fetchFunction, setFetchFunction] = useState<string>('');
-  const { ref, inView } = useInView();
-
   useEffect(() => {
     if (search === 'post') {
-      setFetchFunction('post');
       setInitialThumbnails(postThumbnails);
     } else if (search === 'liked') {
-      setFetchFunction('liked');
       setInitialThumbnails(likedThumbnails);
     }
+    setList([]);
   }, [search]);
 
   const loadMorePosts = async () => {
     const nextPage = pagesLoaded + 1;
     if (nextPage <= initialThumbnails?.totalPages!) {
-      if (fetchFunction === 'post') {
+      if (search === 'post') {
         const response = await getPostThumbnails(uuid, nextPage);
         const newList = response.content;
-        setList([...list, ...newList]);
+        setList((prev) => [...prev, ...newList]);
         setPagesLoaded(nextPage);
-      } else if (fetchFunction === 'liked') {
-        setList([]);
+      } else if (search === 'liked') {
         const response = await getLikedThumbnails(uuid, nextPage);
         const newList = response.content;
-        setList([...list, ...newList]);
+        setList((prev) => [...prev, ...newList]);
         setPagesLoaded(nextPage);
       }
     }
@@ -86,7 +80,6 @@ export default function FeedList({
 
   useEffect(() => {
     if (inView) {
-      console.log(fetchFunction === 'liked');
       loadMorePosts();
     }
   }, [inView]);

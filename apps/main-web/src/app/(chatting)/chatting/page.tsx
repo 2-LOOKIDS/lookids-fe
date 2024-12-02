@@ -17,7 +17,7 @@ import { FollowerListModal } from '../../../components/pages/chatting/FollowerLi
 import CommonHeader from '../../../components/ui/CommonHeader';
 import { useSession } from '../../../context/SessionContext';
 import { RoomMessage } from '../../../types/chatting/ChattingType';
-import { responseList } from '../../../types/responseType';
+import { PaginationResponse } from '../../../types/responseType';
 
 export default function Page() {
   const session = useSession();
@@ -35,7 +35,8 @@ export default function Page() {
     const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
     const fetchInitialRoomInfos = async () => {
       try {
-        const data: responseList<RoomMessage> = await getChattingList(uuid);
+        const data: PaginationResponse<RoomMessage> =
+          await getChattingList(uuid);
         setRoomInfos(data?.content || []);
       } catch (error) {
         console.error('Failed to fetch chatting list:', error);

@@ -1,3 +1,5 @@
+import { PaginationResponse } from '../responseType';
+
 export interface FeedPostType {
   petCode?: string;
   content: string;
@@ -43,31 +45,4 @@ export interface Thumbnail {
   feedCode: string;
   mediaUrl: string;
 }
-export interface FeedThumbnailList {
-  content: Thumbnail[];
-  pageable: {
-    pageNumber: number;
-    pageSize: number;
-    sort: {
-      empty: boolean;
-      sorted: boolean;
-      unsorted: boolean;
-    };
-    offset: number;
-    paged: boolean;
-    unpaged: boolean;
-  };
-  totalElements: number;
-  totalPages: number;
-  last: boolean;
-  size: number;
-  number: number;
-  sort: {
-    empty: boolean;
-    sorted: boolean;
-    unsorted: boolean;
-  };
-  numberOfElements: number;
-  first: boolean;
-  empty: boolean;
-}
+export type FeedThumbnailList = PaginationResponse<Thumbnail>;

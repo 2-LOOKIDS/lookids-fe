@@ -6,7 +6,7 @@ export interface CommonResponse<T> {
   result: T;
 }
 
-export interface responseList<T> {
+export interface PaginationResponse<T = any> {
   totalPages?: number;
   totalElements?: number;
   content: T[];
@@ -16,20 +16,27 @@ export interface responseList<T> {
     unsorted: boolean;
     empty: boolean;
   };
-  pageable: {
-    sort: {
-      sorted: boolean;
-      unsorted: boolean;
-      empty: boolean;
-    };
-    offset: number;
-    pageNumber: number;
-    pageSize: number;
-    paged: boolean;
-    unpaged: boolean;
-  };
+  pageable: Pageable;
   numberOfElements: number;
   first: boolean;
   last: boolean;
   empty: boolean;
 }
+
+export interface Pageable {
+  sort: {
+    sorted: boolean;
+    unsorted: boolean;
+    empty: boolean;
+  };
+  offset: number;
+  pageNumber: number;
+  pageSize: number;
+  paged: boolean;
+  unpaged: boolean;
+}
+
+export type PaginationParams<T> = {
+  page?: number;
+  size?: number;
+} & T;

@@ -1,16 +1,18 @@
-import { CommonResponse, responseList } from '../../types/responseType';
+import { CommonResponse, PaginationResponse } from '../../types/responseType';
 
 import { Following } from '../../types/follow/FollowType';
 import { fetchDataforMembers } from '../common/common';
 import { revalidatePath } from 'next/cache';
 
-// const BASE_URL = `${process.env.NEXT_PUBLIC_BACKEND_URL}/follow-block-service`;
-const BASE_URL = '/api/follow-block-service';
+const BASE_URL = `${process.env.BACKEND_URL}/follow-block-service`;
+// const BASE_URL = '/api/follow-block-service';
 
-export async function getFollowingList(): Promise<responseList<Following>> {
+export async function getFollowingList(): Promise<
+  PaginationResponse<Following>
+> {
   try {
     const data = await fetchDataforMembers<
-      CommonResponse<responseList<Following>>
+      CommonResponse<PaginationResponse<Following>>
     >(`member-service/read/following`, 'GET', null, 'no-cache');
     console.log('팔로잉 목록:', await data.result);
     return await data.result;
