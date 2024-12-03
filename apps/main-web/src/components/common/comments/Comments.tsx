@@ -167,7 +167,10 @@ export default function Comments({
             </div>
           )}
         </section>
-        <CommentLike commentCode={comment.commentCode} />
+        <CommentLike
+          authorUuid={comment.uuid}
+          commentCode={comment.commentCode}
+        />
       </section>
       <div className="h-px w-full bg-[#CFCDCD] opacity-50" />
     </div>

@@ -88,7 +88,7 @@ export default function CommentSection({ feedCode }: { feedCode: string }) {
           )}
         </div>
       ))}
-      {(isLoading || isValidating) && <div>Loading...</div>}
+      {/* {(isLoading || isValidating) && <div>Loading...</div>} */}
     </div>
   );
 }

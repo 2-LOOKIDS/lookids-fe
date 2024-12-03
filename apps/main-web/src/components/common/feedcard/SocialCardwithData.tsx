@@ -30,7 +30,7 @@ export default function SocialCardwithData({
       {/* Social Card Image */}
       {!isDetail && (
         <div className="relative">
-          <Link href={`/feed/${feedData.uuid}`}>
+          <Link href={`/feed/${feedData.feedCode}`}>
             <Image
               src={getMediaUrl(feedData.mediaUrlList?.[0] || '')}
               width={500}
