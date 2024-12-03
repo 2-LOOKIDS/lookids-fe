@@ -2,6 +2,7 @@ import { CommonResponse, PaginationResponse } from '../../types/responseType';
 
 import { Following } from '../../types/follow/FollowType';
 import { fetchDataforMembers } from '../common/common';
+import { responseList } from '../../utils/chatting/fetchMessages';
 import { revalidatePath } from 'next/cache';
 
 const BASE_URL = `${process.env.BACKEND_URL}/follow-block-service`;
@@ -12,9 +13,13 @@ export async function getFollowingList(): Promise<
 > {
   try {
     const data = await fetchDataforMembers<
-      CommonResponse<PaginationResponse<Following>>
-    >(`member-service/read/following`, 'GET', null, 'no-cache');
-    console.log('팔로잉 목록:', await data.result);
+      CommonResponse<responseList<Following>>
+    >(
+      `follow-block-service/read/following?page=0&size=10`,
+      'GET',
+      null,
+      'no-cache'
+    );
     return await data.result;
   } catch (error) {
     console.error('팔로잉 목록 조회 중 오류 발생:', error);

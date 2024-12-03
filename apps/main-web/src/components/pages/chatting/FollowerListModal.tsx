@@ -12,6 +12,7 @@ import {
   DialogTitle,
 } from '@repo/ui/components/ui/dialog';
 import { ScrollArea } from '@repo/ui/components/ui/scroll-area';
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { getFollowingList } from '../../../actions/follow/Follow';
 import { getUserProfile } from '../../../actions/user';
@@ -20,6 +21,7 @@ import {
   Following,
 } from '../../../types/follow/FollowType';
 import { UserInfo } from '../../../types/user';
+import { getMediaUrl } from '../../../utils/media';
 
 export function FollowerListModal({
   isOpen,
@@ -32,13 +34,24 @@ export function FollowerListModal({
     // Fetch followers list
     // This is a mock implementation. Replace with actual API call.
     const fetchFollowers = async () => {
-      const response = await getFollowingList();
-      const Follwers: Following[] = response.content; // Adjust according to the actual response structure
-      Follwers.map(async (follower) => {
-        const user: UserInfo = await getUserProfile(follower.followerUuid);
-        setFollowerProfile((prev) => [...(prev || []), user]);
-      });
-      setFollowers(Follwers);
+      try {
+        const response = await getFollowingList();
+        const Follwers: Following[] = response.content; // 서버 응답 구조에 맞게 조정
+
+        // 모든 프로필 데이터를 병렬로 가져오기
+        const profiles = await Promise.all(
+          Follwers.map(async (follower) => {
+            const user: UserInfo = await getUserProfile(follower.followerUuid);
+            return user;
+          })
+        );
+
+        // 상태 업데이트
+        setFollowerProfile(profiles); // 모든 프로필 한 번에 설정
+        setFollowers(Follwers); // Follwers 배열 설정
+      } catch (error) {
+        console.error('Failed to fetch followers:', error);
+      }
     };
 
     if (isOpen) {
@@ -55,16 +68,28 @@ export function FollowerListModal({
         <ScrollArea className="h-[300px] pr-4">
           {followerProfile.map((follower, index) => (
             <div key={index} className="flex items-center space-x-4 py-2">
-              <Avatar>
-                <AvatarImage src={follower.image} alt={follower.nickname} />
-                <AvatarFallback>{follower.nickname}</AvatarFallback>
-              </Avatar>
+              <Link href={`/user/${follower.nickname}-${follower.tag}`}>
+                <Avatar>
+                  <AvatarImage
+                    src={getMediaUrl(follower.image)}
+                    alt={follower.nickname}
+                  />
+                  <AvatarFallback>{follower.nickname}</AvatarFallback>
+                </Avatar>
+              </Link>
               <div className="flex-1">
-                <p className="text-sm font-medium">{follower.nickname}</p>
+                <Link href={`/user/${follower.nickname}-${follower.tag}`}>
+                  <p className="text-sm font-medium">{follower.nickname}</p>
+                </Link>
               </div>
               <Button
                 className="text-lookids bg-slate-100"
-                onClick={() => onSelectFollower(followers[index].followerUuid)}
+                onClick={() =>
+                  onSelectFollower(
+                    followers[index].followerUuid,
+                    follower.nickname
+                  )
+                }
               >
                 메시지 보내기
               </Button>

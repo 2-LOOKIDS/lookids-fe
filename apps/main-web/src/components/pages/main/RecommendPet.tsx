@@ -2,11 +2,6 @@
 
 import { Button } from '@repo/ui/components/ui/button';
 import { Card, CardContent } from '@repo/ui/components/ui/card';
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-} from '@repo/ui/components/ui/carousel';
 import { Heart, MapPin } from 'lucide-react';
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';

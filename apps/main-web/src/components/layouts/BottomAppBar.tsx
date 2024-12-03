@@ -48,11 +48,11 @@ export default function BottomAppBar() {
           <li>
             <button
               onClick={() => {
-                router.push('/subscribe/test');
+                router.push('/chatting');
               }}
               className="flex flex-col items-center"
             >
-              <BottomDiaryIcon isActive={currentPath === '/diary'} />
+              <BottomDiaryIcon isActive={currentPath === '/chatting'} />
             </button>
           </li>
           <li>

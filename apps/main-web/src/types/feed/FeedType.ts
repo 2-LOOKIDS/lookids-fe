@@ -27,6 +27,17 @@ export interface ImageGpsInfo {
   latitude: number;
 }
 
+export interface FeedDetail {
+  uuid: string;
+  tag: string;
+  nickname: string;
+  image: string;
+  petCode?: string;
+  content: string;
+  tagList?: string[];
+  mediaUrlList: string[];
+  createdAt: string;
+}
 //피드 카드 내부의 섹션들
 export interface ContentSection {
   petName: string;

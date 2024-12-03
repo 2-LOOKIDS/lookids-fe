@@ -1,6 +1,6 @@
 'use client';
 import { EllipsisVertical } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { MenuItem } from '../../types/common/MenuType';
 
 interface CommonMenuProps {
@@ -9,9 +9,24 @@ interface CommonMenuProps {
 
 export default function CommonMenu({ menuItems }: CommonMenuProps) {
   const [isMenuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null); // 메뉴 영역 감지용 ref
+
+  // 메뉴 외부 클릭 감지 로직
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setMenuOpen(false); // 메뉴 닫기
+      }
+    };
+
+    document.addEventListener('click', handleClickOutside);
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, []);
 
   return (
-    <div className="relative">
+    <div ref={menuRef} className="relative">
       {/* 메뉴 버튼 */}
       <EllipsisVertical
         className="cursor-pointer"
