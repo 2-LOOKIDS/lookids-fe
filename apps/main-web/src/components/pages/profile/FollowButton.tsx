@@ -1,8 +1,12 @@
 'use client';
 
+import {
+  putFollowToggle,
+  putFollowToggle2,
+} from '../../../actions/follow/Follow';
+
 import { Button } from '@repo/ui/components/ui/button';
 import { cn } from '@repo/ui/lib/utils';
-import { putFollowToggle } from '../../../actions/follow/Follow';
 
 interface FollowButtonProps {
   token: string;
@@ -16,10 +20,10 @@ function FollowButton({
   targetUuid,
   followStatus,
 }: FollowButtonProps) {
-  console.log(token);
   const handleFollow = async () => {
-    const response = await putFollowToggle(token, uuid, targetUuid);
-    console.log('🚀 ~ handleFollow ~ response:', response);
+    const response = await putFollowToggle2(targetUuid);
+    // const response = await putFollowToggle(token, uuid, targetUuid);
+    // const response = await putFollowToggle(targetUuid);
   };
 
   const className = followStatus

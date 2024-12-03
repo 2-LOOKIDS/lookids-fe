@@ -1,4 +1,8 @@
 import {
+  getFollowStatus,
+  putFollowToggle,
+} from '../../../../actions/follow/Follow';
+import {
   getLikedThumbnails,
   getPostThumbnails,
 } from '../../../../actions/feed/FeedList';
@@ -12,7 +16,6 @@ import ProfileAvatar from '../../../../components/ui/ProfileAvatar';
 import ProfileDescription from '../../../../components/pages/profile/ProfileDescription';
 import ProfileHeader from '../../../../components/pages/profile/ProfileHeader';
 import ProfileStats from '../../../../components/pages/profile/ProfileStats';
-import { getFollowStatus } from '../../../../actions/follow/Follow';
 import { getServerSession } from 'next-auth';
 import { getUserProfileByNicknameTag } from '../../../../actions/user';
 import { options } from '../../../api/auth/[...nextauth]/options';
@@ -37,6 +40,13 @@ export default async function page({ params }: { params: { id: string } }) {
   const followStatus = await getFollowStatus(data?.user.uuid, userProfile.uuid);
   const postThumbnails = await getPostThumbnails(userProfile.uuid);
   const likedThumbnails = await getLikedThumbnails(userProfile.uuid);
+
+  const test = await putFollowToggle(
+    // data?.user.accessToken
+    // data?.user.uuid,
+    userProfile.uuid
+  );
+  console.log('test', test);
 
   return (
     <>

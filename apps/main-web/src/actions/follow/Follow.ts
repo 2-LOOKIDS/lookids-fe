@@ -1,7 +1,9 @@
 import { CommonResponse, PaginationResponse } from '../../types/responseType';
+import { Session, getServerSession } from 'next-auth';
 
 import { Following } from '../../types/follow/FollowType';
 import { fetchDataforMembers } from '../common/common';
+import { options } from '../../app/api/auth/[...nextauth]/options';
 import { responseList } from '../../utils/chatting/fetchMessages';
 import { revalidatePath } from 'next/cache';
 
@@ -32,7 +34,6 @@ export const getFollowStatus = async (
   targetUuid: string
 ): Promise<boolean> => {
   const API_URL = `${BASE_URL}/read/follow?targetUuid=${targetUuid}`;
-  console.log('🚀 ~ BACKEND_URL:', process.env.BACKEND_URL);
   const response = await fetch(API_URL, {
     method: 'GET',
     headers: {
@@ -46,25 +47,45 @@ export const getFollowStatus = async (
 };
 
 export const putFollowToggle = async (
-  token: string,
-  uuid: string,
+  // token: string,
+  // uuid: string,
   targetUuid: string
 ): Promise<boolean> => {
+  const session: Session | null = await getServerSession(options);
+  const token: string = session ? session.user.accessToken : '';
+
   const API_URL = `${BASE_URL}/write/follow`;
-  // const API_URL = `/api/write/follow`;
-  console.log('🚀 ~ API_URL:', API_URL);
+  const followerUuid = { followerUuid: targetUuid };
+  console.log('🚀 ~ token:', token);
+  console.log('🚀 ~ session:', session?.user.uuid);
+  console.log('🚀 ~ followerUuid:', followerUuid);
   const response = await fetch(API_URL, {
     method: 'PUT',
     headers: {
-      'accept': '*/*',
-      'uuid': uuid,
+      'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`,
-      'Content-type': 'application/json',
+      'uuid': session?.user.uuid,
     },
-    body: JSON.stringify({ followerUuid: targetUuid }),
-  });
 
+    body: JSON.stringify(followerUuid),
+  });
   const result = (await response.json()) as CommonResponse<boolean>;
-  revalidatePath('/user/*');
   return result.result;
 };
+
+export async function putFollowToggle2(targetUuid: string): Promise<boolean> {
+  const followerUuid = { followerUuid: targetUuid };
+  try {
+    const data = await fetchDataforMembers<CommonResponse<boolean>>(
+      `/follow-block-service/write/follow`,
+      'PUT',
+      followerUuid,
+      'no-cache'
+    );
+    console.log(data);
+    return data.result;
+  } catch (error) {
+    console.error('error', error);
+    throw new Error('error');
+  }
+}

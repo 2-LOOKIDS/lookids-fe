@@ -1,18 +1,21 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { FeedThumbnailList, Thumbnail } from '../../../types/feed/FeedType';
 import {
   getLikedThumbnails,
   getPostThumbnails,
 } from '../../../actions/feed/FeedList';
-import { FeedThumbnailList, Thumbnail } from '../../../types/feed/FeedType';
+import { useEffect, useState } from 'react';
+import useSWRInfinite, { SWRInfiniteKeyLoader } from 'swr/infinite';
 
-import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
-import { useInView } from 'react-intersection-observer';
 import FeedThumbnail from './FeedThumbnail';
+import Link from 'next/link';
 import UserLikesTab from './UserLikesTab';
 import UserPostsTab from './UserPostsTab';
+import { initial } from 'lodash';
+import { useInView } from 'react-intersection-observer';
+import useSWR from 'swr';
+import { useSearchParams } from 'next/navigation';
 
 interface Tab {
   id: number;
@@ -36,7 +39,8 @@ export default function FeedList({
   const [initialThumbnails, setInitialThumbnails] =
     useState<FeedThumbnailList | null>(null);
   const [list, setList] = useState<Thumbnail[]>([]);
-  const [pagesLoaded, setPagesLoaded] = useState<number>(0);
+  // const [isLast, setIsLast] = useState(false);
+  const [pageLoaded, setPageLoaded] = useState<number>(0);
   const { ref, inView } = useInView();
 
   const tabs: Tab[] = [
@@ -58,31 +62,62 @@ export default function FeedList({
     } else if (search === 'liked') {
       setInitialThumbnails(likedThumbnails);
     }
-    setList([]);
+    // setList([]);
   }, [search]);
 
-  const loadMorePosts = async () => {
-    const nextPage = pagesLoaded + 1;
-    if (nextPage <= initialThumbnails?.totalPages!) {
-      if (search === 'post') {
-        const response = await getPostThumbnails(uuid, nextPage);
-        const newList = response.content;
-        setList((prev) => [...prev, ...newList]);
-        setPagesLoaded(nextPage);
-      } else if (search === 'liked') {
-        const response = await getLikedThumbnails(uuid, nextPage);
-        const newList = response.content;
-        setList((prev) => [...prev, ...newList]);
-        setPagesLoaded(nextPage);
-      }
+  const fetcher = async () => {
+    if (search === 'post') {
+      const response = await getPostThumbnails(uuid, size);
+      return response;
+    } else if (search === 'liked') {
+      const response = await getLikedThumbnails(uuid, size);
+      return response;
     }
   };
 
+  const getKey: SWRInfiniteKeyLoader = (pageIndex, previousPageData) => {
+    if (previousPageData && previousPageData.last) return null;
+    return `/api/users?page=${pageIndex}&size=10`;
+  };
+
+  const { data, size, setSize, isValidating } = useSWRInfinite(getKey, fetcher);
+
+  const isLast = data?.[0]?.last;
   useEffect(() => {
-    if (inView) {
-      loadMorePosts();
-    }
-  }, [inView]);
+    if (!inView || !data || isValidating || isLast) return;
+    setSize((size) => size + 1);
+    console.log(data[0]?.pageable.pageNumber, data[0]?.content);
+  }, [inView, data, isValidating, isLast]);
+
+  // const { data: moreThumbnails } = useSWR(search, fetcher, {
+  //   revalidateOnFocus: false,
+  //   dedupingInterval: 60000,
+  // });
+
+  // const loadMorePosts = async () => {
+  //   const nextPage = pageLoaded + 1;
+  //   if (nextPage <= initialThumbnails?.totalPages!) {
+  //     if (search === 'post') {
+  //       const response = await getPostThumbnails(uuid, nextPage);
+  //       const newList = response.content;
+  //       // const newList = moreThumbnails;
+  //       setList((prev) => [...prev, ...(newList ?? [])]);
+  //       setPageLoaded(nextPage);
+  //     } else if (search === 'liked') {
+  //       const response = await getLikedThumbnails(uuid, nextPage);
+  //       const newList = response.content;
+  //       // const newList = moreThumbnails;
+  //       setList((prev) => [...prev, ...(newList ?? [])]);
+  //       setPageLoaded(nextPage);
+  //     }
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   if (inView) {
+  //     loadMorePosts();
+  //   }
+  // }, [inView]);
 
   return (
     <>
@@ -109,7 +144,7 @@ export default function FeedList({
             />
           ))}
 
-          {list?.map((item, idx) => {
+          {/* {list?.map((item, idx) => {
             return (
               <FeedThumbnail
                 feedCode={item.feedCode}
@@ -118,7 +153,19 @@ export default function FeedList({
                 imgAlt={item.feedCode}
               />
             );
-          })}
+          })} */}
+
+          {/* {data &&
+            data[0]?.content.map((item, idx) => {
+              return (
+                <FeedThumbnail
+                  feedCode={item.feedCode}
+                  key={idx}
+                  imgUrl={item.mediaUrl}
+                  imgAlt={item.feedCode}
+                />
+              );
+            })} */}
           <div ref={ref}></div>
         </div>
       </div>
