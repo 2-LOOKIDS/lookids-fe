@@ -3,14 +3,13 @@
 import { CommonResponse } from '../../types/responseType';
 import { FeedThumbnailList } from '../../types/feed/FeedType';
 
-const BASE_URL = `${process.env.BACKEND_URL}/feed-read-service/read/feed`;
+const BASE_URL = process.env.BACKEND_URL;
 
-export const getPostThumbnails = async (
-  uuid: string,
-  page: number = 0,
-  size: number = 10
+export const getFeedThumbnails = async (
+  url: string,
+  uuid: string
 ): Promise<FeedThumbnailList> => {
-  const API_URL = `${BASE_URL}/thumbnailList?page=${page}&size=${size}`;
+  const API_URL = `${BASE_URL}/${url}`;
   const response = await fetch(API_URL, {
     method: 'GET',
     headers: {
@@ -18,6 +17,7 @@ export const getPostThumbnails = async (
     },
   });
 
+  console.log('🚀 ~ API_URLfdsa:', API_URL);
   const result = (await response.json()) as CommonResponse<FeedThumbnailList>;
   return result.result;
 };

@@ -4,7 +4,7 @@ import {
 } from '../../../../actions/follow/Follow';
 import {
   getLikedThumbnails,
-  getPostThumbnails,
+  getFeedThumbnails,
 } from '../../../../actions/feed/FeedList';
 
 import FeedList from '../../../../components/pages/profile/FeedList';
@@ -38,19 +38,8 @@ export default async function page({ params }: { params: { id: string } }) {
   const imgUrl = process.env.NEXT_PUBLIC_MEDIA_BASE_URL + userProfile.image;
 
   const followStatus = await getFollowStatus(data?.user.uuid, userProfile.uuid);
-  const postThumbnails = await getPostThumbnails(userProfile.uuid);
+  // const postThumbnails = await getPostThumbnails(userProfile.uuid);
   const likedThumbnails = await getLikedThumbnails(userProfile.uuid);
-
-  // console.log('token', data?.user.accessToken);
-  // console.log('uuid', data?.user.uuid);
-  // console.log('targetUuid', userProfile.uuid);
-
-  // const test = await putFollowToggle(
-  //   data?.user.accessToken,
-  //   data?.user.uuid,
-  //   userProfile.uuid
-  // );
-  // console.log('test', test);
 
   return (
     <>
@@ -86,7 +75,7 @@ export default async function page({ params }: { params: { id: string } }) {
         <section className="flex flex-col items-center justify-center px-4 pt-9">
           <FeedList
             uuid={userProfile.uuid}
-            postThumbnails={postThumbnails}
+            // postThumbnails={postThumbnails}
             likedThumbnails={likedThumbnails}
           />
         </section>

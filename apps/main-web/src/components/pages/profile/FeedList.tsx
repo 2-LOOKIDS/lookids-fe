@@ -3,7 +3,7 @@
 import { FeedThumbnailList, Thumbnail } from '../../../types/feed/FeedType';
 import {
   getLikedThumbnails,
-  getPostThumbnails,
+  getFeedThumbnails,
 } from '../../../actions/feed/FeedList';
 import { useEffect, useState } from 'react';
 import useSWRInfinite, { SWRInfiniteKeyLoader } from 'swr/infinite';
@@ -25,13 +25,13 @@ interface Tab {
 
 interface FeedListProps {
   uuid: string;
-  postThumbnails: FeedThumbnailList;
+  // postThumbnails: FeedThumbnailList;
   likedThumbnails: FeedThumbnailList;
 }
 
 export default function FeedList({
   uuid,
-  postThumbnails,
+  // postThumbnails,
   likedThumbnails,
 }: FeedListProps) {
   const searchParams = useSearchParams();
@@ -58,36 +58,52 @@ export default function FeedList({
 
   useEffect(() => {
     if (search === 'post') {
-      setInitialThumbnails(postThumbnails);
+      // setInitialThumbnails(postThumbnails);
     } else if (search === 'liked') {
       setInitialThumbnails(likedThumbnails);
     }
     // setList([]);
   }, [search]);
 
-  const fetcher = async () => {
+  const fetcher = async (url: string) => {
+    console.log('fecther 등장!', url);
     if (search === 'post') {
-      const response = await getPostThumbnails(uuid, size);
-      return response;
-    } else if (search === 'liked') {
-      const response = await getLikedThumbnails(uuid, size);
+      const response = await getFeedThumbnails(url, uuid);
       return response;
     }
+    // else if (search === 'liked') {
+    //   const response = await getLikedThumbnails(uuid, url);
+    //   return response;
+    // }
   };
 
   const getKey: SWRInfiniteKeyLoader = (pageIndex, previousPageData) => {
     if (previousPageData && previousPageData.last) return null;
-    return `/api/users?page=${pageIndex}&size=10`;
+    return `/feed-read-service/read/feed/thumbnailList?page=${pageIndex}&size=10`;
   };
 
-  const { data, size, setSize, isValidating } = useSWRInfinite(getKey, fetcher);
+  const { data, size, setSize, isValidating, isLoading } = useSWRInfinite(
+    getKey,
+    fetcher,
+    // async (a) => {},
+    {
+      initialSize: 1,
+    }
+  );
+
+  const isEmpty = data?.[0]?.content.length === 0;
+  const isLoadingMore =
+    isLoading || (size > 0 && data && typeof data[size - 1] === 'undefined');
+  const isReachingEnd =
+    isEmpty || (data && (data[data.length - 1]?.content ?? []).length < 10);
 
   const isLast = data?.[0]?.last;
+
   useEffect(() => {
-    if (!inView || !data || isValidating || isLast) return;
+    if (!inView || isLoadingMore || isReachingEnd) return;
     setSize((size) => size + 1);
-    console.log(data[0]?.pageable.pageNumber, data[0]?.content);
-  }, [inView, data, isValidating, isLast]);
+    // console.log(data[0]?.pageable.pageNumber, data[0]?.content);
+  }, [inView, isLoadingMore, isReachingEnd]);
 
   // const { data: moreThumbnails } = useSWR(search, fetcher, {
   //   revalidateOnFocus: false,
@@ -143,7 +159,6 @@ export default function FeedList({
               imgUrl={thumbnail.mediaUrl}
             />
           ))}
-
           {/* {list?.map((item, idx) => {
             return (
               <FeedThumbnail
@@ -154,18 +169,19 @@ export default function FeedList({
               />
             );
           })} */}
-
-          {/* {data &&
-            data[0]?.content.map((item, idx) => {
-              return (
-                <FeedThumbnail
-                  feedCode={item.feedCode}
-                  key={idx}
-                  imgUrl={item.mediaUrl}
-                  imgAlt={item.feedCode}
-                />
-              );
-            })} */}
+          {data &&
+            data.map((item) => {
+              return item?.content.map((item, idx) => {
+                return (
+                  <FeedThumbnail
+                    feedCode={item.feedCode}
+                    key={idx}
+                    imgUrl={item.mediaUrl}
+                    imgAlt={item.feedCode}
+                  />
+                );
+              });
+            })}
           <div ref={ref}></div>
         </div>
       </div>
