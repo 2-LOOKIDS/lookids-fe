@@ -90,7 +90,7 @@ export async function getCommentCount(feedCode: string): Promise<commentCount> {
       '',
       'no-cache'
     );
-    console.log('댓글 수 조회 결과:', data.result);
+    console.log('댓글 수 조회 결과:', data);
     return data.result;
   } catch (error) {
     console.error('댓글 수 조회 중 오류 발생:', error);
