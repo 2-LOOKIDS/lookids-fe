@@ -1,3 +1,4 @@
+'use server';
 import { CommonResponse, PaginationResponse } from '../../types/responseType';
 import { Session, getServerSession } from 'next-auth';
 
@@ -42,29 +43,22 @@ export const getFollowStatus = async (
   });
 
   const result = (await response.json()) as CommonResponse<boolean>;
-  // console.log('🚀 ~ result:', result);
   return result.result;
 };
 
 export const putFollowToggle = async (
-  // token: string,
-  // uuid: string,
+  token: string,
+  uuid: string,
   targetUuid: string
 ): Promise<boolean> => {
-  const session: Session | null = await getServerSession(options);
-  const token: string = session ? session.user.accessToken : '';
-
   const API_URL = `${BASE_URL}/write/follow`;
   const followerUuid = { followerUuid: targetUuid };
-  console.log('🚀 ~ token:', token);
-  console.log('🚀 ~ session:', session?.user.uuid);
-  console.log('🚀 ~ followerUuid:', followerUuid);
   const response = await fetch(API_URL, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`,
-      'uuid': session?.user.uuid,
+      'uuid': uuid,
     },
 
     body: JSON.stringify(followerUuid),

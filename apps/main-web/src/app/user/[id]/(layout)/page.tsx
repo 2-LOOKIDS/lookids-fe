@@ -41,12 +41,16 @@ export default async function page({ params }: { params: { id: string } }) {
   const postThumbnails = await getPostThumbnails(userProfile.uuid);
   const likedThumbnails = await getLikedThumbnails(userProfile.uuid);
 
-  const test = await putFollowToggle(
-    // data?.user.accessToken
-    // data?.user.uuid,
-    userProfile.uuid
-  );
-  console.log('test', test);
+  // console.log('token', data?.user.accessToken);
+  // console.log('uuid', data?.user.uuid);
+  // console.log('targetUuid', userProfile.uuid);
+
+  // const test = await putFollowToggle(
+  //   data?.user.accessToken,
+  //   data?.user.uuid,
+  //   userProfile.uuid
+  // );
+  // console.log('test', test);
 
   return (
     <>

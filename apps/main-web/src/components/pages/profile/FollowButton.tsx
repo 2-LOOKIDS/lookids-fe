@@ -21,9 +21,8 @@ function FollowButton({
   followStatus,
 }: FollowButtonProps) {
   const handleFollow = async () => {
-    const response = await putFollowToggle2(targetUuid);
-    // const response = await putFollowToggle(token, uuid, targetUuid);
-    // const response = await putFollowToggle(targetUuid);
+    const response = await putFollowToggle(token, uuid, targetUuid);
+    console.log('🚀 ~ handleFollow ~ response:', response);
   };
 
   const className = followStatus
