@@ -35,6 +35,7 @@ export interface FeedDetail {
   tagList?: string[];
   mediaUrlList: string[];
   createdAt: string;
+  feedCode?: string;
 }
 //피드 카드 내부의 섹션들
 export interface ContentSection {
