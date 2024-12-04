@@ -1,67 +1,38 @@
 'use client';
+
 import {
   Avatar,
   AvatarFallback,
   AvatarImage,
 } from '@repo/ui/components/ui/avatar';
 import { Card, CardContent, CardFooter } from '@repo/ui/components/ui/card';
-
-import { Share2, ThumbsUp } from 'lucide-react';
+import { Heart, Share2, ThumbsUp } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { getFeedDetail } from '../../../actions/feed/FeedCard';
 import { FeedDetail } from '../../../types/feed/FeedType';
 import { formatDate } from '../../../utils/formatDate';
 import { getMediaUrl } from '../../../utils/media';
-import LikeButton from '../LikeButton';
 
-export default function SocialCard({
+export default function SocialCardwithData({
   isDetail,
-  feedCode,
+  feedData,
 }: {
   isDetail: boolean;
-  feedCode: string;
+  feedData: FeedDetail;
 }) {
   const [isLiked, setIsLiked] = useState(false);
-  const [feedDetail, setFeedDetail] = useState<FeedDetail>({
-    uuid: '',
-    tag: '',
-    nickname: '',
-    image: '',
-    content: '',
-    tagList: [],
-    mediaUrlList: [],
-    createdAt: '',
-  });
-
-  const toggleLike = () => {
-    setIsLiked(!isLiked);
-    // 추가 로직 (API 호출 등)도 이곳에 구현 가능
-  };
-
-  useEffect(() => {
-    const fetchFeedDetail = async (feedCode: string) => {
-      try {
-        const data = await getFeedDetail(feedCode);
-        setFeedDetail(data);
-      } catch (error) {
-        console.log('피드 데이터 에러', error);
-      }
-    };
-    fetchFeedDetail(feedCode);
-  }, [feedCode]);
 
   return (
     <Card className={`h-2/5 overflow-hidden p-4 ${isDetail ? 'border-0' : ''}`}>
       {/* Social Card Image */}
       {!isDetail && (
         <div className="relative">
-          <Link href={`/feed/${feedCode}`}>
+          <Link href={`/feed/${feedData.feedCode}`}>
             <Image
-              src={`${getMediaUrl(feedDetail.mediaUrlList?.[0] || '')}`}
+              src={getMediaUrl(feedData.mediaUrlList?.[0] || '')}
               width={500}
               height={300}
               alt="Feed image"
@@ -69,7 +40,17 @@ export default function SocialCard({
             />
           </Link>
 
-          <LikeButton isLiked={isLiked} onToggle={toggleLike} />
+          <div
+            className={`absolute right-3 top-3 rounded-full p-2 ${
+              isLiked ? 'bg-red-500' : 'opacity-50 bg-gray-800'
+            }`}
+            onClick={() => setIsLiked(!isLiked)}
+          >
+            <Heart
+              fill="white"
+              className={`h-4 w-4 ${isLiked ? 'text-white' : 'text-gray-300'}`}
+            />
+          </div>
         </div>
       )}
 
@@ -79,7 +60,7 @@ export default function SocialCard({
           pagination={{ clickable: true }}
           className="rounded-lg overflow-hidden"
         >
-          {feedDetail.mediaUrlList.map((url, index) => (
+          {feedData.mediaUrlList.map((url, index) => (
             <SwiperSlide key={index}>
               <Image
                 src={getMediaUrl(url)}
@@ -98,21 +79,21 @@ export default function SocialCard({
           <div className="mb-4 flex items-center space-x-4">
             <Avatar>
               <AvatarImage
-                src={getMediaUrl(feedDetail.image)}
-                alt={feedDetail.nickname}
+                src={getMediaUrl(feedData.image)}
+                alt={feedData.nickname}
                 className="object-cover"
               />
               <AvatarFallback>RF</AvatarFallback>
             </Avatar>
             <div className="flex-1">
               <h3 className="text-md font-extrabold text-black">
-                {feedDetail.nickname}
+                {feedData.nickname}
               </h3>
-              <p className="text-xs text-black">{`@${feedDetail.tag}`}</p>
+              <p className="text-xs text-black">{`@${feedData.tag}`}</p>
             </div>
           </div>
           <p className="text-xs text-gray-500">
-            {formatDate(feedDetail.createdAt)}
+            {formatDate(feedData.createdAt)}
           </p>
         </div>
         <p
@@ -120,7 +101,7 @@ export default function SocialCard({
             isDetail ? '' : 'line-clamp-2'
           }`}
         >
-          {feedDetail.content}
+          {feedData.content}
         </p>
       </CardContent>
 

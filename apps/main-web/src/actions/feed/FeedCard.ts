@@ -7,7 +7,7 @@ import {
   PinType,
 } from '../../types/feed/FeedType';
 
-import { CommonResponse } from '../../types/responseType';
+import { CommonResponse, responseList } from '../../types/responseType';
 import { extractCommonUrl } from '../../utils/media';
 import { fetchDataforMembers } from '../common/common';
 
@@ -64,8 +64,6 @@ export async function uploadFeedWithMedia({
         locationScore: 0,
       }));
 
-    console.log('생성된 핀 데이터:', pin);
-
     // 핀 업로드
     for (const pindata of pin) {
       try {
@@ -104,5 +102,44 @@ export async function getFeedDetail(feedCode: string): Promise<FeedDetail> {
   } catch (error) {
     console.error('피드 상세 조회 중 오류 발생:', error);
     throw new Error(`피드 상세 조회 실패: ${error}`);
+  }
+}
+
+export async function getMainFeedList(
+  page: number
+): Promise<responseList<FeedDetail>> {
+  try {
+    console.log('페이지:', page);
+    const data = await fetchDataforMembers<
+      CommonResponse<responseList<FeedDetail>>
+    >(
+      `feed-read-service/read/feed/feedList?page=${page}&size=10`,
+      'GET',
+      null,
+      'no-cache'
+    );
+    return data.result;
+  } catch (error) {
+    console.error('메인 피드 조회 중 오류 발생:', error);
+    throw new Error(`메인 피드 조회 실패: ${error}`);
+  }
+}
+
+export async function getRandomFeedList(
+  page: number
+): Promise<responseList<FeedDetail>> {
+  try {
+    const data = await fetchDataforMembers<
+      CommonResponse<responseList<FeedDetail>>
+    >(
+      `feed-read-service/read/feed/random?page=${page}&size=10`,
+      'GET',
+      null,
+      'force-cache'
+    );
+    return data.result;
+  } catch (error) {
+    console.error('랜덤 피드 조회 중 오류 발생:', error);
+    throw new Error(`랜덤 피드 조회 실패: ${error}`);
   }
 }

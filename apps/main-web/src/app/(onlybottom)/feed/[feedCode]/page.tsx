@@ -9,13 +9,16 @@ export default async function page({
 }: {
   params: { feedCode: string };
 }) {
-  const commentCount = await getCommentCount(params.feedCode);
+  let commentCount = await getCommentCount(params.feedCode);
+  if (!commentCount) {
+    commentCount = { commentCount: 0 };
+  }
   return (
     <>
       <div>
         <SocialCard isDetail={true} feedCode={params.feedCode}></SocialCard>
         <section className="px-4 pb-8">
-          <h3 className="py-4 text-xl text-lookids">{`댓글 (${commentCount.commentCount})`}</h3>
+          <h3 className="py-4 text-xl text-lookids">{`댓글 (${commentCount.commentCount ? commentCount.commentCount : '0'})`}</h3>
           <AddFeedCommentSection
             feedCode={params.feedCode}
           ></AddFeedCommentSection>
