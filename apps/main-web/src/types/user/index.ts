@@ -37,3 +37,15 @@ export interface UserInfo {
   comment: string;
   image: string;
 }
+
+//pet
+
+export interface PetInfo {
+  petCode: string;
+  name: string;
+  gender: string;
+  birthDate: string;
+  type: string;
+  weight: number;
+  image: string;
+}

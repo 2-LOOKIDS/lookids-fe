@@ -19,7 +19,6 @@ export default function EditProfileImage({
   uuid,
   token,
 }: EditProfileImageProps) {
-  imgUrl = process.env.NEXT_PUBLIC_MEDIA_BASE_URL + imgUrl;
   const { uploadToS3 } = useS3Upload();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -32,7 +31,7 @@ export default function EditProfileImage({
     let url = await uploadToS3(newImage);
     const cdnurl = `https://media.lookids.online/${url.key}`;
     await updateProfileImage(uuid, token, cdnurl);
-    console.log(token);
+    console.log('🚀 ~ handleImageUpload ~ cdnurl:', cdnurl);
   };
   const handleIconClick = () => {
     if (fileInputRef.current) {

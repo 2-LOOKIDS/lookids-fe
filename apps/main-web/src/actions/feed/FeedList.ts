@@ -17,7 +17,6 @@ export const getFeedThumbnails = async (
     },
   });
 
-  console.log('🚀 ~ API_URLfdsa:', API_URL);
   const result = (await response.json()) as CommonResponse<FeedThumbnailList>;
   return result.result;
 };

@@ -1,11 +1,7 @@
 import {
-  getFollowStatus,
-  putFollowToggle,
-} from '../../../../actions/follow/Follow';
-import {
-  getLikedThumbnails,
-  getFeedThumbnails,
-} from '../../../../actions/feed/FeedList';
+  getPetList,
+  getUserProfileByNicknameTag,
+} from '../../../../actions/user';
 
 import FeedList from '../../../../components/pages/profile/FeedList';
 import FollowButton from '../../../../components/pages/profile/FollowButton';
@@ -16,8 +12,9 @@ import ProfileAvatar from '../../../../components/ui/ProfileAvatar';
 import ProfileDescription from '../../../../components/pages/profile/ProfileDescription';
 import ProfileHeader from '../../../../components/pages/profile/ProfileHeader';
 import ProfileStats from '../../../../components/pages/profile/ProfileStats';
+import { getFollowStatus } from '../../../../actions/follow/Follow';
 import { getServerSession } from 'next-auth';
-import { getUserProfileByNicknameTag } from '../../../../actions/user';
+import { notFound } from 'next/navigation';
 import { options } from '../../../api/auth/[...nextauth]/options';
 
 export async function generateMetadata({
@@ -25,8 +22,9 @@ export async function generateMetadata({
 }: {
   params: { id: string };
 }): Promise<Metadata> {
+  const [nickname, tag] = params.id.split('-');
   return {
-    title: `${decodeURIComponent(`${params.id}`)}`,
+    title: `${decodeURIComponent(`${nickname}`)}-${tag}`,
     description: `${decodeURIComponent(`${params.id}`)}'s profile`,
   };
 }
@@ -35,11 +33,12 @@ export default async function page({ params }: { params: { id: string } }) {
   const data = await getServerSession(options);
   const [nickname, tag] = params.id.split('-');
   const userProfile = await getUserProfileByNicknameTag(nickname, tag);
-  const imgUrl = process.env.NEXT_PUBLIC_MEDIA_BASE_URL + userProfile.image;
-
+  if (userProfile === null) {
+    notFound();
+  }
+  const imgUrl = userProfile.image;
   const followStatus = await getFollowStatus(data?.user.uuid, userProfile.uuid);
-  // const postThumbnails = await getPostThumbnails(userProfile.uuid);
-  const likedThumbnails = await getLikedThumbnails(userProfile.uuid);
+  const petList = await getPetList(userProfile.uuid);
 
   return (
     <>
@@ -69,15 +68,11 @@ export default async function page({ params }: { params: { id: string } }) {
         </section>
 
         <section className="pt-10">
-          <PetList />
+          <PetList petList={petList} />
         </section>
 
         <section className="flex flex-col items-center justify-center px-4 pt-9">
-          <FeedList
-            uuid={userProfile.uuid}
-            // postThumbnails={postThumbnails}
-            likedThumbnails={likedThumbnails}
-          />
+          <FeedList uuid={userProfile.uuid} />
         </section>
       </main>
     </>

@@ -1,7 +1,8 @@
 'use server';
 
+import { PetInfo, UserInfo } from '../../types/user';
+
 import { CommonResponse } from '../../types/responseType';
-import { UserInfo } from '../../types/user';
 import { fetchDataforMembers } from '../common/common';
 import { revalidatePath } from 'next/cache';
 
@@ -54,4 +55,15 @@ export const getUserProfileByNicknameTag = async (
     console.error('유저 프로필 조회 실패:', error);
     throw new Error(`유저 프로필 조회 실패: ${error}`);
   }
+};
+
+// pet
+
+export const getPetList = async (uuid: string): Promise<PetInfo[]> => {
+  const API_URL = `${BASE_URL}/read/petprofile/all?userUuid=${uuid}`;
+  const response = await fetch(API_URL, {
+    method: 'GET',
+  });
+  const result = (await response.json()) as CommonResponse<PetInfo[]>;
+  return result.result;
 };
