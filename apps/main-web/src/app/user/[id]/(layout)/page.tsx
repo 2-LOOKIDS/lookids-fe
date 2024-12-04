@@ -22,9 +22,8 @@ export async function generateMetadata({
 }: {
   params: { id: string };
 }): Promise<Metadata> {
-  const [nickname, tag] = params.id.split('-');
   return {
-    title: `${decodeURIComponent(`${nickname}`)}-${tag}`,
+    title: `${decodeURIComponent(`${params.id}`)}`,
     description: `${decodeURIComponent(`${params.id}`)}'s profile`,
   };
 }
