@@ -3,7 +3,20 @@ module.exports = {
   reactStrictMode: true,
   transpilePackages: ['@repo/ui'],
   images: {
-    domains: ['picsum.photos', 'media.lookids.online'], // 추가
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'picsum.photos',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'media.lookids.online',
+        port: '',
+        pathname: '/**',
+      },
+    ],
   },
 };
 

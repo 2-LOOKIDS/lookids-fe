@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import React from 'react';
 
 interface FeedThumbnailProps {
@@ -13,7 +14,10 @@ function FeedThumbnail({ imgUrl, imgAlt, feedCode }: FeedThumbnailProps) {
     imgUrl = BASE_URL + imgUrl;
   }
   return (
-    <div className="relative aspect-square">
+    <Link
+      href={`/feed/${feedCode}`}
+      className="relative aspect-square hover:cursor-pointer"
+    >
       {imgUrl ? (
         <Image
           src={imgUrl}
@@ -28,7 +32,7 @@ function FeedThumbnail({ imgUrl, imgAlt, feedCode }: FeedThumbnailProps) {
           <p className="text-[#838383]">{imgAlt}</p>
         </div>
       )}
-    </div>
+    </Link>
   );
 }
 
