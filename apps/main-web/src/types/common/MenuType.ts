@@ -1,6 +1,7 @@
 export interface MenuItem {
   label: string;
   onClick: () => void;
+  className?: string;
 }
 
 export interface CommonHeaderProps {
