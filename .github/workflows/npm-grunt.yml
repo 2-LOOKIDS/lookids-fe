@@ -1,4 +1,4 @@
-name: git push into another repo to deploy to vercel
+name: Sync with Fork via SSH
 
 on:
   push:
@@ -8,6 +8,9 @@ on:
     branches: ["main", "dev"]
   workflow_dispatch:  # 수동 트리거 추가
 
+permissions:
+  contents: write  # 푸시 권한 추가
+
 jobs:
   sync:
     runs-on: ubuntu-latest
@@ -16,18 +19,23 @@ jobs:
       - name: Checkout the repository
         uses: actions/checkout@v3
 
+      - name: Set up SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+
       - name: Configure git user
         run: |
           git config --global user.name "${{ secrets.USER_NAME }}"
           git config --global user.email "${{ secrets.EMAIL }}"
 
-      - name: Add remote fork
+      - name: Add remote fork (SSH)
         run: |
-          git remote add fork https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/PSangEon/lookids-fe.git
+          git remote add fork git@github.com:${{ secrets.USER_NAME }}/${{ secrets.REPO_NAME }}.git
           git fetch fork
 
       - name: Push changes to fork
         run: |
           git push fork main --force-with-lease  # --force-with-lease로 강제 푸시
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
