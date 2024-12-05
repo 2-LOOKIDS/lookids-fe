@@ -23,7 +23,7 @@ jobs:
 
       - name: Add remote fork
         run: |
-          git remote add fork https://github.com/${{ secrets.USER_NAME }}/${{ secrets.REPO_NAME }}.git
+          git remote add fork https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ secrets.USER_NAME }}/${{ secrets.REPO_NAME }}.git
           git fetch fork
 
       - name: Push changes to fork
