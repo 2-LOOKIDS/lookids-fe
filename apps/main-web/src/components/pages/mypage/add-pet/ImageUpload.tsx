@@ -1,28 +1,17 @@
 'use client';
 
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 
 import { ImageUp } from 'lucide-react';
-import ProfileAvatar from '../../ui/ProfileAvatar';
-import { extractCommonUrl } from '../../../utils/media';
-import { updateProfileImage } from '../../../actions/user';
+import ProfileAvatar from '../../../ui/ProfileAvatar';
 import { useS3Upload } from 'next-s3-upload';
 
-interface EditProfileImageProps {
-  imgUrl: string;
-  imgAlt: string;
-  uuid: string;
-  token: string;
-}
-export default function EditProfileImage({
-  imgUrl,
-  imgAlt,
-  uuid,
-  token,
-}: EditProfileImageProps) {
+export default function ImageUpload() {
+  const BASIC_IMAGE = process.env.NEXT_PUBLIC_BASIC_PET_PROFILE_IMAGE;
+  const [preview, setPreview] = useState(BASIC_IMAGE);
+  const [imgAlt, setImgAlt] = useState('default_image');
   const { uploadToS3 } = useS3Upload();
   const fileInputRef = useRef<HTMLInputElement>(null);
-
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const newImage = e.target.files?.[0];
     if (!newImage) {
@@ -31,8 +20,8 @@ export default function EditProfileImage({
 
     let url = await uploadToS3(newImage);
     const cdnurl = `https://media.lookids.online/${url.key}`;
-    const mediaUrl = extractCommonUrl(cdnurl);
-    await updateProfileImage(uuid, token, mediaUrl);
+    // await updateProfileImage(uuid, token, cdnurl);
+    setPreview(cdnurl);
     console.log('🚀 ~ handleImageUpload ~ cdnurl:', cdnurl);
   };
   const handleIconClick = () => {
@@ -40,12 +29,11 @@ export default function EditProfileImage({
       fileInputRef.current.click();
     }
   };
-
   return (
     <div className="relative">
       <ProfileAvatar
         className="h-[162px] w-[162px]"
-        imgUrl={imgUrl}
+        imgUrl={preview!}
         imgAlt={imgAlt}
       />
       <div
