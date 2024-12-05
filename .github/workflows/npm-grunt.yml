@@ -1,4 +1,4 @@
-name: Clone and Push to Another Repo
+name: git push into another repo to deploy to vercel
 
 on:
   push:
@@ -9,12 +9,10 @@ on:
   workflow_dispatch:  # 수동 트리거 추가
 
 jobs:
-  clone_and_push:
+  push:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Check out the source repository
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
       
       - name: Pushes to another repository
         id: push_directory
@@ -22,12 +20,9 @@ jobs:
         env:
           API_TOKEN_GITHUB: ${{ secrets.AUTO_ACTIONS }}
         with:
-          source-directory: '.' # 현재 저장소의 모든 내용을 복제
+          source-directory: '.'  # 전체 레포지토리를 전송
           destination-github-username: ${{ secrets.USER_NAME }}
           destination-repository-name: ${{ secrets.REPO_NAME }}
           user-email: ${{ secrets.EMAIL }}
-          commit-message: 'Clone and deploy'
+          commit-message: "Sync from source repo: ${{ github.event.commits[0].message }}"
           target-branch: main
-
-      - name: Confirm destination cloned directory
-        run: echo $DESTINATION_CLONED_DIRECTORY
