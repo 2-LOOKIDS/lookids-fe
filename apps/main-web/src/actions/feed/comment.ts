@@ -91,7 +91,8 @@ export async function getCommentCount(feedCode: string): Promise<commentCount> {
       `comment-read-service/read/comment/count?feedCode=${feedCode}`,
       'GET',
       '',
-      'no-cache'
+      'default',
+      'updatecomments'
     );
     console.log('댓글 수 조회 결과:', data);
     return data.result;
