@@ -7,8 +7,8 @@ import {
   isRoomExist,
   roomInfo,
 } from '../../types/chatting/ChattingType';
-import { CommonResponse, PaginationResponse } from '../../types/responseType';
 
+import { CommonResponse } from '../../types/responseType';
 import { fetchDataforMembers } from '../common/common';
 import { responseList } from '../../utils/chatting/fetchMessages';
 
@@ -18,7 +18,7 @@ export async function getChattingList(
 ): Promise<responseList<RoomMessage>> {
   try {
     const data = await fetchDataforMembers<
-      CommonResponse<PaginationResponse<RoomMessage>>
+      CommonResponse<responseList<RoomMessage>>
     >(
       `chatting-service/read/chat/rooms/${userId}?page=${page}`,
       'GET',
