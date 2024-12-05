@@ -58,3 +58,8 @@ export interface Thumbnail {
   mediaUrl: string;
 }
 export type FeedThumbnailList = PaginationResponse<Thumbnail>;
+export interface searchFeedResult {
+  feedCode: string;
+  tagList?: string[];
+  mediaUrlList: string[];
+}

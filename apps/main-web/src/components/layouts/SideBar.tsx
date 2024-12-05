@@ -1,4 +1,5 @@
 import { X } from 'lucide-react';
+import { signOut } from 'next-auth/react';
 import { useEffect } from 'react';
 
 interface SidebarProps {
@@ -21,7 +22,11 @@ export function Sidebar({ open, onClose }: SidebarProps) {
       document.body.style.overflow = '';
     }
   }, [open]);
-
+  const handleLogout = () => {
+    signOut({
+      redirect: true,
+    });
+  };
   return (
     <>
       <div
@@ -47,8 +52,11 @@ export function Sidebar({ open, onClose }: SidebarProps) {
           </div>
         </div>
         <div className="flex flex-col flex-wrap gap-8 px-4 z-50">
-          <p className="text-white text-xs font-bold bg-[#FFFFFF60] w-fit py-1 px-2 rounded-full">
-            가나
+          <p
+            className="text-white text-xs font-bold bg-[#FFFFFF60] w-fit py-1 px-2 rounded-full"
+            onClick={handleLogout}
+          >
+            로그아웃
           </p>
           <p className="text-white text-xs font-bold bg-[#FFFFFF60] w-fit py-1 px-2 rounded-full">
             다라
