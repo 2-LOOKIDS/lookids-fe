@@ -17,7 +17,7 @@ export const PetProfileImageSchema = z.object({
 });
 
 export const PetProfileSchema = z.object({
-  name: z.string().min(2, '애기 이름을 입력해 주세요'),
+  nickName: z.string().min(2, '애기 이름을 입력해 주세요'),
   gender: z.enum(['성별 선택', '수컷', '암컷']),
   birthdate: z
     .string()
