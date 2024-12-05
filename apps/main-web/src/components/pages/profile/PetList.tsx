@@ -11,6 +11,7 @@ import { calculateAge, formatDateString } from '../../../utils/formatDate';
 import { EditDialog } from '../mypage/EditDialog';
 import { PetInfo } from '../../../types/user';
 import ProfileAvatar from '../../ui/ProfileAvatar';
+import { getMediaUrl } from '../../../utils/media';
 
 interface PetListProps {
   petList: PetInfo[];
@@ -31,10 +32,11 @@ function PetList({ petList, isEdit }: PetListProps) {
         {petList.map((pet, idx) => {
           const age = calculateAge(pet.birthDate);
           const dateString = formatDateString(pet.birthDate);
+          const image = getMediaUrl(pet.image);
           return (
             <SwiperSlide key={idx}>
               <ProfileAvatar
-                imgUrl={pet.image}
+                imgUrl={image}
                 className="h-[77px] min-h-[77px] w-[77px] min-w-[77px]"
                 imgAlt={pet.name}
               />
@@ -49,24 +51,31 @@ function PetList({ petList, isEdit }: PetListProps) {
                   <p className="text-grey text-sm">{pet.weight}kg /</p>
                   <p className="text-grey text-sm">{dateString}</p>
                 </div>
+                <div>
+                  <p className="text-grey text-sm">{pet.comment}</p>
+                </div>
               </div>
               {isEdit && (
                 <div className="absolute right-1 top-0">
                   <EditDialog
                     type={'petProfile'}
                     fields={[
+                      { label: '프로필 이미지', field: 'image' },
                       { label: '이름', field: 'name' },
                       { label: '종류', field: 'type' },
                       { label: '성별', field: 'gender' },
                       { label: '몸무게', field: 'weight' },
-                      { label: '생일', field: 'birthdate' },
+                      { label: '생일', field: 'birthDate' },
+                      { label: '특징', field: 'comment' },
                     ]}
                     defaultValues={{
+                      image: undefined,
                       name: '',
-                      type: '동물 종류 선택',
-                      gender: '성별 선택',
-                      weight: '',
-                      birthdate: '',
+                      type: '',
+                      gender: undefined,
+                      weight: 0,
+                      birthDate: '',
+                      comment: '',
                     }}
                   />
                 </div>

@@ -1,60 +1,139 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
+import {
+  FormCustomField,
+  FormInputField,
+  FormTextAreaField,
+} from '../../forms/FormFields';
+import { PetProfileSchema, PetProfileType } from '../../../types/user';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@repo/ui/components/ui/select';
 
-import { ImageUp } from 'lucide-react';
-import ProfileAvatar from '../../ui/ProfileAvatar';
-import { useS3Upload } from 'next-s3-upload';
+import { Button } from '@repo/ui/components/ui/button';
+import { Form } from '@repo/ui/components/ui/form';
+import ImageUpload from '../../forms/ImageUpload';
+import { extractCommonUrl } from '../../../utils/media';
+import { formatStringDate } from '../../../utils/formatDate';
+import { registerPetProfile } from '../../../actions/user';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 export default function AddPetForm() {
+  const form = useForm<PetProfileType>({
+    resolver: zodResolver(PetProfileSchema),
+    defaultValues: {
+      image: '',
+      name: '',
+      gender: undefined,
+      birthDate: '',
+      type: '',
+      weight: '',
+      comment: '',
+    },
+  });
   const BASIC_IMAGE = process.env.NEXT_PUBLIC_BASIC_PET_PROFILE_IMAGE;
-  const [preview, setPreview] = useState(BASIC_IMAGE);
-  const [imgAlt] = useState('default_image');
-  const { uploadToS3 } = useS3Upload();
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newImage = e.target.files?.[0];
-    if (!newImage) {
-      return;
-    }
 
-    let url = await uploadToS3(newImage);
-    const cdnurl = `https://media.lookids.online/${url.key}`;
-    // await updateProfileImage(uuid, token, cdnurl);
-    setPreview(cdnurl);
-    console.log('🚀 ~ handleImageUpload ~ cdnurl:', cdnurl);
+  const onSubmit = async (values: PetProfileType) => {
+    const image = extractCommonUrl(values.image);
+    const birthDate = formatStringDate(values.birthDate);
+
+    const body = {
+      name: values.name,
+      image: image,
+      gender: values.gender,
+      birthDate: birthDate,
+      type: values.type,
+      weight: values.weight,
+      comment: values.comment,
+    };
+    await registerPetProfile(body);
   };
-  const handleIconClick = () => {
-    if (fileInputRef.current) {
-      fileInputRef.current.click();
-    }
-  };
+
   return (
-    <section className="flex flex-col items-center gap-5">
-      {/* 이미지 업로드 */}
-      <div className="relative">
-        <ProfileAvatar
-          className="h-[162px] w-[162px]"
-          imgUrl={preview!}
-          imgAlt={imgAlt}
-        />
-        <div
-          className="bg-lookids absolute bottom-1 right-1 z-[1] flex h-11 w-11 flex-row items-center justify-center gap-2.5 rounded-[16.5px] p-[5px]"
-          onClick={handleIconClick}
-        >
-          <input
-            type="file"
-            accept="image/*"
-            multiple
-            onChange={handleImageUpload}
-            ref={fileInputRef}
-            className="hidden"
+    <Form {...form}>
+      <form
+        className="flex flex-col items-center gap-5"
+        onSubmit={form.handleSubmit(onSubmit)}
+      >
+        <FormCustomField name="image">
+          <ImageUpload
+            onChange={(url) =>
+              form.setValue('image', url, {
+                shouldValidate: true,
+              })
+            }
+            initialImage={BASIC_IMAGE}
           />
-          <ImageUp color="white" size={22} />
+        </FormCustomField>
+
+        <div className="w-4/5">
+          <FormInputField
+            name="name"
+            label="이름"
+            placeholder="이름을 입력해주세요"
+          />
         </div>
-      </div>
-      {/* 펫 프로필  */}
-      <div className="border-lookids border-2 rounded-sm"></div>
-    </section>
+
+        <div className="w-4/5">
+          <FormCustomField name="gender" label="성별">
+            <Select
+              onValueChange={(value) =>
+                form.setValue('gender', value as '수컷' | '암컷', {
+                  shouldValidate: true,
+                })
+              }
+            >
+              <SelectTrigger className="!mt-0">
+                <SelectValue placeholder="성별을 선택해주세요" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="수컷">수컷</SelectItem>
+                <SelectItem value="암컷">암컷</SelectItem>
+              </SelectContent>
+            </Select>
+          </FormCustomField>
+        </div>
+
+        <div className="w-4/5">
+          <FormInputField
+            name="birthDate"
+            label="생년월일"
+            placeholder="YYYYMMDD"
+          />
+        </div>
+
+        <div className="w-4/5">
+          <FormInputField
+            name="type"
+            label="동물종류"
+            placeholder="예: 강아지, 고양이"
+          />
+        </div>
+
+        <div className="w-4/5">
+          <FormInputField
+            name="weight"
+            label="몸무게"
+            type="number"
+            placeholder="kg 단위로 입력해주세요"
+          />
+        </div>
+
+        <div className="w-4/5">
+          <FormTextAreaField
+            name="comment"
+            label="소개글"
+            placeholder="소개를 간략하게 해주세요"
+          />
+        </div>
+
+        <Button type="submit">등록</Button>
+      </form>
+    </Form>
   );
 }
