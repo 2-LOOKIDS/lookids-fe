@@ -35,4 +35,4 @@ jobs:
       # 변경 사항을 포크한 레포지토리에 푸시
       - name: Push changes to fork
         run: |
-          git push fork main
+          git push fork dev
