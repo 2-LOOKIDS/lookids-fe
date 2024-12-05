@@ -11,10 +11,10 @@ import { options } from '../api/auth/[...nextauth]/options';
 
 export default async function page() {
   const data = await getServerSession(options);
+  const token = data?.user.accessToken;
+  console.log('🚀 ~ page ~ token:', token);
   const uuid = data?.user.uuid;
   const userProfile = await getUserProfile(uuid);
-  console.log('🚀 ~ page ~ uuid:', uuid);
-  console.log('🚀 ~ page ~ res:', userProfile);
   return (
     <main className="">
       {/* 프로필 사진, 닉네임 변경 */}
@@ -22,6 +22,8 @@ export default async function page() {
         <EditProfileImage
           imgUrl={userProfile.image}
           imgAlt={userProfile.nickname}
+          uuid={uuid}
+          token={token}
         />
 
         <div className="flex flex-col items-center gap-2 pt-2">
@@ -29,6 +31,8 @@ export default async function page() {
             {userProfile.nickname}#{userProfile.tag}
           </p>
           <EditDialog
+            uuid={uuid}
+            token={token}
             type={'userProfile'}
             fields={[
               { label: '닉네임', field: 'nickname' },

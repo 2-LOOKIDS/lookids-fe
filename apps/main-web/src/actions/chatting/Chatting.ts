@@ -2,13 +2,15 @@
 
 import {
   ChattingRequest,
-  isRoomExist,
   MessageResponse,
-  roomInfo,
   RoomMessage,
+  isRoomExist,
+  roomInfo,
 } from '../../types/chatting/ChattingType';
-import { CommonResponse, responseList } from '../../types/responseType';
+
+import { CommonResponse } from '../../types/responseType';
 import { fetchDataforMembers } from '../common/common';
+import { responseList } from '../../utils/chatting/fetchMessages';
 
 export async function getChattingList(
   userId: string,

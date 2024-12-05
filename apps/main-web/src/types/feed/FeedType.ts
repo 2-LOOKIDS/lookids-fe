@@ -1,3 +1,5 @@
+import { PaginationResponse } from '../responseType';
+
 export interface FeedPostType {
   petCode?: string;
   content: string;
@@ -50,3 +52,9 @@ export interface ReactionSection {
   commentCount: number;
   isLiked: boolean;
 }
+
+export interface Thumbnail {
+  feedCode: string;
+  mediaUrl: string;
+}
+export type FeedThumbnailList = PaginationResponse<Thumbnail>;

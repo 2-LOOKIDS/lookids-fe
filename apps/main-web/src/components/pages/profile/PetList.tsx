@@ -6,23 +6,18 @@ import 'swiper/css/pagination';
 
 import { Grid, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { calculateAge, formatDateString } from '../../../utils/formatDate';
 
 import { EditDialog } from '../mypage/EditDialog';
+import { PetInfo } from '../../../types/user';
 import ProfileAvatar from '../../ui/ProfileAvatar';
 
-const petList = [
-  { id: 0, name: '신지훈1', imgUrl: '/pome.jpg' },
-  { id: 1, name: '신지훈2', imgUrl: '/jihunpistol.jpg' },
-  { id: 2, name: '신지훈3', imgUrl: '/pome.jpg' },
-  { id: 3, name: '신지훈4', imgUrl: '/jihunpistol.jpg' },
-  { id: 4, name: '신지훈5', imgUrl: '/pome.jpg' },
-];
-
 interface PetListProps {
+  petList: PetInfo[];
   isEdit?: boolean;
 }
 
-function PetList({ isEdit }: PetListProps) {
+function PetList({ petList, isEdit }: PetListProps) {
   return (
     <>
       <Swiper
@@ -33,23 +28,27 @@ function PetList({ isEdit }: PetListProps) {
         spaceBetween={20}
         className="petList"
       >
-        {petList.map((item) => {
+        {petList.map((pet, idx) => {
+          const age = calculateAge(pet.birthDate);
+          const dateString = formatDateString(pet.birthDate);
           return (
-            <SwiperSlide key={item.id}>
+            <SwiperSlide key={idx}>
               <ProfileAvatar
-                imgUrl={item.imgUrl}
+                imgUrl={pet.image}
                 className="h-[77px] min-h-[77px] w-[77px] min-w-[77px]"
-                imgAlt={item.name}
+                imgAlt={pet.name}
               />
 
               <div className="relative flex max-w-[297px] flex-col gap-1">
-                <p className="font-semibold">{item.name}</p>
-                <p className="text-grey text-sm">허스키 2살 남자아이</p>
-                <p className="text-grey text-xs">
-                  웃겨보려고 한건 아니지만 웃긴다... 피식... 2년동안 얼굴 하나로
-                  먹고 살고 있다.
+                <p className="font-semibold">
+                  {pet.name} {age}
                 </p>
-                <p className="text-grey text-xs">허수키 견생 2회차..</p>
+                <div className="flex gap-1">
+                  <p className="text-grey text-sm">{pet.type} /</p>
+                  <p className="text-grey text-sm">남자 /</p>
+                  <p className="text-grey text-sm">{pet.weight}kg /</p>
+                  <p className="text-grey text-sm">{dateString}</p>
+                </div>
               </div>
               {isEdit && (
                 <div className="absolute right-1 top-0">

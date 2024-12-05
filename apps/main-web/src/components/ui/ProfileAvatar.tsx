@@ -14,7 +14,6 @@ export default function ProfileAvatar({
   ...props
 }: ProfileAvatarProps) {
   return (
-    // <div className={`relative w-${w} h-${h}`}>
     <div className={cn('relative', className, { ...props })}>
       {imgUrl ? (
         <Image

@@ -1,9 +1,14 @@
 'use client';
 
+import useSWRInfinite, { SWRInfiniteKeyLoader } from 'swr/infinite';
+
 import FeedThumbnail from './FeedThumbnail';
 import Link from 'next/link';
 import UserLikesTab from './UserLikesTab';
 import UserPostsTab from './UserPostsTab';
+import { getFeedThumbnails } from '../../../actions/feed/FeedList';
+import { useEffect } from 'react';
+import { useInView } from 'react-intersection-observer';
 import { useSearchParams } from 'next/navigation';
 
 interface Tab {
@@ -12,34 +17,59 @@ interface Tab {
   component: ({ isActive }: { isActive: boolean }) => JSX.Element;
 }
 
-export default function FeedList() {
+interface FeedListProps {
+  uuid: string;
+}
+
+export default function FeedList({ uuid }: FeedListProps) {
   const searchParams = useSearchParams();
-  const search = searchParams.get('tab') ?? 'posts';
+  const search = searchParams.get('tab') ?? 'post';
+  const { ref, inView } = useInView();
   const tabs: Tab[] = [
     {
       id: 0,
-      label: 'posts',
+      label: 'post',
       component: ({ isActive }) => <UserPostsTab isActive={isActive} />,
     },
     {
       id: 1,
-      label: 'likes',
+      label: 'liked',
       component: ({ isActive }) => <UserLikesTab isActive={isActive} />,
     },
   ];
 
-  const images = [
-    { id: 0, imgAlt: 'jihun', imgSrc: '/jihunpistol.jpg' },
-    { id: 1, imgAlt: 'poem', imgSrc: '/pome.jpg' },
-    { id: 2, imgAlt: 'jihun', imgSrc: '/jihunpistol.jpg' },
-    { id: 3, imgAlt: 'poem', imgSrc: '/pome.jpg' },
-    { id: 4, imgAlt: 'jihun', imgSrc: '/jihunpistol.jpg' },
-    { id: 5, imgAlt: 'poem', imgSrc: '/pome.jpg' },
-    { id: 6, imgAlt: 'jihun', imgSrc: '/jihunpistol.jpg' },
-    { id: 7, imgAlt: 'poem', imgSrc: '/pome.jpg' },
-    { id: 8, imgAlt: 'jihun', imgSrc: '/jihunpistol.jpg' },
-    { id: 9, imgAlt: 'poem', imgSrc: '/pome.jpg' },
-  ];
+  const fetcher = async (url: string) => {
+    if (search === 'post') {
+      const response = await getFeedThumbnails(url, uuid);
+      return response;
+    } else if (search === 'liked') {
+      const response = await getFeedThumbnails(url, uuid);
+      return response;
+    }
+  };
+
+  const getKey: SWRInfiniteKeyLoader = (pageIndex, previousPageData) => {
+    if (search === 'post') {
+      return `/feed-read-service/read/feed/thumbnailList?page=${pageIndex}&size=10`;
+    } else if (search === 'liked') {
+      return `/feed-read-service/read/feed/favoriteList?page=${pageIndex}&size=10`;
+    }
+  };
+
+  const { data, size, setSize, isLoading } = useSWRInfinite(getKey, fetcher, {
+    initialSize: 1,
+  });
+
+  const isEmpty = data?.[0]?.content.length === 0;
+  const isLoadingMore =
+    isLoading || (size > 0 && data && typeof data[size - 1] === 'undefined');
+  const isReachingEnd =
+    isEmpty || (data && (data[data.length - 1]?.content ?? []).length < 10);
+
+  useEffect(() => {
+    if (!inView || isLoadingMore || isReachingEnd) return;
+    setSize((size) => size + 1);
+  }, [inView, isLoadingMore, isReachingEnd]);
 
   return (
     <>
@@ -53,15 +83,23 @@ export default function FeedList() {
           </li>
         ))}
       </ul>
+
       <div className="flex w-full justify-center pt-4">
         <div className="grid w-full grid-cols-3 gap-1">
-          {images.map((item) => (
-            <FeedThumbnail
-              key={item.id}
-              imgAlt={item.imgAlt}
-              imgUrl={item.imgSrc}
-            />
-          ))}
+          {data &&
+            data.map((item) => {
+              return item?.content.map((item, idx) => {
+                return (
+                  <FeedThumbnail
+                    feedCode={item.feedCode}
+                    key={idx}
+                    imgUrl={item.mediaUrl}
+                    imgAlt={item.feedCode}
+                  />
+                );
+              });
+            })}
+          <div ref={ref}></div>
         </div>
       </div>
     </>
