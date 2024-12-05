@@ -20,8 +20,8 @@ jobs:
       # GitHub 액세스를 위한 설정
       - name: Set up Git
         run: |
-          git config user.name "GitHub Actions"
-          git config user.email "actions@github.com"
+          git config user.name "PSangEon"
+          git config user.email "qkr99102@naver.com"
 
       # Personal Access Token을 사용하여 인증 설정
       - name: Set up authentication
