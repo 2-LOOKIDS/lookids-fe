@@ -7,6 +7,7 @@ import EditPets from '../../components/pages/mypage/EditPets';
 import EditProfileImage from '../../components/pages/mypage/EditProfileImage';
 import Hr from '../../components/common/Hr';
 import SignOut from '../../components/pages/mypage/SignOut';
+import { getMediaUrl } from '../../utils/media';
 import { getServerSession } from 'next-auth';
 import { options } from '../api/auth/[...nextauth]/options';
 
@@ -15,6 +16,7 @@ export default async function page() {
   const token = data?.user.accessToken;
   const uuid = data?.user.uuid;
   const userProfile = await getUserProfile(uuid);
+  const profileImage = getMediaUrl(userProfile.image);
   const petList = await getPetList(uuid);
   const comment = userProfile.comment ?? '소개글을 작성해주세요!';
   return (
@@ -22,7 +24,7 @@ export default async function page() {
       {/* 프로필 사진, 닉네임 변경 */}
       <section className="flex flex-col items-center justify-center px-4 py-5">
         <EditProfileImage
-          imgUrl={userProfile.image}
+          imgUrl={profileImage}
           imgAlt={userProfile.nickname}
           uuid={uuid}
           token={token}
