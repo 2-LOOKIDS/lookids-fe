@@ -20,7 +20,7 @@ export const options: NextAuthOptions = {
         }
         // 로그인 요청을 보낼 URL
         const res = await fetch(
-          `${process.env.BACKEND_URL}/auth-service/auth/sign-in`,
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth-service/auth/sign-in`,
           {
             method: 'POST',
             body: JSON.stringify(credentials),
@@ -55,7 +55,7 @@ export const options: NextAuthOptions = {
         account?.provider === 'google'
       ) {
         const res = await fetch(
-          `${process.env.BACKEND_URL}/auth-service/auth/social-sign`,
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth-service/auth/social-sign`,
           {
             method: 'POST',
             body: JSON.stringify({
