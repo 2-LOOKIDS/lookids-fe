@@ -35,7 +35,7 @@ jobs:
 
       - name: Add remote for personal private repository
         run: |
-          git remote add personal git@github.com:${{ secrets.USER_NAME }}/${{ secrets.PERSONAL_REPO_NAME }}.git
+          git remote add personal git@github.com:PSangEon/lookids-fe.git
           git fetch personal
 
       - name: Push changes to personal private repository
