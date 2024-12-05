@@ -27,10 +27,11 @@ jobs:
       - name: Add fork remote
         run: git remote add fork https://github.com/PSangEon/lookids-fe.git
 
-      # 포크한 레포지토리에서 변경 사항을 푸시할 수 있도록 인증 처리 (Personal Access Token 사용)
+      # Personal Access Token을 사용하여 인증 설정
       - name: Set up authentication
         run: |
-          echo "${{ secrets.FORK_ACCESS_TOKEN }}" | git credential-store --file=.git-credentials store
+          git config --global credential.helper store
+          echo "https://x-access-token:${{ secrets.AUTO_ACTIONS }}@github.com" > ~/.git-credentials
 
       # 변경 사항을 포크한 레포지토리에 푸시
       - name: Push changes to fork
