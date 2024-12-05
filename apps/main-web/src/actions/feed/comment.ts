@@ -1,4 +1,3 @@
-import { revalidateTag } from 'next/cache';
 import { CommentReplyType, CommentType } from '../../types/feed/CommentType';
 import { CommonResponse, responseList } from '../../types/responseType';
 import { fetchDataforCommon, fetchDataforMembers } from '../common/common';
@@ -20,7 +19,6 @@ export async function uploadComment(
       'no-cache'
     );
     console.log('댓글 업로드 응답:', data);
-    revalidateTag('updatecomments');
     return data;
   } catch (error) {
     console.error('댓글 업로드 중 오류 발생:', error);
@@ -41,7 +39,7 @@ export async function uploadReply(
       { feedCode, parentCommentCode, content },
       'no-cache'
     );
-    revalidateTag('updatecomments');
+    // revalidateTag('updatecomments');
   } catch (error) {
     console.error('대댓글 업로드 중 오류 발생:', error);
     throw new Error(`대댓글 업로드 실패: ${error}`);
@@ -70,7 +68,7 @@ export async function getComments(
       `comment-read-service/read/comment?feedCode=${feedCode}&page=${page}&size=20`,
       'GET',
       '',
-      'no-cache',
+      'default',
       'updatecomments'
     );
     console.log(data.result);
@@ -90,7 +88,8 @@ export async function getCommentReply(
       `comment-read-service/read/comment/reply?commentCode=${commentCode}`,
       'GET',
       '',
-      'no-cache'
+      'no-cache',
+      'updatecomments'
     );
     return data.result;
   } catch (error) {
@@ -106,17 +105,17 @@ interface commentCount {
 //  댓글 개수 조회
 export async function getCommentCount(feedCode: string): Promise<commentCount> {
   try {
-    const data = await fetchDataforCommon<CommonResponse<commentCount>>(
+    const data = await fetchDataforMembers<CommonResponse<commentCount>>(
       `comment-read-service/read/comment/count?feedCode=${feedCode}`,
       'GET',
       '',
-      'default',
-      'updatecomments'
+      'no-cache'
     );
-    console.log('댓글 수 조회 결과:', data);
+    console.log('댓글 수 조회 결과:', data.result);
     return data.result;
   } catch (error) {
     console.error('댓글 수 조회 중 오류 발생:', error);
+    return { commentCount: 0 };
     throw new Error(`댓글 수 조회 실패: ${error}`);
   }
 }

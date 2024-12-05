@@ -20,7 +20,6 @@ export default function CommentLike({
   useEffect(() => {
     const fetchCommentLike = async () => {
       const res = await getIsFavorite(commentCode);
-      console.log('현재 좋아요 상태', res);
       setIsLiked(res);
     };
     fetchCommentLike();
