@@ -72,22 +72,31 @@ export default function Page() {
     <main className="px-4">
       <div className="mb-20 mt-14 flex flex-col gap-4">
         <MainSwiper />
-        {feedList.reduce<React.ReactNode[]>((acc, feed, index) => {
-          acc.push(
-            <SocialCardwithData
-              isDetail={false}
-              feedData={feed}
-              key={`feed-${index}`}
-            />
-          );
-          // 매 3번째 항목 뒤에 RecommendedPet 삽입
-          if ((index + 1) % 3 === 0) {
-            acc.push(<RecommendedPet key={`recommended-${index}`} />);
-          }
-          return acc;
-        }, [])}
+        {feedList.length === 0 ? (
+          // 피드가 없을 때 표시할 메시지
+          <div className="text-center text-gray-500">
+            팔로우중인 유저가 없습니다!
+          </div>
+        ) : (
+          feedList.reduce<React.ReactNode[]>((acc, feed, index) => {
+            acc.push(
+              <SocialCardwithData
+                isDetail={false}
+                feedData={feed}
+                key={`feed-${index}`}
+              />
+            );
+            // 매 3번째 항목 뒤에 RecommendedPet 삽입
+            if ((index + 1) % 3 === 0) {
+              acc.push(<RecommendedPet key={`recommended-${index}`} />);
+            }
+            return acc;
+          }, [])
+        )}
         {isLoadingMore && <div>로딩 중...</div>}
-        {isReachingEnd && <div>더 이상 불러올 피드가 없습니다.</div>}
+        {isReachingEnd && feedList.length > 0 && (
+          <div>더 이상 불러올 피드가 없습니다.</div>
+        )}
       </div>
     </main>
   );
