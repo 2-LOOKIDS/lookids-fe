@@ -3,6 +3,7 @@ import { Button } from '@repo/ui/components/ui/button';
 import { Textarea } from '@repo/ui/components/ui/textarea';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
+import Swal from 'sweetalert2';
 import { uploadFeedWithMedia } from '../../actions/feed/FeedCard';
 import { useImage } from '../../context/ImageContext';
 import { FeedPostType } from '../../types/feed/FeedType';
@@ -36,6 +37,15 @@ export default function AddFeedForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     // #태그명을 찾아서 selectedTags에 중복 없이 추가
+
+    if (!images || images.length === 0) {
+      Swal.fire({
+        title: '이미지를 1개 이상 업로드 해주세요!',
+        confirmButtonText: '확인',
+      });
+      return;
+    }
+
     const extractedTags = content.match(/#\S+/g) || []; // #으로 시작하는 단어들 찾기
     const uniqueTags = [...new Set([...selectedTags, ...extractedTags])]; // 중복 제거하여 배열 합치기
     console.log(uniqueTags);
