@@ -55,14 +55,14 @@ function PetList({ petList, isEdit }: PetListProps) {
                   <EditDialog
                     type={'petProfile'}
                     fields={[
-                      { label: '이름', field: 'nickname' },
+                      { label: '이름', field: 'name' },
                       { label: '종류', field: 'type' },
                       { label: '성별', field: 'gender' },
                       { label: '몸무게', field: 'weight' },
                       { label: '생일', field: 'birthdate' },
                     ]}
                     defaultValues={{
-                      nickname: '',
+                      name: '',
                       type: '동물 종류 선택',
                       gender: '성별 선택',
                       weight: '',
