@@ -1,3 +1,4 @@
+import { revalidateTag } from 'next/cache';
 import { CommentReplyType, CommentType } from '../../types/feed/CommentType';
 import { CommonResponse, responseList } from '../../types/responseType';
 import { fetchDataforMembers } from '../common/common';
@@ -15,6 +16,7 @@ export async function uploadComment(
       'no-cache'
     );
     console.log('댓글 업로드 응답:', data);
+    revalidateTag('updatecomments');
     return data;
   } catch (error) {
     console.error('댓글 업로드 중 오류 발생:', error);
@@ -73,6 +75,7 @@ export async function uploadReply(
       { feedCode, parentCommentCode, content },
       'no-cache'
     );
+    revalidateTag('updatecomments');
   } catch (error) {
     console.error('대댓글 업로드 중 오류 발생:', error);
     throw new Error(`대댓글 업로드 실패: ${error}`);

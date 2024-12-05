@@ -31,7 +31,7 @@ export function Sidebar({ open, onClose }: SidebarProps) {
       />
 
       <aside
-        className={`fixed inset-y-0 left-0 z-50 w-full transform overflow-hidden p-4 transition-transform duration-300 ease-in-out ${
+        className={`fixed inset-y-0 left-0 z-50 w-3/5 transform overflow-hidden p-4 transition-transform duration-300 ease-in-out ${
           open ? 'translate-x-0' : '-translate-x-full'
         }`}
         style={{
@@ -46,7 +46,13 @@ export function Sidebar({ open, onClose }: SidebarProps) {
             <X color="white" size={'1.5rem'} />
           </div>
         </div>
-        <div className="flex flex-wrap gap-2 px-4 z-50">
+        <div className="flex flex-col flex-wrap gap-8 px-4 z-50">
+          <p className="text-white text-xs font-bold bg-[#FFFFFF60] w-fit py-1 px-2 rounded-full">
+            가나
+          </p>
+          <p className="text-white text-xs font-bold bg-[#FFFFFF60] w-fit py-1 px-2 rounded-full">
+            다라
+          </p>
           {/* {data.map((category) => (
             <p className="text-white text-xs font-bold bg-[#FFFFFF60] w-fit py-1 px-2 rounded-full">
               {category.name}
