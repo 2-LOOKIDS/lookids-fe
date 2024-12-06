@@ -32,7 +32,7 @@ export default async function page() {
 
         <div className="flex flex-col items-center gap-2 pt-2">
           <p className="font-semibold">
-            {userProfile.nickname}#{userProfile.tag}
+            {userProfile.nickname}@{userProfile.tag}
           </p>
           <EditDialog
             uuid={uuid}

@@ -13,15 +13,17 @@ export const UserCommentSchema = z.object({
 
 // 펫
 export const PetProfileSchema = z.object({
-  // image: z.instanceof(File, { message: '애기 사진은 필수입니다' }),
   image: z.string().min(1, '애기 사진은 필수입니다'),
   name: z.string().min(2, '애기 이름을 입력해 주세요'),
   gender: z.enum(['수컷', '암컷'], { message: '성별을 선택해주세요' }),
-  birthDate: z.string().regex(/^\d{8}$/, {
-    message: '생년월일을 입력해주세요',
-  }),
   type: z.string().min(2, { message: '반려 동물 종류를 입력해주세요' }),
   weight: z
+    .string()
+    .refine((val) => !isNaN(parseFloat(val)) && parseFloat(val) > 0, {
+      message: '몸무게는 양수여야 합니다.',
+    })
+    .transform((val) => parseFloat(val)),
+  age: z
     .string()
     .refine((val) => !isNaN(parseFloat(val)) && parseFloat(val) > 0, {
       message: '몸무게는 양수여야 합니다.',

@@ -4,14 +4,25 @@ import 'swiper/css';
 import 'swiper/css/grid';
 import 'swiper/css/pagination';
 
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@repo/ui/components/ui/alert-dialog';
 import { Grid, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { calculateAge, formatDateString } from '../../../utils/formatDate';
 
-import { PetInfo } from '../../../types/user';
-import { getMediaUrl } from '../../../utils/media';
-import ProfileAvatar from '../../ui/ProfileAvatar';
 import { EditDialog } from '../mypage/EditDialog';
+import { PetInfo } from '../../../types/user';
+import ProfileAvatar from '../../ui/ProfileAvatar';
+import { deletePet } from '../../../actions/user';
+import { getMediaUrl } from '../../../utils/media';
 
 interface PetListProps {
   petList: PetInfo[];
@@ -19,6 +30,9 @@ interface PetListProps {
 }
 
 function PetList({ petList, isEdit }: PetListProps) {
+  const onDeletePet = async (petUuid: string) => {
+    await deletePet(petUuid);
+  };
   return (
     <>
       <Swiper
@@ -30,8 +44,6 @@ function PetList({ petList, isEdit }: PetListProps) {
         className="petList"
       >
         {petList.map((pet, idx) => {
-          const age = calculateAge(pet.birthDate);
-          const dateString = formatDateString(pet.birthDate);
           const image = getMediaUrl(pet.image);
           return (
             <SwiperSlide key={idx}>
@@ -43,20 +55,19 @@ function PetList({ petList, isEdit }: PetListProps) {
 
               <div className="relative flex max-w-[297px] flex-col gap-1">
                 <p className="font-semibold">
-                  {pet.name} {age}
+                  {pet.name} {pet.age}
                 </p>
                 <div className="flex gap-1">
                   <p className="text-grey text-sm">{pet.type} /</p>
                   <p className="text-grey text-sm">남자 /</p>
-                  <p className="text-grey text-sm">{pet.weight}kg /</p>
-                  <p className="text-grey text-sm">{dateString}</p>
+                  <p className="text-grey text-sm">{pet.weight}kg</p>
                 </div>
                 <div>
                   <p className="text-grey text-sm">{pet.comment}</p>
                 </div>
               </div>
               {isEdit && (
-                <div className="absolute right-1 top-0">
+                <div className="absolute right-1 top-0 flex flex-col gap-2">
                   <EditDialog
                     type={'petProfile'}
                     fields={[
@@ -65,19 +76,45 @@ function PetList({ petList, isEdit }: PetListProps) {
                       { label: '종류', field: 'type' },
                       { label: '성별', field: 'gender' },
                       { label: '몸무게', field: 'weight' },
-                      { label: '생일', field: 'birthDate' },
+                      { label: '나이', field: 'age' },
                       { label: '특징', field: 'comment' },
                     ]}
                     defaultValues={{
-                      image: undefined,
+                      image: image,
                       name: '',
                       type: '',
                       gender: undefined,
-                      weight: 0,
-                      birthDate: '',
+                      weight: '',
+                      age: '',
                       comment: '',
                     }}
                   />
+
+                  <AlertDialog>
+                    <AlertDialogTrigger className="bg-lookids hover:bg-lookids/90 h-7 rounded-sm">
+                      <p className="text-white text-sm">삭제</p>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>
+                          <AlertDialogDescription>
+                            삭제 하시겠습니까?
+                          </AlertDialogDescription>
+                        </AlertDialogTitle>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogAction
+                          className="bg-lookids hover:bg-lookids/90 h-8"
+                          onClick={() => onDeletePet(pet.petCode)}
+                        >
+                          삭제
+                        </AlertDialogAction>
+                        <AlertDialogCancel className="h-8">
+                          취소
+                        </AlertDialogCancel>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
                 </div>
               )}
             </SwiperSlide>

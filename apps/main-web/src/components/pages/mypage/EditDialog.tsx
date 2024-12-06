@@ -85,12 +85,12 @@ function InternalDialog<
         onOpenAutoFocus={(e) => e.preventDefault()}
         className="w-[90%] rounded-sm"
       >
-        <div
+        {/* <div
           className="flex justify-end hover:cursor-pointer"
           onClick={() => setOpen(false)}
         >
           <X className="h-4 w-4" />
-        </div>
+        </div> */}
         <DialogTitle className="hidden" />
         <form
           onSubmit={handleSubmit(onSubmit)}
