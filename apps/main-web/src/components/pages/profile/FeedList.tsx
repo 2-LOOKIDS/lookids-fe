@@ -2,14 +2,15 @@
 
 import useSWRInfinite, { SWRInfiniteKeyLoader } from 'swr/infinite';
 
-import FeedThumbnail from './FeedThumbnail';
 import Link from 'next/link';
-import UserLikesTab from './UserLikesTab';
-import UserPostsTab from './UserPostsTab';
-import { getFeedThumbnails } from '../../../actions/feed/FeedList';
+import { useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
-import { useSearchParams } from 'next/navigation';
+import { getFeedThumbnails } from '../../../actions/feed/FeedList';
+import { getMediaUrl } from '../../../utils/media';
+import FeedThumbnail from './FeedThumbnail';
+import UserLikesTab from './UserLikesTab';
+import UserPostsTab from './UserPostsTab';
 
 interface Tab {
   id: number;
@@ -93,7 +94,7 @@ export default function FeedList({ uuid }: FeedListProps) {
                   <FeedThumbnail
                     feedCode={item.feedCode}
                     key={idx}
-                    imgUrl={item.mediaUrl}
+                    imgUrl={getMediaUrl(item.mediaUrl)}
                     imgAlt={item.feedCode}
                   />
                 );

@@ -3,18 +3,19 @@ import {
   getUserProfileByNicknameTag,
 } from '../../../../actions/user';
 
+import { Metadata } from 'next';
+import { getServerSession } from 'next-auth';
+import { notFound } from 'next/navigation';
+import { getFollowStatus } from '../../../../actions/follow/Follow';
 import FeedList from '../../../../components/pages/profile/FeedList';
 import FollowButton from '../../../../components/pages/profile/FollowButton';
 import MessageButton from '../../../../components/pages/profile/MessageButton';
-import { Metadata } from 'next';
 import PetList from '../../../../components/pages/profile/PetList';
-import ProfileAvatar from '../../../../components/ui/ProfileAvatar';
 import ProfileDescription from '../../../../components/pages/profile/ProfileDescription';
 import ProfileHeader from '../../../../components/pages/profile/ProfileHeader';
 import ProfileStats from '../../../../components/pages/profile/ProfileStats';
-import { getFollowStatus } from '../../../../actions/follow/Follow';
-import { getServerSession } from 'next-auth';
-import { notFound } from 'next/navigation';
+import ProfileAvatar from '../../../../components/ui/ProfileAvatar';
+import { getMediaUrl } from '../../../../utils/media';
 import { options } from '../../../api/auth/[...nextauth]/options';
 
 export async function generateMetadata({
@@ -35,7 +36,7 @@ export default async function page({ params }: { params: { id: string } }) {
   if (userProfile === null) {
     notFound();
   }
-  const imgUrl = userProfile.image;
+  const imgUrl = getMediaUrl(userProfile.image);
   const followStatus = await getFollowStatus(data?.user.uuid, userProfile.uuid);
   const petList = await getPetList(userProfile.uuid);
 

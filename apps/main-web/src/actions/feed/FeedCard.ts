@@ -150,7 +150,7 @@ export async function getRandomFeedList(
       `feed-read-service/read/feed/random?page=${page}&size=10`,
       'GET',
       null,
-      'force-cache'
+      'no-cache'
     );
     return data.result;
   } catch (error) {

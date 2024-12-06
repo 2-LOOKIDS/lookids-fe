@@ -12,7 +12,9 @@ import NaverSign from '../icons/signIn/NaverSign';
 export default function LoginForm() {
   const [loginError, setLoginError] = useState<string | null>(null); // 에러 메시지 상태
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit: (
+    e: React.FormEvent<HTMLFormElement>
+  ) => Promise<void> = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
 
