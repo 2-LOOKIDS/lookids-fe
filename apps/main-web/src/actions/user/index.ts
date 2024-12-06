@@ -1,6 +1,6 @@
 'use server';
 
-import { PetInfo, UserInfo } from '../../types/user';
+import { PetInfo, PetProfileType, UserInfo } from '../../types/user';
 
 import { CommonResponse } from '../../types/responseType';
 import { fetchDataforMembers } from '../common/common';
@@ -66,4 +66,23 @@ export const getPetList = async (uuid: string): Promise<PetInfo[]> => {
   });
   const result = (await response.json()) as CommonResponse<PetInfo[]>;
   return result.result;
+};
+
+export const registerPetProfile = async (
+  body: PetProfileType
+): Promise<CommonResponse<null>> => {
+  try {
+    const data = await fetchDataforMembers<CommonResponse<null>>(
+      `user-service/write/petprofile`,
+      'POST',
+      body,
+      'no-cache'
+    );
+    console.log(data);
+    revalidatePath('/mypage');
+    return data;
+  } catch (error) {
+    console.error('유저 프로필 조회 실패:', error);
+    throw new Error(`유저 프로필 조회 실패: ${error}`);
+  }
 };
