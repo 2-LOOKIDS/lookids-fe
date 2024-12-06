@@ -8,9 +8,10 @@ import { Grid, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { calculateAge, formatDateString } from '../../../utils/formatDate';
 
-import { EditDialog } from '../mypage/EditDialog';
 import { PetInfo } from '../../../types/user';
+import { getMediaUrl } from '../../../utils/media';
 import ProfileAvatar from '../../ui/ProfileAvatar';
+import { EditDialog } from '../mypage/EditDialog';
 
 interface PetListProps {
   petList: PetInfo[];
@@ -34,7 +35,7 @@ function PetList({ petList, isEdit }: PetListProps) {
           return (
             <SwiperSlide key={idx}>
               <ProfileAvatar
-                imgUrl={pet.image}
+                imgUrl={getMediaUrl(pet.image)}
                 className="h-[77px] min-h-[77px] w-[77px] min-w-[77px]"
                 imgAlt={pet.name}
               />
