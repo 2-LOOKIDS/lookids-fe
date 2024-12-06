@@ -78,7 +78,6 @@ export const registerPetProfile = async (
       body,
       'no-cache'
     );
-    console.log(data);
     revalidatePath('/mypage');
     return data;
   } catch (error) {

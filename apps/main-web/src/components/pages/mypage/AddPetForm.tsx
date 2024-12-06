@@ -43,7 +43,7 @@ export default function AddPetForm({ setOpen }: AddPetFormProps) {
 
   const onSubmit = async (values: PetProfileType) => {
     const image = extractCommonUrl(values.image);
-    const birthDate = formatStringDate(values.birthDate);
+    const birthDate = formatStringDate(values.birthDate ?? '??');
 
     const body = {
       name: values.name,
@@ -54,6 +54,7 @@ export default function AddPetForm({ setOpen }: AddPetFormProps) {
       weight: values.weight,
       comment: values.comment,
     };
+    console.log(body);
     const response = await registerPetProfile(body);
     if (response.isSuccess) {
       setOpen(false);

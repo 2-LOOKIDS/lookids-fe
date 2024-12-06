@@ -8,9 +8,11 @@ import { Grid, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { calculateAge, formatDateString } from '../../../utils/formatDate';
 
+import { Button } from '@repo/ui/components/ui/button';
 import { EditDialog } from '../mypage/EditDialog';
 import { PetInfo } from '../../../types/user';
 import ProfileAvatar from '../../ui/ProfileAvatar';
+import { deletePet } from '../../../actions/user';
 import { getMediaUrl } from '../../../utils/media';
 
 interface PetListProps {
@@ -56,7 +58,7 @@ function PetList({ petList, isEdit }: PetListProps) {
                 </div>
               </div>
               {isEdit && (
-                <div className="absolute right-1 top-0">
+                <div className="absolute right-1 top-0 flex flex-col gap-2">
                   <EditDialog
                     type={'petProfile'}
                     fields={[
