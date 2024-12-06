@@ -17,23 +17,39 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # GitHub 액세스를 위한 설정
-      - name: Set up Git
+      - name: Add remote-url
         run: |
-          git config user.name "PSangEon"
-          git config user.email "qkr99102@naver.com"
-
-      # Personal Access Token을 사용하여 인증 설정
-      - name: Set up authentication
+          git remote add forked-repo https://PSangEon:${{ secrets.AUTO_ACTIONS }}@github.com/PSangEon/lookids-fe.git
+          git config user.name PSangEon
+          git config user.email qkr99102@naver.com
+      
+      - name: Push changes to forked-repo 
         run: |
-          echo "https://x-access-token:${{ secrets.AUTO_ACTIONS }}@github.com" > ~/.git-credentials
-          git config --global credential.helper store
-
-      # 포크한 레포지토리 리모트 추가
-      - name: Add fork remote
-        run: git remote add fork https://github.com/PSangEon/lookids-fe.git
-
-      # 변경 사항을 포크한 레포지토리에 푸시
-      - name: Push changes to fork
+          git push -f forked-repo main
+      
+      - name: Clean up
         run: |
-          git push fork dev
+          git remote remove forked-repo
+          
+      # # GitHub 액세스를 위한 설정
+      # - name: Set up Git
+      #   run: |
+      #     git config user.name "PSangEon"
+      #     git config user.email "qkr99102@naver.com"
+
+      # # Personal Access Token을 사용하여 인증 설정
+      # - name: Set up authentication
+      #   run: |
+      #     echo "https://x-access-token:${{ secrets.AUTO_ACTIONS }}@github.com" > ~/.git-credentials
+      #     git config --global credential.helper store
+
+      # # 포크한 레포지토리 리모트 추가
+      # - name: Add fork remote
+      #   run: git remote add fork https://github.com/PSangEon/lookids-fe.git
+
+      # # 변경 사항을 포크한 레포지토리에 푸시
+      # - name: Push changes to fork
+      #   run: |
+      #     git push fork dev
+
+          
