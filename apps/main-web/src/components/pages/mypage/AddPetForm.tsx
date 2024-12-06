@@ -33,7 +33,7 @@ export default function AddPetForm({ setOpen }: AddPetFormProps) {
       image: '',
       name: '',
       gender: undefined,
-      birthDate: '',
+      age: '',
       type: '',
       weight: '',
       comment: '',
@@ -43,13 +43,12 @@ export default function AddPetForm({ setOpen }: AddPetFormProps) {
 
   const onSubmit = async (values: PetProfileType) => {
     const image = extractCommonUrl(values.image);
-    const birthDate = formatStringDate(values.birthDate ?? '??');
 
     const body = {
       name: values.name,
       image: image,
       gender: values.gender,
-      birthDate: birthDate,
+      age: values.age,
       type: values.type,
       weight: values.weight,
       comment: values.comment,
@@ -108,9 +107,9 @@ export default function AddPetForm({ setOpen }: AddPetFormProps) {
 
         <div className="w-4/5">
           <FormInputField
-            name="birthDate"
-            label="생년월일"
-            placeholder="YYYYMMDD"
+            name="age"
+            label="나이"
+            placeholder="나이를 입력해주세요"
           />
         </div>
 
@@ -139,7 +138,9 @@ export default function AddPetForm({ setOpen }: AddPetFormProps) {
           />
         </div>
 
-        <Button type="submit">등록</Button>
+        <Button className="bg-lookids hover:bg-lookids/90" type="submit">
+          등록
+        </Button>
       </form>
     </Form>
   );

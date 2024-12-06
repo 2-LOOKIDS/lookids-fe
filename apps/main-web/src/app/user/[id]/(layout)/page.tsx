@@ -13,6 +13,7 @@ import ProfileDescription from '../../../../components/pages/profile/ProfileDesc
 import ProfileHeader from '../../../../components/pages/profile/ProfileHeader';
 import ProfileStats from '../../../../components/pages/profile/ProfileStats';
 import { getFollowStatus } from '../../../../actions/follow/Follow';
+import { getMediaUrl } from '../../../../utils/media';
 import { getServerSession } from 'next-auth';
 import { notFound } from 'next/navigation';
 import { options } from '../../../api/auth/[...nextauth]/options';
@@ -30,12 +31,13 @@ export async function generateMetadata({
 
 export default async function page({ params }: { params: { id: string } }) {
   const data = await getServerSession(options);
-  const [nickname, tag] = params.id.split('-');
+  const [nickname, tag] = decodeURIComponent(params.id).split('-');
+  console.log(nickname, tag);
   const userProfile = await getUserProfileByNicknameTag(nickname, tag);
   if (userProfile === null) {
     notFound();
   }
-  const imgUrl = userProfile.image;
+  const imgUrl = getMediaUrl(userProfile.image);
   const followStatus = await getFollowStatus(data?.user.uuid, userProfile.uuid);
   const petList = await getPetList(userProfile.uuid);
 

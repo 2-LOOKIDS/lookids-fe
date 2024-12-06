@@ -16,13 +16,6 @@ export const PetProfileSchema = z.object({
   image: z.string().min(1, '애기 사진은 필수입니다'),
   name: z.string().min(2, '애기 이름을 입력해 주세요'),
   gender: z.enum(['수컷', '암컷'], { message: '성별을 선택해주세요' }),
-  birthDate: z
-    .string()
-    .regex(/^\d{8}$/, {
-      message: '생년월일을 입력해주세요',
-    })
-    .optional()
-    .or(z.literal('')),
   type: z.string().min(2, { message: '반려 동물 종류를 입력해주세요' }),
   weight: z
     .string()
@@ -30,18 +23,12 @@ export const PetProfileSchema = z.object({
       message: '몸무게는 양수여야 합니다.',
     })
     .transform((val) => parseFloat(val)),
-  // birthDate: z
-  //   .string()
-  //   .optional()
-  //   .refine(
-  //     (val) => {
-  //       if (val === undefined) return true; // optional이므로 값이 없을 경우 true 반환
-  //       return /^\d{8}$/.test(val); // 8자리 형식 검사
-  //     },
-  //     {
-  //       message: '생년월일은 8자리여야 합니다',
-  //     }
-  //   ),
+  age: z
+    .string()
+    .refine((val) => !isNaN(parseFloat(val)) && parseFloat(val) > 0, {
+      message: '몸무게는 양수여야 합니다.',
+    })
+    .transform((val) => parseFloat(val)),
   comment: z.string().optional(),
 });
 

@@ -85,3 +85,15 @@ export const registerPetProfile = async (
     throw new Error(`유저 프로필 조회 실패: ${error}`);
   }
 };
+
+export const deletePet = async (
+  petUuid: string
+): Promise<CommonResponse<null>> => {
+  const result = await fetchDataforMembers<CommonResponse<null>>(
+    `user-service/write/petprofile?petUuid=${petUuid}`,
+    'DELETE',
+    'no-cache'
+  );
+  revalidatePath('/mypage');
+  return result;
+};
