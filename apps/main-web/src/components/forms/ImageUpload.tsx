@@ -27,7 +27,6 @@ export default function ImageUpload({
     const url = await uploadToS3(file);
     const cdnUrl = `https://media.lookids.online/${url.key}`;
     setPreview(cdnUrl);
-    console.log(typeof cdnUrl);
     onChange(cdnUrl);
   };
 

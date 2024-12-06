@@ -23,7 +23,10 @@ import { registerPetProfile } from '../../../actions/user';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-export default function AddPetForm() {
+interface AddPetFormProps {
+  setOpen: (open: boolean) => void;
+}
+export default function AddPetForm({ setOpen }: AddPetFormProps) {
   const form = useForm<PetProfileType>({
     resolver: zodResolver(PetProfileSchema),
     defaultValues: {
@@ -51,7 +54,10 @@ export default function AddPetForm() {
       weight: values.weight,
       comment: values.comment,
     };
-    await registerPetProfile(body);
+    const response = await registerPetProfile(body);
+    if (response.isSuccess) {
+      setOpen(false);
+    }
   };
 
   return (

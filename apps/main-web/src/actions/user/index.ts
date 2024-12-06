@@ -68,37 +68,19 @@ export const getPetList = async (uuid: string): Promise<PetInfo[]> => {
   return result.result;
 };
 
-// export const registerPetProfile = async (
-//   token: string,
-//   uuid: string,
-//   body: PetProfileType
-// ) => {
-//   const API_URL = `${BASE_URL}/write/petprofile`;
-//   const response = await fetch(API_URL, {
-//     method: 'POST',
-//     headers: {
-//       'uuid': uuid,
-//       'Authorization': `Bearer ${token}`,
-//       'Content-Type': 'application/json',
-//     },
-//     body: JSON.stringify(body),
-//   });
-//   const result = await response.json();
-//   console.log(result);
-// };
-
 export const registerPetProfile = async (
   body: PetProfileType
-): Promise<any> => {
+): Promise<CommonResponse<null>> => {
   try {
-    const data = await fetchDataforMembers<CommonResponse<PetProfileType>>(
+    const data = await fetchDataforMembers<CommonResponse<null>>(
       `user-service/write/petprofile`,
       'POST',
       body,
       'no-cache'
     );
     console.log(data);
-    return data.result;
+    revalidatePath('/mypage');
+    return data;
   } catch (error) {
     console.error('유저 프로필 조회 실패:', error);
     throw new Error(`유저 프로필 조회 실패: ${error}`);
