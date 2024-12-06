@@ -16,6 +16,11 @@ jobs:
       # 원본 레포지토리의 내용 체크아웃
       - name: Checkout repository
         uses: actions/checkout@v3
+        
+        with: 
+          token: ${{ secrets.AUTO_ACTIONS }}
+          fetch-depth: 0
+
 
       - name: Add remote-url
         run: |
