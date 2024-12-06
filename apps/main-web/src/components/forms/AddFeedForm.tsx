@@ -9,7 +9,10 @@ import { useImage } from '../../context/ImageContext';
 import { FeedPostType } from '../../types/feed/FeedType';
 import FeedTags from '../common/feedcard/FeedTags';
 
-export default function AddFeedForm() {
+interface AddFeedFormProps {
+  selectedPetCode: string[] | null;
+}
+export default function AddFeedForm({ selectedPetCode }: AddFeedFormProps) {
   const [content, setContent] = useState<string>('');
   const tags = ['#디자인', '#배고프다', '#집가고싶다'];
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
@@ -30,6 +33,7 @@ export default function AddFeedForm() {
 
   useEffect(() => {
     // Textarea 내용에 있는 태그들을 selectedTags에 업데이트
+
     const contentTags = tags.filter((tag) => content.includes(tag));
     setSelectedTags(contentTags);
   }, [content]);
@@ -54,7 +58,14 @@ export default function AddFeedForm() {
       content,
       tagList: uniqueTags,
     };
-    const res = await uploadFeedWithMedia({ feed: feedData, images: images });
+    // selectedPetCode가 있을경우에 , 로 string으로 만들어서 넘김
+    if (selectedPetCode) {
+      feedData.petCode = selectedPetCode;
+    }
+    const res = await uploadFeedWithMedia({
+      feed: feedData,
+      images: images,
+    });
     console.log(res);
     if (res.isSuccess) {
       alert('게시물이 성공적으로 등록되었습니다.');

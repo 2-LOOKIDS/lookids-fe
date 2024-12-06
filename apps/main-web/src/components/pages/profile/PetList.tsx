@@ -48,7 +48,7 @@ function PetList({ petList, isEdit }: PetListProps) {
           return (
             <SwiperSlide key={idx}>
               <ProfileAvatar
-                imgUrl={image}
+                imgUrl={getMediaUrl(pet.image)}
                 className="h-[77px] min-h-[77px] w-[77px] min-w-[77px]"
                 imgAlt={pet.name}
               />

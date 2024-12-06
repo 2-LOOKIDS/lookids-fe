@@ -1,7 +1,7 @@
 import { PaginationResponse } from '../responseType';
 
 export interface FeedPostType {
-  petCode?: string;
+  petCode?: string[];
   content: string;
   tagList?: string[];
   mediaUrlList?: string[];
