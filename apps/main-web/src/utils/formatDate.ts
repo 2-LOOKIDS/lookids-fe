@@ -24,16 +24,6 @@ export const calculateAge = (birthDate: string) => {
   const today = new Date();
 
   const age = today.getFullYear() - birth.getFullYear();
-  const monthDifference = today.getMonth() - birth.getMonth();
-
-  // 생일이 지나지 않은 경우 나이를 1 줄임
-  // if (
-  //   monthDifference < 0 ||
-  //   (monthDifference === 0 && today.getDate() < birth.getDate())
-  // ) {
-  //   age--;
-  // }
-
   return age;
 };
 
@@ -49,3 +39,18 @@ export const formatDateString = (dateString: string) => {
   // 형식에 맞게 결합하여 반환
   return `${year}${month}${day}`;
 };
+
+export function formatStringDate(string: string) {
+  // 입력 문자열이 8자리인지 확인
+  if (string.length !== 8) {
+    throw new Error('입력 문자열은 8자리여야 합니다.');
+  }
+
+  // 연도, 월, 일 추출
+  const year = string.substring(0, 4);
+  const month = string.substring(4, 6);
+  const day = string.substring(6, 8);
+
+  // 형식에 맞게 반환
+  return `${year}-${month}-${day}`;
+}

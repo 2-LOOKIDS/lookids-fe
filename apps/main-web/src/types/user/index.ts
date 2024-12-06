@@ -12,24 +12,26 @@ export const UserCommentSchema = z.object({
 });
 
 // 펫
-export const PetProfileImageSchema = z.object({
-  image: z.string().min(1, '애기 사진을 등록 해주세요'),
-});
-
 export const PetProfileSchema = z.object({
+  // image: z.instanceof(File, { message: '애기 사진은 필수입니다' }),
+  image: z.string().min(1, '애기 사진은 필수입니다'),
   name: z.string().min(2, '애기 이름을 입력해 주세요'),
-  gender: z.enum(['성별 선택', '수컷', '암컷']),
-  birthdate: z
+  gender: z.enum(['수컷', '암컷'], { message: '성별을 선택해주세요' }),
+  birthDate: z.string().regex(/^\d{8}$/, {
+    message: '생년월일을 입력해주세요',
+  }),
+  type: z.string().min(2, { message: '반려 동물 종류를 입력해주세요' }),
+  weight: z
     .string()
-    .min(8, '생년월일 8자리를 입력해주세요')
-    .max(8, '생년월일 8자리를 입력해주세요'),
-  type: z.enum(['동물 종류 선택', '개', '고양이']),
-  weight: z.string().min(1, '애기 몸무게를 입력해주세요'),
+    .refine((val) => !isNaN(parseFloat(val)) && parseFloat(val) > 0, {
+      message: '몸무게는 양수여야 합니다.',
+    })
+    .transform((val) => parseFloat(val)),
+  comment: z.string().optional(),
 });
 
 export type UserProfileType = z.infer<typeof UserProfileSchema>;
 export type UserCommentType = z.infer<typeof UserCommentSchema>;
-export type PetProfileImageType = z.infer<typeof PetProfileImageSchema>;
 export type PetProfileType = z.infer<typeof PetProfileSchema>;
 
 export interface UserInfo {
@@ -45,12 +47,6 @@ export interface UserInfo {
 
 //pet
 
-export interface PetInfo {
+export interface PetInfo extends PetProfileType {
   petCode: string;
-  name: string;
-  gender: string;
-  birthDate: string;
-  type: string;
-  weight: number;
-  image: string;
 }
