@@ -9,6 +9,8 @@ import {
 
 import AddPetForm from './AddPetForm';
 import { CirclePlus } from 'lucide-react';
+import InputPetForm from './InputPetForm';
+import { registerPetProfile } from '../../../actions/user';
 import { useState } from 'react';
 
 export default function AddPet() {
@@ -32,6 +34,7 @@ export default function AddPet() {
       >
         <DialogTitle className="hidden" />
         <AddPetForm setOpen={setOpen} />
+        {/* <InputPetForm action={registerPetProfile} setOpen={setOpen} /> */}
       </DialogContent>
     </Dialog>
   );
