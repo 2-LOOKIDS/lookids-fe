@@ -11,6 +11,7 @@ export default function TopNavBar({ onMenuClick }: HeaderProps) {
   const prevScrollY = useRef(0);
   const ticking = useRef(false);
 
+  // 스크롤 조작
   const handleScroll = () => {
     if (!ticking.current) {
       ticking.current = true;
