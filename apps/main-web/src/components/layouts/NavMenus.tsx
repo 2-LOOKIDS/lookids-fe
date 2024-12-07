@@ -2,7 +2,6 @@
 import { useNotification } from '../../hooks/useNotification';
 import NotificationBellIcon from '../common/NotificationBellIcon';
 import MainHamburger from '../icons/topNavBar/MainHamburger';
-import BellTest from '../icons/topNavBar/MainTopBell';
 import MainTopLogo from '../icons/topNavBar/MainTopLogo';
 import MainTopSearch from '../icons/topNavBar/MainTopSearch';
 import { NotificationModal } from '../icons/topNavBar/NotificationModal';
@@ -17,7 +16,6 @@ function NavMenus({ onMenuClick }: HeaderProps) {
     notificationData,
     isModalOpen,
     hasNotification,
-    handleNotification,
     closeModal,
     openModal,
   } = useNotification();
@@ -44,14 +42,11 @@ function NavMenus({ onMenuClick }: HeaderProps) {
           <MainTopSearch />
         </NavMenuItem>
       </ul>
-
       <NotificationModal
         isOpen={isModalOpen}
         closeModal={closeModal}
         notificationData={notificationData}
       />
-
-      <BellTest onNotification={handleNotification} />
     </nav>
   );
 }

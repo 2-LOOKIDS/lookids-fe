@@ -1,4 +1,5 @@
 'use client';
+
 import {
   Avatar,
   AvatarFallback,
@@ -30,15 +31,17 @@ export function FollowerListModal({
 }: FollowerListModalProps) {
   const [followers, setFollowers] = useState<Following[]>([]);
   const [followerProfile, setFollowerProfile] = useState<UserInfo[]>([]);
+  const [isFetching, setIsFetching] = useState(false);
+
   useEffect(() => {
-    // Fetch followers list
-    // This is a mock implementation. Replace with actual API call.
     const fetchFollowers = async () => {
+      if (isFetching || followerProfile.length > 0) return; // 요청 중이거나 데이터가 이미 있으면 중단
+
+      setIsFetching(true); // 요청 시작
       try {
         const response = await getFollowingList();
-        const Follwers: Following[] = response.content; // 서버 응답 구조에 맞게 조정
+        const Follwers: Following[] = response.content;
 
-        // 모든 프로필 데이터를 병렬로 가져오기
         const profiles = await Promise.all(
           Follwers.map(async (follower) => {
             const user: UserInfo = await getUserProfile(follower.followerUuid);
@@ -46,18 +49,19 @@ export function FollowerListModal({
           })
         );
 
-        // 상태 업데이트
-        setFollowerProfile(profiles); // 모든 프로필 한 번에 설정
-        setFollowers(Follwers); // Follwers 배열 설정
+        setFollowerProfile(profiles);
+        setFollowers(Follwers);
       } catch (error) {
         console.error('Failed to fetch followers:', error);
+      } finally {
+        setIsFetching(false); // 요청 완료
       }
     };
 
     if (isOpen) {
       fetchFollowers();
     }
-  }, [isOpen]);
+  }, [isOpen, isFetching, followerProfile]);
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
