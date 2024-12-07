@@ -32,9 +32,9 @@ export default function AddPetForm({ setOpen }: AddPetFormProps) {
       image: '',
       name: '',
       gender: undefined,
-      age: '',
+      age: 0,
       type: '',
-      weight: '',
+      weight: 0,
       comment: '',
     },
   });
