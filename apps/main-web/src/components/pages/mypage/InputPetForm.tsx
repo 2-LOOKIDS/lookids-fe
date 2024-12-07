@@ -1,25 +1,24 @@
 import {
-  FormCustomField,
-  FormInputField,
-  FormTextAreaField,
-} from '../../forms/FormFields';
-import { PetProfileSchema, PetProfileType } from '../../../types/user';
-import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from '@repo/ui/components/ui/select';
+import { PetProfileSchema, PetProfileType } from '../../../types/user';
+import {
+  FormCustomField,
+  FormInputField,
+  FormTextAreaField,
+} from '../../forms/FormFields';
 
-import { Button } from '@repo/ui/components/ui/button';
-import { CommonResponse } from '../../../types/responseType';
-import { Form } from '@repo/ui/components/ui/form';
-import ImageUpload from '../../forms/ImageUpload';
-import React from 'react';
-import { extractCommonUrl } from '../../../utils/media';
-import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Button } from '@repo/ui/components/ui/button';
+import { Form } from '@repo/ui/components/ui/form';
+import { useForm } from 'react-hook-form';
+import { CommonResponse } from '../../../types/responseType';
+import { extractCommonUrl } from '../../../utils/media';
+import ImageUpload from '../../forms/ImageUpload';
 
 interface InputPetFormProps {
   setOpen: (open: boolean) => void;
@@ -35,9 +34,9 @@ export default function InputPetForm<TParams>({
       image: '',
       name: '',
       gender: undefined,
-      age: '',
+      age: 0,
       type: '',
-      weight: '',
+      weight: 0,
       comment: '',
     },
   });
