@@ -178,8 +178,6 @@ const schemaMap = {
   petProfile: PetProfileSchema,
 };
 
-const actionMap = {};
-
 interface EditDialogProps<T extends keyof typeof schemaMap> {
   uuid?: string;
   token?: string;

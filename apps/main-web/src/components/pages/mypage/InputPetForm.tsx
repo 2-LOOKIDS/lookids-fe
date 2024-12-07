@@ -1,5 +1,3 @@
-'use client';
-
 import {
   FormCustomField,
   FormInputField,
@@ -15,17 +13,22 @@ import {
 } from '@repo/ui/components/ui/select';
 
 import { Button } from '@repo/ui/components/ui/button';
+import { CommonResponse } from '../../../types/responseType';
 import { Form } from '@repo/ui/components/ui/form';
 import ImageUpload from '../../forms/ImageUpload';
+import React from 'react';
 import { extractCommonUrl } from '../../../utils/media';
-import { registerPetProfile } from '../../../actions/user';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-interface AddPetFormProps {
+interface InputPetFormProps {
   setOpen: (open: boolean) => void;
+  action: (values: PetProfileType) => CommonResponse<null>;
 }
-export default function AddPetForm({ setOpen }: AddPetFormProps) {
+export default function InputPetForm<TParams>({
+  setOpen,
+  action,
+}: InputPetFormProps) {
   const form = useForm<PetProfileType>({
     resolver: zodResolver(PetProfileSchema),
     defaultValues: {
@@ -53,7 +56,7 @@ export default function AddPetForm({ setOpen }: AddPetFormProps) {
       comment: values.comment,
     };
     console.log(body);
-    const response = await registerPetProfile(body);
+    const response = await action(body);
     if (response.isSuccess) {
       setOpen(false);
     }

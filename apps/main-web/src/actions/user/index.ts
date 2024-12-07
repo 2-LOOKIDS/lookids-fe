@@ -86,6 +86,24 @@ export const registerPetProfile = async (
   }
 };
 
+export const updatePetProfile = async (
+  body: PetInfo
+): Promise<CommonResponse<null>> => {
+  try {
+    const data = await fetchDataforMembers<CommonResponse<null>>(
+      `user-service/write/petprofile`,
+      'PUT',
+      body,
+      'no-cache'
+    );
+    revalidatePath('/mypage');
+    return data;
+  } catch (error) {
+    console.error('유저 프로필 조회 실패:', error);
+    throw new Error(`유저 프로필 조회 실패: ${error}`);
+  }
+};
+
 export const deletePet = async (
   petUuid: string
 ): Promise<CommonResponse<null>> => {

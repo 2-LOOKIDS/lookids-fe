@@ -5,7 +5,7 @@ import {
   FormInputField,
   FormTextAreaField,
 } from '../../forms/FormFields';
-import { PetProfileSchema, PetProfileType } from '../../../types/user';
+import { PetInfo, PetProfileSchema, PetProfileType } from '../../../types/user';
 import {
   Select,
   SelectContent,
@@ -13,50 +13,58 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@repo/ui/components/ui/select';
+import { extractCommonUrl, getMediaUrl } from '../../../utils/media';
 
 import { Button } from '@repo/ui/components/ui/button';
 import { Form } from '@repo/ui/components/ui/form';
 import ImageUpload from '../../forms/ImageUpload';
-import { extractCommonUrl } from '../../../utils/media';
-import { registerPetProfile } from '../../../actions/user';
 import { useForm } from 'react-hook-form';
+import { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-interface AddPetFormProps {
+interface EditPetFormProps {
   setOpen: (open: boolean) => void;
+  petCode: string;
+  defaultValues: PetInfo;
 }
-export default function AddPetForm({ setOpen }: AddPetFormProps) {
+
+export default function EditPetForm({
+  setOpen,
+  petCode,
+  defaultValues,
+}: EditPetFormProps) {
+  const defaultImage = getMediaUrl(defaultValues.image);
+
   const form = useForm<PetProfileType>({
     resolver: zodResolver(PetProfileSchema),
     defaultValues: {
-      image: '',
-      name: '',
-      gender: undefined,
-      age: '',
-      type: '',
-      weight: '',
-      comment: '',
+      image: defaultImage,
+      name: defaultValues.name,
+      gender: defaultValues.gender,
+      age: defaultValues.age,
+      type: defaultValues.type,
+      weight: defaultValues.weight,
+      comment: defaultValues.comment,
     },
   });
-  const BASIC_IMAGE = process.env.NEXT_PUBLIC_BASIC_PET_PROFILE_IMAGE;
-
   const onSubmit = async (values: PetProfileType) => {
     const image = extractCommonUrl(values.image);
 
     const body = {
+      petCode: petCode,
       name: values.name,
-      image: image,
+      comment: values.comment,
       gender: values.gender,
       age: values.age,
       type: values.type,
       weight: values.weight,
-      comment: values.comment,
+      image: image,
     };
     console.log(body);
-    const response = await registerPetProfile(body);
-    if (response.isSuccess) {
-      setOpen(false);
-    }
+    // const response = await updatePetProfile(body);
+    // if (response.isSuccess) {
+    //   setOpen(false);
+    // }
   };
 
   return (
@@ -72,7 +80,7 @@ export default function AddPetForm({ setOpen }: AddPetFormProps) {
                 shouldValidate: true,
               })
             }
-            initialImage={BASIC_IMAGE}
+            initialImage={defaultImage}
           />
         </FormCustomField>
 
@@ -94,7 +102,7 @@ export default function AddPetForm({ setOpen }: AddPetFormProps) {
               }
             >
               <SelectTrigger className="!mt-0">
-                <SelectValue placeholder="성별을 선택해주세요" />
+                <SelectValue placeholder={defaultValues.gender} />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="수컷">수컷</SelectItem>
@@ -108,6 +116,7 @@ export default function AddPetForm({ setOpen }: AddPetFormProps) {
           <FormInputField
             name="age"
             label="나이"
+            type="number"
             placeholder="나이를 입력해주세요"
           />
         </div>
@@ -138,7 +147,7 @@ export default function AddPetForm({ setOpen }: AddPetFormProps) {
         </div>
 
         <Button className="bg-lookids hover:bg-lookids/90" type="submit">
-          등록
+          수정
         </Button>
       </form>
     </Form>
