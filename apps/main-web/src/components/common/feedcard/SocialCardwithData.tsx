@@ -24,11 +24,13 @@ export default function SocialCardwithData({
   feedData: FeedDetail;
 }) {
   const [isLiked, setIsLiked] = useState(false);
+  console.log(feedData);
+  console.log(feedData.mediaUrlList);
 
   return (
     <Card className={`h-2/5 overflow-hidden p-4 ${isDetail ? 'border-0' : ''}`}>
       {/* Social Card Image */}
-      {!isDetail && (
+      {!isDetail && feedData && (
         <div className="relative">
           <Link href={`/feed/${feedData.feedCode}`}>
             <Image

@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useRef, useState } from 'react';
+import { useScrollVisibility } from '../../hooks/useScrollVisibility';
 import NavMenus from './NavMenus';
 
 interface HeaderProps {
@@ -7,42 +7,7 @@ interface HeaderProps {
 }
 
 export default function TopNavBar({ onMenuClick }: HeaderProps) {
-  const [isView, setIsView] = useState(true);
-  const prevScrollY = useRef(0);
-  const ticking = useRef(false);
-
-  const handleScroll = () => {
-    if (!ticking.current) {
-      ticking.current = true;
-
-      window.requestAnimationFrame(() => {
-        const currentScrollY = Math.max(0, window.scrollY);
-        const maxScrollY =
-          document.documentElement.scrollHeight - window.innerHeight;
-
-        if (currentScrollY === 0 || currentScrollY >= maxScrollY) {
-          ticking.current = false;
-          return;
-        }
-
-        if (currentScrollY > prevScrollY.current) {
-          setIsView(false);
-        } else if (currentScrollY < prevScrollY.current) {
-          setIsView(true);
-        }
-
-        prevScrollY.current = currentScrollY;
-        ticking.current = false;
-      });
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
+  const isView = useScrollVisibility();
 
   return (
     <header

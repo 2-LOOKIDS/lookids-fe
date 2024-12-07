@@ -132,6 +132,7 @@ export async function getMainFeedList(
       null,
       'no-cache'
     );
+    console.log(data.result.content);
     return data.result;
   } catch (error) {
     console.error('메인 피드 조회 중 오류 발생:', error);

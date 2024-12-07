@@ -1,11 +1,7 @@
-'use client';
 import { useNotification } from '../../hooks/useNotification';
-import NotificationBellIcon from '../common/NotificationBellIcon';
 import MainHamburger from '../icons/topNavBar/MainHamburger';
-import BellTest from '../icons/topNavBar/MainTopBell';
 import MainTopLogo from '../icons/topNavBar/MainTopLogo';
 import MainTopSearch from '../icons/topNavBar/MainTopSearch';
-import { NotificationModal } from '../icons/topNavBar/NotificationModal';
 import NavMenuItem from './NavMenuItem';
 
 interface HeaderProps {
@@ -13,14 +9,8 @@ interface HeaderProps {
 }
 
 function NavMenus({ onMenuClick }: HeaderProps) {
-  const {
-    notificationData,
-    isModalOpen,
-    hasNotification,
-    handleNotification,
-    closeModal,
-    openModal,
-  } = useNotification();
+  const { isModalOpen, hasNotification, openModal, closeModal, notifications } =
+    useNotification();
 
   return (
     <nav className="flex w-full justify-between">
@@ -29,29 +19,28 @@ function NavMenus({ onMenuClick }: HeaderProps) {
           <MainHamburger />
         </NavMenuItem>
         <NavMenuItem>
-          <h1 className="text-[0px]">Lookids</h1>
           <MainTopLogo />
         </NavMenuItem>
       </ul>
       <ul className="flex items-center gap-x-1">
-        <NavMenuItem>
+        {/* <NavMenuItem onClick={openModal}>
           <NotificationBellIcon
             hasNotification={hasNotification}
-            onClick={openModal}
+            onClick={function (): void {
+              throw new Error('Function not implemented.');
+            }}
           />
-        </NavMenuItem>
+        </NavMenuItem> */}
         <NavMenuItem>
           <MainTopSearch />
         </NavMenuItem>
       </ul>
 
-      <NotificationModal
+      {/* <NotificationModal
         isOpen={isModalOpen}
         closeModal={closeModal}
-        notificationData={notificationData}
-      />
-
-      <BellTest onNotification={handleNotification} />
+        notifications={notifications}
+      /> */}
     </nav>
   );
 }
