@@ -5,6 +5,7 @@ import { EditDialog } from '../../components/pages/mypage/EditDialog';
 import EditPassword from '../../components/pages/mypage/EditPassword';
 import EditPets from '../../components/pages/mypage/EditPets';
 import EditProfileImage from '../../components/pages/mypage/EditProfileImage';
+import FeedList from '../../components/pages/profile/FeedList';
 import Hr from '../../components/common/Hr';
 import SignOut from '../../components/pages/mypage/SignOut';
 import { getMediaUrl } from '../../utils/media';
@@ -73,8 +74,14 @@ export default async function page() {
         <EditPets petList={petList} />
         <AddPet />
       </section>
-
       <Hr />
+      {/* 피드 썸네일 리스트 */}
+
+      <section className="flex flex-col gap-1 py-5">
+        <FeedList uuid={uuid} />
+      </section>
+      <Hr />
+
       {/* 비밀번호 변경 페이지 이동 버튼 */}
       <section className="px-5 py-5">
         <EditPassword />
