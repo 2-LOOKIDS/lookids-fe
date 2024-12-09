@@ -1,10 +1,10 @@
 'use server';
 
-import { PetInfo, PetProfileType, UserInfo } from '../../types/user';
+import { PetDetail, PetInfo, PetProfileType, UserInfo } from '../../types/user';
 
+import { revalidatePath } from 'next/cache';
 import { CommonResponse } from '../../types/responseType';
 import { fetchDataforMembers } from '../common/common';
-import { revalidatePath } from 'next/cache';
 
 const BASE_URL = `${process.env.BACKEND_URL}/user-service`;
 
@@ -58,6 +58,21 @@ export const getUserProfileByNicknameTag = async (
 };
 
 // pet
+
+export async function getPetDetail(petUuid: string): Promise<PetDetail> {
+  try {
+    const data = await fetchDataforMembers<CommonResponse<PetDetail>>(
+      `user-service/read/petprofile?petUuid=${petUuid}`,
+      'GET',
+      '',
+      'no-cache'
+    );
+    return data.result;
+  } catch (error) {
+    console.error('펫 프로필 조회 실패:', error);
+    throw new Error(`펫 프로필 조회 실패: ${error}`);
+  }
+}
 
 export const getPetList = async (uuid: string): Promise<PetInfo[]> => {
   const API_URL = `${BASE_URL}/read/petprofile/all?userUuid=${uuid}`;

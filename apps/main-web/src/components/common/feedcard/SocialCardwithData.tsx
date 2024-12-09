@@ -30,6 +30,8 @@ export default function SocialCardwithData({
 }) {
   useEffect(() => {
     // 좋아요 여부 조회
+    console.log('펫코드', feedData.petCode);
+    console.log('펫 데이터', feedData);
     getIsFavorite(feedData.feedCode).then((res) => {
       setIsLiked(res);
     });
@@ -138,20 +140,22 @@ export default function SocialCardwithData({
       </CardContent>
 
       {/* SocialCard Reaction Section */}
-      <CardFooter className="flex gap-x-5 border-t border-gray-100 px-2 py-3 text-xs text-gray-400">
-        <ul className="flex items-center gap-x-2">
-          <li>
-            <ThumbsUp className="text-lookids h-4 w-4" />
-          </li>
-          <li>{`${178} Likes`}</li>
-        </ul>
-        <ul className="flex items-center gap-x-2">
-          <li>
-            <Share2 className="text-lookids h-4 w-4" />
-          </li>
-          <li>{`${12} Shares`}</li>
-        </ul>
-      </CardFooter>
+      {feedData.petCode && (
+        <CardFooter className="flex gap-x-5 border-t border-gray-100 px-2 py-3 text-xs text-gray-400">
+          <ul className="flex items-center gap-x-2">
+            <li>
+              <ThumbsUp className="text-lookids h-4 w-4" />
+            </li>
+            <li>{`${178} Likes`}</li>
+          </ul>
+          <ul className="flex items-center gap-x-2">
+            <li>
+              <Share2 className="text-lookids h-4 w-4" />
+            </li>
+            <li>{`${12} Shares`}</li>
+          </ul>
+        </CardFooter>
+      )}
     </Card>
   );
 }
