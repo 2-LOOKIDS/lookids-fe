@@ -1,3 +1,4 @@
+'use server';
 import { revalidateTag } from 'next/cache';
 import { CommonResponse, responseList } from '../../types/responseType';
 import { fetchDataforMembers } from '../common/common';
