@@ -1,7 +1,6 @@
 'use client';
 
 import { FormCustomField, FormInputField } from '../../forms/FormFields';
-import React, { useState } from 'react';
 import {
   Select,
   SelectContent,

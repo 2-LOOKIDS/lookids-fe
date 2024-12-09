@@ -1,6 +1,7 @@
 import { getPetList, getUserProfile } from '../../actions/user';
 
 import AddPet from '../../components/pages/mypage/AddPet';
+import EditCommentForm from '../../components/pages/mypage/EditCommentForm';
 import { EditDialog } from '../../components/pages/mypage/EditDialog';
 import EditPassword from '../../components/pages/mypage/EditPassword';
 import { EditPetButton } from '../../components/pages/profile/PetList';
@@ -11,7 +12,9 @@ import FeedList from '../../components/pages/profile/FeedList';
 import Hr from '../../components/common/Hr';
 import InputFormDialog from '../../components/forms/InputFormDialog';
 import SignOut from '../../components/pages/mypage/SignOut';
+import { cn } from '@repo/ui/lib/utils';
 import { formatDateString } from '../../utils/formatDate';
+import { genderColor } from '../../utils/font';
 import { getMediaUrl } from '../../utils/media';
 import { getServerSession } from 'next-auth';
 import { options } from '../api/auth/[...nextauth]/options';
@@ -25,8 +28,6 @@ export default async function page() {
   const petList = await getPetList(uuid);
   const comment = userProfile.comment ?? '소개글을 작성해주세요!';
   const userBirthDate = formatDateString(userProfile.birthDate);
-  // const userBirthDate = formatDateString(userProfile.birthDate ?? '0000-00-00');
-  console.log(userProfile.birthDate);
   return (
     <main className="">
       {/* 프로필 사진, 닉네임 변경 */}
@@ -39,9 +40,10 @@ export default async function page() {
         />
 
         <div className="flex flex-col items-center gap-2 pt-2">
-          <p className="font-semibold">
-            {userProfile.nickname}@{userProfile.tag}
-          </p>
+          <div className="font-semibold flex">
+            <p>{userProfile.nickname}-</p>
+            <p>{userProfile.tag}</p>
+          </div>
           <InputFormDialog
             TriggerComponent={<EditPetButton />}
             FormComponent={EditUserProfileForm}
@@ -53,23 +55,6 @@ export default async function page() {
               },
             }}
           />
-
-          {/* <EditDialog
-            uuid={uuid}
-            token={token}
-            type={'userProfile'}
-            fields={[
-              { label: '닉네임', field: 'nickname' },
-              {
-                label: '성별',
-                field: 'gender',
-              },
-            ]}
-            defaultValues={{
-              nickname: userProfile.nickname,
-              gender: '성별 선택',
-            }}
-          /> */}
         </div>
       </section>
       <Hr />
@@ -77,12 +62,14 @@ export default async function page() {
       <section className="px-5 py-5">
         <div className="flex flex-col gap-4">
           <p className="text-sm font-semibold">내 소개글</p>
-          <p className="text-grey text-xs">{comment}</p>
+          <p className="text-grey">{comment}</p>
           <div className="flex justify-start">
-            <EditDialog
-              type={'userComment'}
-              fields={[{ label: '소개글', field: 'comment' }]}
-              defaultValues={{ comment: userProfile.comment }}
+            <InputFormDialog
+              TriggerComponent={<EditPetButton />}
+              FormComponent={EditCommentForm}
+              formProps={{
+                comment,
+              }}
             />
           </div>
         </div>

@@ -85,7 +85,11 @@ export function FormTextAreaField({
           <div className="flex items-center">
             {label && <FormLabel className="w-2/5">{label}</FormLabel>}
             <FormControl>
-              <Textarea placeholder={placeholder} {...field} />
+              <Textarea
+                placeholder={placeholder}
+                {...field}
+                value={field.value ?? ''}
+              />
             </FormControl>
             {description && <FormDescription>{description}</FormDescription>}
           </div>

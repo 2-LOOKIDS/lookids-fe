@@ -34,7 +34,13 @@ export const UserProfileSchema = z.object({
   }),
 });
 export const UserCommentSchema = z.object({
-  comment: z.string().min(1, '소개글을 작성해주세요'),
+  comment: z
+    .string()
+    .min(3, '소개글을 작성해주세요')
+    .nullable()
+    .refine((val) => val !== null, {
+      message: '소개글을 입력해주세요.',
+    }),
 });
 
 // 펫

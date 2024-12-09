@@ -42,10 +42,28 @@ export const updateProfileImage = async (
 export const updateUserProfile = async (body: {
   nickname: string;
   gender: string;
-}) => {
+}): Promise<CommonResponse<null>> => {
   try {
     const response = await fetchDataforMembers<CommonResponse<null>>(
       'user-service/write/userprofile/nickname',
+      'PUT',
+      body,
+      'no-cache'
+    );
+    revalidatePath('/mypage');
+    return response;
+  } catch (error) {
+    console.error('유저 프로필 업데이트 실패:', error);
+    throw new Error(`유저 프로필 업데이트 실패: ${error}`);
+  }
+};
+
+export const updateUserComment = async (body: {
+  comment: string;
+}): Promise<CommonResponse<null>> => {
+  try {
+    const response = await fetchDataforMembers<CommonResponse<null>>(
+      'user-service/write/userprofile',
       'PUT',
       body,
       'no-cache'
@@ -79,7 +97,7 @@ export const getUserProfileByNicknameTag = async (
 // pet
 
 export const getPetList = async (uuid: string): Promise<PetInfo[]> => {
-  const API_URL = `${BASE_URL}/read/petprofile/all?userUuid=${uuid}`;
+  const API_URL = `${BASE_URL}/read/petprofile/all?uuid=${uuid}`;
   const response = await fetch(API_URL, {
     method: 'GET',
   });
