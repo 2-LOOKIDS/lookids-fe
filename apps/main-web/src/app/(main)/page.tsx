@@ -1,16 +1,17 @@
 'use client';
 
-import { useEffect } from 'react';
-import useSWRInfinite from 'swr/infinite';
 import {
   getMainFeedList,
   getRandomFeedList,
 } from '../../actions/feed/FeedCard';
-import SocialCardwithData from '../../components/common/feedcard/SocialCardwithData';
+
+import { FeedDetail } from '../../types/feed/FeedType';
 import MainSwiper from '../../components/icons/topNavBar/MainSwiper';
 import RecommendedPet from '../../components/pages/main/RecommendPet';
+import SocialCardwithData from '../../components/common/feedcard/SocialCardwithData';
+import { useEffect } from 'react';
+import useSWRInfinite from 'swr/infinite';
 import { useSession } from '../../context/SessionContext';
-import { FeedDetail } from '../../types/feed/FeedType';
 
 const PAGE_SIZE = 10;
 
