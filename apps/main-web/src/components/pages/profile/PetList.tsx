@@ -16,7 +16,6 @@ import {
   AlertDialogTrigger,
 } from '@repo/ui/components/ui/alert-dialog';
 import { Grid, Pagination } from 'swiper/modules';
-import React, { useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import EditPetForm from '../mypage/EditPetForm';
@@ -24,6 +23,7 @@ import InputFormDialog from '../../forms/InputFormDialog';
 import { PencilLine } from 'lucide-react';
 import { PetInfo } from '../../../types/user';
 import ProfileAvatar from '../../ui/ProfileAvatar';
+import React from 'react';
 import { deletePet } from '../../../actions/user';
 import { getMediaUrl } from '../../../utils/media';
 
@@ -33,15 +33,8 @@ interface PetListProps {
 }
 
 function PetList({ petList, isEdit }: PetListProps) {
-  const [open, setOpen] = useState(false);
   const onDeletePet = async (petUuid: string) => {
     await deletePet(petUuid);
-  };
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    console.log('Form submitted:', Object.fromEntries(formData));
-    setOpen(false);
   };
 
   return (
@@ -57,22 +50,21 @@ function PetList({ petList, isEdit }: PetListProps) {
         {petList.map((pet, idx) => {
           const image = getMediaUrl(pet.image);
           const defaultValues = pet;
-          // console.log(pet.name, pet.gender);
           return (
             <SwiperSlide key={idx}>
               <ProfileAvatar
-                imgUrl={getMediaUrl(pet.image)}
+                imgUrl={image}
                 className="h-[77px] min-h-[77px] w-[77px] min-w-[77px]"
                 imgAlt={pet.name}
               />
 
-              <div className="relative flex max-w-[297px] flex-col gap-1">
+              <div className="relative flex max-w-[297px] flex-col gap-1 pl-4">
                 <p className="font-semibold">
                   {pet.name} {pet.age}
                 </p>
                 <div className="flex gap-1">
                   <p className="text-grey text-sm">{pet.type} /</p>
-                  <p className="text-grey text-sm">남자 /</p>
+                  <p className="text-grey text-sm">{pet.gender} /</p>
                   <p className="text-grey text-sm">{pet.weight}kg</p>
                 </div>
                 <div>
@@ -94,7 +86,7 @@ function PetList({ petList, isEdit }: PetListProps) {
                     <AlertDialogTrigger className="bg-lookids hover:bg-lookids/90 h-7 rounded-sm">
                       <p className="text-white text-sm">삭제</p>
                     </AlertDialogTrigger>
-                    <AlertDialogContent>
+                    <AlertDialogContent className="w-3/4">
                       <AlertDialogHeader>
                         <AlertDialogTitle>
                           <AlertDialogDescription>
@@ -109,7 +101,7 @@ function PetList({ petList, isEdit }: PetListProps) {
                         >
                           삭제
                         </AlertDialogAction>
-                        <AlertDialogCancel className="h-8">
+                        <AlertDialogCancel className="h-8 m-0">
                           취소
                         </AlertDialogCancel>
                       </AlertDialogFooter>

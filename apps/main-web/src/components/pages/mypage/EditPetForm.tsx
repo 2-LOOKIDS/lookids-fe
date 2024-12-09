@@ -18,8 +18,8 @@ import { extractCommonUrl, getMediaUrl } from '../../../utils/media';
 import { Button } from '@repo/ui/components/ui/button';
 import { Form } from '@repo/ui/components/ui/form';
 import ImageUpload from '../../forms/ImageUpload';
+import { updatePetProfile } from '../../../actions/user';
 import { useForm } from 'react-hook-form';
-import { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 interface EditPetFormProps {
@@ -60,11 +60,10 @@ export default function EditPetForm({
       weight: values.weight,
       image: image,
     };
-    console.log(body);
-    // const response = await updatePetProfile(body);
-    // if (response.isSuccess) {
-    //   setOpen(false);
-    // }
+    const response = await updatePetProfile(body);
+    if (response.isSuccess) {
+      setOpen(false);
+    }
   };
 
   return (
