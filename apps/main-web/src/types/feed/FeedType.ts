@@ -32,7 +32,7 @@ export interface FeedDetail {
   tag: string;
   nickname: string;
   image: string;
-  petCode?: string;
+  petCode?: string[];
   content: string;
   tagList?: string[];
   mediaUrlList: string[];

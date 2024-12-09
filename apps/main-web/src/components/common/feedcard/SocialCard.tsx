@@ -19,9 +19,12 @@ import {
   putFavoriteComment,
 } from '../../../actions/favorite/favorite';
 import { getFeedDetail } from '../../../actions/feed/FeedCard';
+import { getPetDetail } from '../../../actions/user';
 import { FeedDetail } from '../../../types/feed/FeedType';
+import { PetDetail } from '../../../types/user';
 import { formatDate } from '../../../utils/formatDate';
 import { getMediaUrl } from '../../../utils/media';
+import { PetModal } from './PetModal';
 import { ShareModal } from './ShareModal';
 
 export default function SocialCard({
@@ -32,8 +35,10 @@ export default function SocialCard({
   feedCode: string;
 }) {
   const router = useRouter();
+  const [isPetModalOpen, setIsPetModalOpen] = useState(false);
+  const [selectedPet, setSelectedPet] = useState<PetDetail | null>(null);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
-
+  const [petDetail, setPetDetail] = useState<PetDetail[]>([]);
   const [likeCount, setLikeCount] = useState(0);
   const [isLiked, setIsLiked] = useState(false);
   const [feedDetail, setFeedDetail] = useState<FeedDetail>({
@@ -46,13 +51,22 @@ export default function SocialCard({
     mediaUrlList: [],
     createdAt: '',
     feedCode: '',
+    petCode: [],
   });
   useEffect(() => {
     // 좋아요 여부 조회
     getIsFavorite(feedCode).then((res) => {
       setIsLiked(res);
     });
-  }, [feedCode]);
+    if (feedDetail.petCode) {
+      feedDetail.petCode.forEach((petCode) => {
+        getPetDetail(petCode).then((res) => {
+          console.log('펫정보', res);
+          setPetDetail((prev) => [...prev, res]);
+        });
+      });
+    }
+  }, [feedDetail]);
 
   const handleShareClick = () => {
     setIsShareModalOpen(true);
@@ -162,6 +176,38 @@ export default function SocialCard({
           </p>
         </CardContent>
 
+        {petDetail.length > 0 && (
+          <div className="px-2 py-3 border-t border-gray-100">
+            <h4 className="text-sm font-semibold text-gray-600 mb-2">
+              반려동물
+            </h4>
+            <div className="flex flex-wrap gap-2">
+              {petDetail.map((pet, index) => (
+                <div
+                  key={index}
+                  className="flex items-center space-x-2 bg-gray-50 rounded-full px-3 py-1 cursor-pointer"
+                  onClick={() => {
+                    setSelectedPet(pet);
+                    setIsPetModalOpen(true);
+                  }}
+                >
+                  <Avatar className="h-6 w-6">
+                    <AvatarImage
+                      src={getMediaUrl(pet.image)}
+                      alt={pet.name}
+                      className="object-cover"
+                    />
+                    <AvatarFallback>{pet.name.charAt(0)}</AvatarFallback>
+                  </Avatar>
+                  <span className="text-sm font-medium text-gray-700">
+                    {pet.name}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* SocialCard Reaction Section */}
         <CardFooter className="flex gap-x-5 border-t border-gray-100 px-2 py-3 text-xs text-gray-400">
           <ul className="flex items-center gap-x-2">
@@ -209,6 +255,11 @@ export default function SocialCard({
         isOpen={isShareModalOpen}
         onClose={() => setIsShareModalOpen(false)}
         url={`https://lookids.online/feed/${feedCode}`}
+      />
+      <PetModal
+        isOpen={isPetModalOpen}
+        onClose={() => setIsPetModalOpen(false)}
+        pet={selectedPet}
       />
     </>
   );

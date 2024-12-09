@@ -42,3 +42,14 @@ export interface UserInfo {
 export interface PetInfo extends PetProfileType {
   petCode: string;
 }
+
+export interface PetDetail {
+  petCode: string;
+  name: string;
+  comment: string;
+  gender: string;
+  age: number;
+  type: string;
+  weight: number;
+  image: string;
+}
