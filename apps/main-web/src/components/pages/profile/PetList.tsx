@@ -117,7 +117,7 @@ function PetList({ petList, isEdit }: PetListProps) {
   );
 }
 
-const EditPetButton = React.forwardRef<
+export const EditPetButton = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >((props, ref) => {
