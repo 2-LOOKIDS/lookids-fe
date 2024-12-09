@@ -9,9 +9,13 @@ import { Card, CardContent, CardFooter } from '@repo/ui/components/ui/card';
 import { Heart, Share2, ThumbsUp } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import {
+  getIsFavorite,
+  putFavoriteComment,
+} from '../../../actions/favorite/favorite';
 import { FeedDetail } from '../../../types/feed/FeedType';
 import { formatDate } from '../../../utils/formatDate';
 import { getMediaUrl } from '../../../utils/media';
@@ -23,8 +27,27 @@ export default function SocialCardwithData({
   isDetail: boolean;
   feedData: FeedDetail;
 }) {
+  useEffect(() => {
+    // 좋아요 여부 조회
+    getIsFavorite(feedData.feedCode).then((res) => {
+      setIsLiked(res);
+    });
+  }, [feedData.feedCode]);
   const [isLiked, setIsLiked] = useState(false);
-
+  const handleLike = async (feedData: FeedDetail) => {
+    setIsLiked(!isLiked);
+    try {
+      const res = await putFavoriteComment(
+        feedData.uuid,
+        feedData.feedCode,
+        '피드'
+      );
+      console.log('좋아요 결과:', res);
+    } catch (error) {
+      setIsLiked(!isLiked);
+      throw new Error(`좋아요 등록 중 실패: ${error}`);
+    }
+  };
   return (
     <Card className={`h-2/5 overflow-hidden p-4 ${isDetail ? 'border-0' : ''}`}>
       {/* Social Card Image */}
@@ -44,7 +67,9 @@ export default function SocialCardwithData({
             className={`absolute right-3 top-3 rounded-full p-2 ${
               isLiked ? 'bg-red-500' : 'opacity-50 bg-gray-800'
             }`}
-            onClick={() => setIsLiked(!isLiked)}
+            onClick={() => {
+              handleLike(feedData);
+            }}
           >
             <Heart
               fill="white"

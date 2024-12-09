@@ -1,3 +1,4 @@
+import { revalidateTag } from 'next/cache';
 import { CommonResponse, responseList } from '../../types/responseType';
 import { fetchDataforMembers } from '../common/common';
 
@@ -13,7 +14,8 @@ export async function getIsFavorite(targetCode: string): Promise<boolean> {
       `/favorite-service/read/favorite/feed?targetCode=${targetCode}`,
       'GET',
       '',
-      'no-cache'
+      'default',
+      'updateFeedFavorite'
     );
     return data.result;
   } catch (error) {
@@ -40,6 +42,7 @@ export async function putFavoriteComment(
       },
       'no-cache'
     );
+    revalidateTag('updateFeedFavorite');
     console.log(' 좋아요 등록 결과', data);
   } catch (error) {
     console.error('좋아요 등록 중 오류 발생:', error);
