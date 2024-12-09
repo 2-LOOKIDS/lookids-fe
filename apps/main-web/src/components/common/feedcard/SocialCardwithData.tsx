@@ -9,6 +9,7 @@ import { Card, CardContent, CardFooter } from '@repo/ui/components/ui/card';
 import { Heart, Share2, ThumbsUp } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -33,6 +34,7 @@ export default function SocialCardwithData({
       setIsLiked(res);
     });
   }, [feedData.feedCode]);
+  const router = useRouter();
   const [isLiked, setIsLiked] = useState(false);
   const handleLike = async (feedData: FeedDetail) => {
     setIsLiked(!isLiked);
@@ -101,7 +103,12 @@ export default function SocialCardwithData({
 
       <CardContent className="mt-4 px-2">
         <div className="flex items-start justify-between">
-          <div className="mb-4 flex items-center space-x-4">
+          <div
+            className="mb-4 flex items-center space-x-4 hover:cursor-pointer"
+            onClick={() =>
+              router.push(`/user/${feedData.nickname}-${feedData.tag}`)
+            }
+          >
             <Avatar>
               <AvatarImage
                 src={getMediaUrl(feedData.image)}
