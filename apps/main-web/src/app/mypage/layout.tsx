@@ -7,7 +7,7 @@ interface LayoutProps {
 }
 
 export const metadata: Metadata = {
-  title: 'my page',
+  title: '마이 페이지',
 };
 
 export default function layout({ children }: LayoutProps) {
