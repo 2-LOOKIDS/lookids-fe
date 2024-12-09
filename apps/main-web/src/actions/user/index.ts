@@ -75,7 +75,7 @@ export async function getPetDetail(petUuid: string): Promise<PetDetail> {
 }
 
 export const getPetList = async (uuid: string): Promise<PetInfo[]> => {
-  const API_URL = `${BASE_URL}/read/petprofile/all?userUuid=${uuid}`;
+  const API_URL = `${BASE_URL}/read/petprofile/all?uuid=${uuid}`;
   const response = await fetch(API_URL, {
     method: 'GET',
   });
@@ -130,3 +130,18 @@ export const deletePet = async (
   revalidatePath('/mypage');
   return result;
 };
+
+export async function getRandomPetList(): Promise<PetDetail[]> {
+  try {
+    const data = await fetchDataforMembers<CommonResponse<PetDetail[]>>(
+      `user-service/read/petprofile/random?limit=5`,
+      'GET',
+      '',
+      'no-cache'
+    );
+    return data.result;
+  } catch (error) {
+    console.error('랜덤 펫 리스트 조회 실패:', error);
+    throw new Error(`랜덤 펫 리스트 조회 실패: ${error}`);
+  }
+}
