@@ -39,6 +39,25 @@ export const updateProfileImage = async (
   return null;
 };
 
+export const updateUserProfile = async (body: {
+  nickname: string;
+  gender: string;
+}) => {
+  try {
+    const response = await fetchDataforMembers<CommonResponse<null>>(
+      'user-service/write/userprofile/nickname',
+      'PUT',
+      body,
+      'no-cache'
+    );
+    revalidatePath('/mypage');
+    return response;
+  } catch (error) {
+    console.error('유저 프로필 업데이트 실패:', error);
+    throw new Error(`유저 프로필 업데이트 실패: ${error}`);
+  }
+};
+
 export const getUserProfileByNicknameTag = async (
   nickname: string,
   tag: string

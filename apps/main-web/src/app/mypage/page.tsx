@@ -3,11 +3,15 @@ import { getPetList, getUserProfile } from '../../actions/user';
 import AddPet from '../../components/pages/mypage/AddPet';
 import { EditDialog } from '../../components/pages/mypage/EditDialog';
 import EditPassword from '../../components/pages/mypage/EditPassword';
+import { EditPetButton } from '../../components/pages/profile/PetList';
 import EditPets from '../../components/pages/mypage/EditPets';
 import EditProfileImage from '../../components/pages/mypage/EditProfileImage';
+import EditUserProfileForm from '../../components/pages/mypage/EditUserProfileForm';
 import FeedList from '../../components/pages/profile/FeedList';
 import Hr from '../../components/common/Hr';
+import InputFormDialog from '../../components/forms/InputFormDialog';
 import SignOut from '../../components/pages/mypage/SignOut';
+import { formatDateString } from '../../utils/formatDate';
 import { getMediaUrl } from '../../utils/media';
 import { getServerSession } from 'next-auth';
 import { options } from '../api/auth/[...nextauth]/options';
@@ -20,6 +24,9 @@ export default async function page() {
   const profileImage = getMediaUrl(userProfile.image);
   const petList = await getPetList(uuid);
   const comment = userProfile.comment ?? '소개글을 작성해주세요!';
+  const userBirthDate = formatDateString(userProfile.birthDate);
+  // const userBirthDate = formatDateString(userProfile.birthDate ?? '0000-00-00');
+  console.log(userProfile.birthDate);
   return (
     <main className="">
       {/* 프로필 사진, 닉네임 변경 */}
@@ -35,7 +42,19 @@ export default async function page() {
           <p className="font-semibold">
             {userProfile.nickname}@{userProfile.tag}
           </p>
-          <EditDialog
+          <InputFormDialog
+            TriggerComponent={<EditPetButton />}
+            FormComponent={EditUserProfileForm}
+            formProps={{
+              defaultValues: {
+                nickname: userProfile.nickname,
+                birthDate: userBirthDate,
+                gender: userProfile.gender,
+              },
+            }}
+          />
+
+          {/* <EditDialog
             uuid={uuid}
             token={token}
             type={'userProfile'}
@@ -50,7 +69,7 @@ export default async function page() {
               nickname: userProfile.nickname,
               gender: '성별 선택',
             }}
-          />
+          /> */}
         </div>
       </section>
       <Hr />

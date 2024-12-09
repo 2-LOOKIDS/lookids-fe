@@ -56,6 +56,7 @@ export function FormInputField({
                 className="!mt-0"
                 placeholder={placeholder}
                 {...field}
+                value={field.value ?? ''}
               />
             </FormControl>
             {description && <FormDescription>{description}</FormDescription>}
