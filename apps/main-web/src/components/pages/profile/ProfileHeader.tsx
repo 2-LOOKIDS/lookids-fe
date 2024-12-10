@@ -1,8 +1,13 @@
 'use client';
 
 import { ChevronLeft } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
-import { postSubscribe } from '../../../actions/subscribe/subscribe';
+import {
+  deleteSubscribe,
+  getIsSubscribed,
+  postSubscribe,
+} from '../../../actions/subscribe/subscribe';
 import { MenuItem } from '../../../types/common/MenuType';
 import CommonMenu from '../../common/CommonMenu';
 
@@ -12,6 +17,14 @@ interface HeaderProps {
 }
 
 export default function ProfileHeader({ loginId, uuid }: HeaderProps) {
+  const [isSubscribed, setIsSubscribed] = useState(false);
+  const checkSubscribe = async () => {
+    const data = await getIsSubscribed(uuid);
+    setIsSubscribed(data.subscribed);
+  };
+  useEffect(() => {
+    checkSubscribe();
+  }, [uuid]);
   const menuItems: MenuItem[] = [
     {
       label: '유저 신고하기',
@@ -26,6 +39,7 @@ export default function ProfileHeader({ loginId, uuid }: HeaderProps) {
         });
       },
     },
+
     {
       label: '유저 차단하기',
       onClick: () => {
@@ -38,29 +52,55 @@ export default function ProfileHeader({ loginId, uuid }: HeaderProps) {
         });
       },
     },
+    ...(isSubscribed
+      ? [
+          {
+            label: '유저 알림 받지 않기',
+            onClick: async () => {
+              const result = await Swal.fire({
+                title: '해당 유저의 알림을 받지 않으시겠습니까?',
+                showCancelButton: true,
+                confirmButtonText: '알림 받지 않기',
+                cancelButtonText: '취소',
+              });
+              if (result.isConfirmed) {
+                const res = await deleteSubscribe(uuid);
+                Swal.fire({
+                  title: '알림 설정 완료',
+                  text: '해당 유저의 알림을 받지 않습니다.',
+                  icon: 'success',
+                  confirmButtonText: '확인',
+                });
+                checkSubscribe();
+              }
+            },
+          },
+        ]
+      : [
+          {
+            label: '유저 알림받기',
+            onClick: async () => {
+              console.log('찍히나', uuid);
+              const result = await Swal.fire({
+                title: '해당 유저의 알림을 받으시겠습니까?',
+                showCancelButton: true,
+                confirmButtonText: '알림받기',
+                cancelButtonText: '취소',
+              });
+              if (result.isConfirmed) {
+                const res = await postSubscribe(uuid);
 
-    {
-      label: '유저 알림받기',
-      onClick: async () => {
-        console.log('찍히나', uuid);
-        const result = await Swal.fire({
-          title: '해당 유저의 알림을 받으시겠습니까?',
-          showCancelButton: true,
-          confirmButtonText: '알림받기',
-          cancelButtonText: '취소',
-        });
-        if (result.isConfirmed) {
-          const res = await postSubscribe(uuid);
-
-          Swal.fire({
-            title: '알림 설정 완료',
-            text: '해당 유저의 알림을 받습니다.',
-            icon: 'success',
-            confirmButtonText: '확인',
-          });
-        }
-      },
-    },
+                Swal.fire({
+                  title: '알림 설정 완료',
+                  text: '해당 유저의 알림을 받습니다.',
+                  icon: 'success',
+                  confirmButtonText: '확인',
+                });
+                checkSubscribe();
+              }
+            },
+          },
+        ]),
   ];
   return (
     <header className="relative flex justify-center px-5 pt-12">
