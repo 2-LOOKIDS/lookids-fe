@@ -23,7 +23,7 @@ export const fetchDataforMembers = async <T>(
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`,
-      'Uuid': session?.user.uuid,
+      'Uuid': session?.user.uuid || '1',
     },
     cache,
   };

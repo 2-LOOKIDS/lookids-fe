@@ -30,8 +30,6 @@ export default function SocialCardwithData({
 }) {
   useEffect(() => {
     // 좋아요 여부 조회
-    console.log('펫코드', feedData.petCode);
-    console.log('펫 데이터', feedData);
     getIsFavorite(feedData.feedCode).then((res) => {
       setIsLiked(res);
     });
