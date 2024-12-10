@@ -68,14 +68,17 @@ export function useNotification() {
     const uuid = session?.uuid;
     const myAccessToken = session?.accessToken;
     if (!uuid) return;
-
+    console.log('MYACCESSTOKEN:', myAccessToken);
     const eventSource = new EventSourcePolyfill(
       `${process.env.NEXT_PUBLIC_BACKEND_URL}/notification-service/read/notification/user/sse/${uuid}`,
       {
         headers: { Authorization: `Bearer ${myAccessToken}` },
       }
     );
-
+    console.log(eventSource);
+    eventSource.onopen = () => {
+      console.log('SSE 연결 완료');
+    };
     eventSource.onmessage = (event) => {
       const data = JSON.parse(event.data);
       console.log('THIS IS FROM SSE', data);
