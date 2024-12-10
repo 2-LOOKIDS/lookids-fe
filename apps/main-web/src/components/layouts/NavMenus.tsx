@@ -1,13 +1,11 @@
 'use client';
 
-import { Search, X } from 'lucide-react';
-
 import MainHamburger from '../icons/topNavBar/MainHamburger';
 import MainTopLogo from '../icons/topNavBar/MainTopLogo';
-import MainTopSearch from '../icons/topNavBar/MainTopSearch';
 import NavMenuItem from './NavMenuItem';
 import NotificationBellIcon from '../common/NotificationBellIcon';
 import { NotificationModal } from '../icons/topNavBar/NotificationModal';
+import { Search } from 'lucide-react';
 import SearchBar from '../common/SearchBar';
 import { useNotification } from '../../hooks/useNotification';
 import { useState } from 'react';
@@ -24,12 +22,14 @@ function NavMenus({ onMenuClick }: HeaderProps) {
     closeModal,
     openModal,
   } = useNotification();
-  const [isSearch, setIsSearch] = useState(false);
+  const [isSearchBarVisible, setIsSearchBarVisible] = useState(false);
 
   return (
     <>
-      {isSearch ? (
-        <SearchBar />
+      {isSearchBarVisible ? (
+        <div className="w-full">
+          <SearchBar onClose={() => setIsSearchBarVisible(false)} />
+        </div>
       ) : (
         <>
           <ul className="flex items-center gap-x-2">
@@ -49,7 +49,7 @@ function NavMenus({ onMenuClick }: HeaderProps) {
               />
             </NavMenuItem>
             <NavMenuItem>
-              <div onClick={() => setIsSearch(true)}>
+              <div onClick={() => setIsSearchBarVisible(true)}>
                 <Search color="#ffa200" size={22} />
               </div>
             </NavMenuItem>

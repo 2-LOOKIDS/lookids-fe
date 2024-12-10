@@ -1,22 +1,18 @@
-import SearchBar from '../../components/common/SearchBar';
-import { X } from 'lucide-react';
+import SearchHeader from '../../components/pages/search/SearchHeader';
+import SearchResult from '../../components/pages/search/SearchResult';
 
-export default function page() {
+export default function page({
+  searchParams,
+}: {
+  searchParams: { q: string };
+}) {
+  const query = searchParams.q || '';
   return (
     <main>
-      <section className="pt-13">
-        <div className="flex items-center w-full">
-          {/* <div onClick={() => setIsSearch(!isSearch)}>
-            <Search color="#ffa200" size={22} />
-          </div> */}
-          <div className="flex-1">
-            <SearchBar />
-          </div>
-          {/* <div onClick={() => setIsSearch(!isSearch)}>
-          <X color="#ffa200" size={22} />
-          </div> */}
-        </div>
-      </section>
+      <header className="pt-[0.8rem]">
+        <SearchHeader initialValue={query} />
+      </header>
+      <SearchResult query={query} />
     </main>
   );
 }

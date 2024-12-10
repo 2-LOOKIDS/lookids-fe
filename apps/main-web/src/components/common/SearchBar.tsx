@@ -1,104 +1,59 @@
 'use client';
 
-import { Search, X } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 import { Input } from '@repo/ui/components/ui/input';
+import { X } from 'lucide-react';
+import { useDebounce } from 'use-debounce';
 import { useForm } from 'react-hook-form';
 
-// interface SearchBarProps {
-//   setOpen: (open: boolean) => void;
-// }
+interface SearchBarProps {
+  onClose: () => void;
+  initialValue?: string;
+}
 interface FormValues {
   searchWord: string;
 }
 
-// export default function SearchBar({ setOpen }: SearchBarProps) {
-export default function SearchBar() {
-  const [isOpen, setIsOpen] = useState(false);
-  const pathname = usePathname();
-  const inputRef = useRef<HTMLInputElement | null>(null);
+export default function SearchBar({ onClose, initialValue }: SearchBarProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { register, handleSubmit, watch, setValue } = useForm<FormValues>({
+  const currentTabRef = useRef<string>(searchParams.get('tab') || 'user');
+  const { register, watch, setValue } = useForm<FormValues>({
     defaultValues: {
-      searchWord: '',
+      searchWord: initialValue ?? '',
     },
   });
 
   const searchWord = watch('searchWord');
+  const [debouncedSearchValue] = useDebounce(searchWord, 300);
 
   useEffect(() => {
-    const word = searchParams.get('word');
-    if (word) {
-      setValue('searchWord', word);
-      setIsOpen(true);
+    if (debouncedSearchValue.trim()) {
+      const currentTab = searchParams.get('tab') || currentTabRef.current;
+      currentTabRef.current = currentTab;
+      router.push(
+        `/search?tab=${currentTab}&q=${encodeURIComponent(debouncedSearchValue.trim())}`
+      );
+    } else if (window.location.pathname === '/search') {
+      router.push(`/search?tab=${currentTabRef.current}`);
     }
-  }, [searchParams, setValue]);
+  }, [debouncedSearchValue, router, searchParams]);
 
-  useEffect(() => {
-    if (isOpen && inputRef.current) {
-      inputRef.current.focus();
-    }
-  }, [isOpen]);
-
-  const handleSearchClick = () => {
-    setValue('searchWord', '');
-    setIsOpen(!isOpen);
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValue('searchWord', e.target.value);
   };
-
-  const handleSearchClose = () => {
-    setValue('searchWord', '');
-    console.log('close');
-    router.push('/');
-  };
-
-  const onSubmit = (values: FormValues) => {
-    if (values.searchWord) {
-      router.push(`/search?word=${encodeURIComponent(values.searchWord)}`);
-    } else {
-      router.push('/');
-    }
-  };
-
-  useEffect(() => {
-    const debounceTimer = setTimeout(() => {
-      if (searchWord && searchWord.length >= 1) {
-        router.push(`/search?word=${encodeURIComponent(searchWord)}`);
-      } else {
-        router.push('/');
-      }
-      // if (searchWord && searchWord.length >= 1) {
-      //   router.push(`/search?word=${encodeURIComponent(searchWord)}`);
-      // } else if (searchWord === '') {
-      //   if (pathname.includes('/search')) {
-      //     router.push('/');
-      //   } else {
-      //     router.push(pathname);
-      //   }
-      // }
-    }, 300);
-
-    return () => clearTimeout(debounceTimer);
-  }, [searchWord]);
 
   return (
-    <div className="flex items-center gap-2">
-      {/* <form onSubmit={handleSubmit(onSubmit)} className="flex justify-center"> */}
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Input
-          className="w-[90%]"
-          autoFocus={true}
-          {...register('searchWord')}
-          ref={(e) => {
-            inputRef.current = e;
-            register('searchWord').ref(e);
-          }}
-          placeholder="검색어를 입력해주세요"
-        />
-      </form>
-      <div onClick={() => handleSearchClose}>
+    <div className="flex items-center justify-center gap-2">
+      <Input
+        {...register('searchWord')}
+        autoFocus
+        placeholder="검색어를 입력해주세요"
+        onChange={handleInputChange}
+      />
+      <div onClick={onClose}>
         <X color="#ffa200" size={22} />
       </div>
     </div>
