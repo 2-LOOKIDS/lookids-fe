@@ -169,6 +169,7 @@ export const deletePet = async (
 };
 
 export async function getRandomPetList(): Promise<PetDetail[]> {
+  console.log('랜덤 펫 리스트 조회');
   try {
     const data = await fetchDataforMembers<CommonResponse<PetDetail[]>>(
       `user-service/read/petprofile/random?limit=5`,
@@ -176,6 +177,7 @@ export async function getRandomPetList(): Promise<PetDetail[]> {
       '',
       'no-cache'
     );
+    console.log('동작은하지?', data.result);
     return data.result;
   } catch (error) {
     console.error('랜덤 펫 리스트 조회 실패:', error);
