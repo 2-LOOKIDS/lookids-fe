@@ -7,14 +7,15 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { Input } from '@repo/ui/components/ui/input';
 import { useForm } from 'react-hook-form';
 
-interface SearchBarProps {
-  setOpen: (open: boolean) => void;
-}
+// interface SearchBarProps {
+//   setOpen: (open: boolean) => void;
+// }
 interface FormValues {
   searchWord: string;
 }
 
-export default function SearchBar({ setOpen }: SearchBarProps) {
+// export default function SearchBar({ setOpen }: SearchBarProps) {
+export default function SearchBar() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -49,6 +50,7 @@ export default function SearchBar({ setOpen }: SearchBarProps) {
 
   const handleSearchClose = () => {
     setValue('searchWord', '');
+    console.log('close');
     router.push('/');
   };
 

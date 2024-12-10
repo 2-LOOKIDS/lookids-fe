@@ -12,9 +12,9 @@ export default function page() {
           <div className="flex-1">
             <SearchBar />
           </div>
-          <div onClick={() => setIsSearch(!isSearch)}>
-            <X color="#ffa200" size={22} />
-          </div>
+          {/* <div onClick={() => setIsSearch(!isSearch)}>
+          <X color="#ffa200" size={22} />
+          </div> */}
         </div>
       </section>
     </main>
