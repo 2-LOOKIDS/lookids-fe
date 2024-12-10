@@ -9,6 +9,8 @@ import {
 import SocialCardwithData from '../../components/common/feedcard/SocialCardwithData';
 import MainSwiper from '../../components/icons/topNavBar/MainSwiper';
 import RecommendedPet from '../../components/pages/main/RecommendPet';
+import MainSwiperSkeleton from '../../components/ui/Skeletons/MainSwiperSkeleton';
+import { SocialCardSkeleton } from '../../components/ui/Skeletons/SocialCardSkeleton';
 import { useSession } from '../../context/SessionContext';
 import { FeedDetail } from '../../types/feed/FeedType';
 
@@ -66,12 +68,17 @@ export default function Page() {
   }, [isReachingEnd, isValidating]);
 
   if (error) return <div>데이터를 불러오는 중 오류가 발생했습니다.</div>;
-  if (isLoadingInitialData) return <div>초기 데이터를 로드 중입니다...</div>;
 
   return (
     <main className="px-4">
       <div className="mb-20 mt-14 flex flex-col gap-4">
-        <MainSwiper />
+        {isLoadingInitialData ? (
+          // MainSwiperSkeleton 표시
+          <MainSwiperSkeleton />
+        ) : (
+          // MainSwiper 표시
+          <MainSwiper />
+        )}
         {feedList.length === 0 ? (
           // 피드가 없을 때 표시할 메시지
           <div className="text-center text-gray-500">
@@ -93,7 +100,10 @@ export default function Page() {
             return acc;
           }, [])
         )}
-        {isLoadingMore && <div>로딩 중...</div>}
+        {isLoadingMore &&
+          Array.from({ length: PAGE_SIZE }, (_, i) => (
+            <SocialCardSkeleton key={`loading-skeleton-${i}`} />
+          ))}
         {isReachingEnd && feedList.length > 0 && (
           <div>더 이상 불러올 피드가 없습니다.</div>
         )}
