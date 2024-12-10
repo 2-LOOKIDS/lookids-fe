@@ -5,7 +5,6 @@ import {
   AvatarImage,
 } from '@repo/ui/components/ui/avatar';
 import { Card, CardContent, CardFooter } from '@repo/ui/components/ui/card';
-
 import { motion } from 'framer-motion';
 import { Share2, ThumbsUp } from 'lucide-react';
 import Image from 'next/image';
@@ -20,6 +19,7 @@ import {
 } from '../../../actions/favorite/favorite';
 import { getFeedDetail } from '../../../actions/feed/FeedCard';
 import { getPetDetail } from '../../../actions/user';
+import { SocialCardSkeleton } from '../../../components/ui/Skeletons/SocialCardSkeleton'; // Skeleton 추가
 import { FeedDetail } from '../../../types/feed/FeedType';
 import { PetDetail } from '../../../types/user';
 import { formatDate } from '../../../utils/formatDate';
@@ -35,6 +35,7 @@ export default function SocialCard({
   feedCode: string;
 }) {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true); // 로딩 상태 추가
   const [isPetModalOpen, setIsPetModalOpen] = useState(false);
   const [selectedPet, setSelectedPet] = useState<PetDetail | null>(null);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
@@ -53,52 +54,53 @@ export default function SocialCard({
     feedCode: '',
     petCode: [],
   });
+
   useEffect(() => {
-    // 좋아요 여부 조회
-    getIsFavorite(feedCode).then((res) => {
-      setIsLiked(res);
-    });
-    if (feedDetail.petCode) {
-      feedDetail.petCode.forEach((petCode) => {
-        getPetDetail(petCode).then((res) => {
-          console.log('펫정보', res);
-          setPetDetail((prev) => [...prev, res]);
-        });
-      });
-    }
-  }, [feedDetail]);
+    const fetchData = async () => {
+      try {
+        setIsLoading(true); // 로딩 시작
+        const [feedData, isFavorite] = await Promise.all([
+          getFeedDetail(feedCode),
+          getIsFavorite(feedCode),
+        ]);
+        setFeedDetail(feedData);
+        setIsLiked(isFavorite);
+
+        if (feedData.petCode) {
+          const petDetails = await Promise.all(
+            feedData.petCode.map((petCode) => getPetDetail(petCode))
+          );
+          setPetDetail(petDetails);
+        }
+      } catch (error) {
+        console.error('Error fetching feed data:', error);
+      } finally {
+        setIsLoading(false); // 로딩 종료
+      }
+    };
+
+    fetchData();
+  }, [feedCode]);
 
   const handleShareClick = () => {
     setIsShareModalOpen(true);
   };
+
   const toggleLike = async (feedDetail: FeedDetail) => {
     setIsLiked(!isLiked);
     setLikeCount(isLiked ? likeCount - 1 : likeCount + 1);
     try {
-      const res = await putFavoriteComment(
-        feedDetail.uuid,
-        feedDetail.feedCode,
-        '피드'
-      );
+      await putFavoriteComment(feedDetail.uuid, feedDetail.feedCode, '피드');
     } catch (error) {
       setIsLiked(!isLiked);
       setLikeCount(isLiked ? likeCount + 1 : likeCount - 1);
-      throw new Error(`좋아요 등록 중 실패: ${error}`);
+      console.error(`좋아요 등록 중 실패: ${error}`);
     }
-    // 추가 로직 (API 호출 등)도 이곳에 구현 가능
   };
 
-  useEffect(() => {
-    const fetchFeedDetail = async (feedCode: string) => {
-      try {
-        const data = await getFeedDetail(feedCode);
-        setFeedDetail(data);
-      } catch (error) {
-        console.log('피드 데이터 에러', error);
-      }
-    };
-    fetchFeedDetail(feedCode);
-  }, [feedCode]);
+  if (isLoading) {
+    return <SocialCardSkeleton />;
+  }
 
   return (
     <>
@@ -141,7 +143,7 @@ export default function SocialCard({
         )}
 
         <CardContent className="mt-4 px-2">
-          <div className="flex items-start justify-between ">
+          <div className="flex items-start justify-between">
             <div
               className="mb-4 flex items-center space-x-4 hover:cursor-pointer"
               onClick={() =>
