@@ -19,5 +19,3 @@ module.exports = {
     ],
   },
 };
-
-const { withS3Upload } = require('next-s3-upload');

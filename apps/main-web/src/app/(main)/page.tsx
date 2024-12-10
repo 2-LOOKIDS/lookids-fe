@@ -62,7 +62,6 @@ export default function Page() {
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
-    console.log('feedList:', feedList);
 
     return () => window.removeEventListener('scroll', handleScroll);
   }, [isReachingEnd, isValidating]);
