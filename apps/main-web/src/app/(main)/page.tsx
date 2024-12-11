@@ -6,6 +6,7 @@ import {
   getMainFeedList,
   getRandomFeedList,
 } from '../../actions/feed/FeedCard';
+
 import SocialCard from '../../components/common/feedcard/socialCard/SocialCard';
 import LoginModal from '../../components/common/LoginModal';
 import MainSwiper from '../../components/icons/topNavBar/MainSwiper';

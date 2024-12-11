@@ -1,6 +1,12 @@
-import { searchFeedResult } from '../../types/feed/FeedType';
 import { CommonResponse, responseList } from '../../types/responseType';
+import {
+  SearchResultListFeed,
+  SearchResultListPet,
+  SearchResultListUser,
+} from '../../types/search';
+
 import { fetchDataforCommon } from '../common/common';
+import { searchFeedResult } from '../../types/feed/FeedType';
 
 export interface searchUser {
   uuid: string;
@@ -9,15 +15,10 @@ export interface searchUser {
   profileImage: string;
 }
 
-export async function searchUser(
-  searchParam: string,
-  page: number
-): Promise<responseList<searchUser>> {
+export async function searchUser(url: string): Promise<SearchResultListUser> {
   try {
-    const data = await fetchDataforCommon<
-      CommonResponse<responseList<searchUser>>
-    >(
-      `search-service/read/search/user?searchParam=${searchParam}&page=${page}&size=10`,
+    const data = await fetchDataforCommon<CommonResponse<SearchResultListUser>>(
+      url,
       'GET',
       null,
       'no-cache'
@@ -28,15 +29,24 @@ export async function searchUser(
   }
 }
 
-export async function searchFeed(
-  searchParam: string,
-  page: number
-): Promise<responseList<searchFeedResult>> {
+export async function searchFeed(url: string): Promise<SearchResultListFeed> {
   try {
-    const data = await fetchDataforCommon<
-      CommonResponse<responseList<searchFeedResult>>
-    >(
-      `search-service/read/search/feed?searchParam=${searchParam}&page=${page}&size=10`,
+    const data = await fetchDataforCommon<CommonResponse<SearchResultListFeed>>(
+      url,
+      'GET',
+      null,
+      'no-cache'
+    );
+    return data.result;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function searchPet(url: string): Promise<SearchResultListPet> {
+  try {
+    const data = await fetchDataforCommon<CommonResponse<SearchResultListPet>>(
+      url,
       'GET',
       null,
       'no-cache'

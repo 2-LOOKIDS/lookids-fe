@@ -2,21 +2,18 @@ import { getPetList, getUserProfile } from '../../actions/user';
 
 import AddPet from '../../components/pages/mypage/AddPet';
 import EditCommentForm from '../../components/pages/mypage/EditCommentForm';
-import { EditDialog } from '../../components/pages/mypage/EditDialog';
+
+import { getServerSession } from 'next-auth';
+import Hr from '../../components/common/Hr';
+import InputFormDialog from '../../components/forms/InputFormDialog';
 import EditPassword from '../../components/pages/mypage/EditPassword';
-import { EditPetButton } from '../../components/pages/profile/PetList';
 import EditPets from '../../components/pages/mypage/EditPets';
 import EditProfileImage from '../../components/pages/mypage/EditProfileImage';
 import EditUserProfileForm from '../../components/pages/mypage/EditUserProfileForm';
-import FeedList from '../../components/pages/profile/FeedList';
-import Hr from '../../components/common/Hr';
-import InputFormDialog from '../../components/forms/InputFormDialog';
 import SignOut from '../../components/pages/mypage/SignOut';
-import { cn } from '@repo/ui/lib/utils';
+import FeedList from '../../components/pages/profile/FeedList';
+import { EditPetButton } from '../../components/pages/profile/PetList';
 import { formatDateString } from '../../utils/formatDate';
-import { genderColor } from '../../utils/font';
-import { getMediaUrl } from '../../utils/media';
-import { getServerSession } from 'next-auth';
 import { options } from '../api/auth/[...nextauth]/options';
 
 export default async function page() {
@@ -24,7 +21,6 @@ export default async function page() {
   const token = data?.user.accessToken;
   const uuid = data?.user.uuid;
   const userProfile = await getUserProfile(uuid);
-  const profileImage = getMediaUrl(userProfile.image);
   const petList = await getPetList(uuid);
   const comment = userProfile.comment ?? '소개글을 작성해주세요!';
   const userBirthDate = formatDateString(userProfile.birthDate);
@@ -33,7 +29,7 @@ export default async function page() {
       {/* 프로필 사진, 닉네임 변경 */}
       <section className="flex flex-col items-center justify-center px-4 py-5">
         <EditProfileImage
-          imgUrl={profileImage}
+          imgUrl={userProfile.image}
           imgAlt={userProfile.nickname}
           uuid={uuid}
           token={token}
