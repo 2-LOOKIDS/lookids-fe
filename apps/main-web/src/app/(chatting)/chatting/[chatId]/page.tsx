@@ -1,6 +1,6 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import {
@@ -15,7 +15,6 @@ import MessageSection from '../../../../components/pages/chatting/Message';
 import CommonHeader from '../../../../components/ui/CommonHeader';
 import { useSession } from '../../../../context/SessionContext';
 import { MenuItem } from '../../../../types/common/MenuType';
-import { scrollToBottom } from '../../../../utils/scroll';
 
 export default function ChatPage({ params }: { params: { chatId: string } }) {
   const session = useSession();
@@ -25,7 +24,6 @@ export default function ChatPage({ params }: { params: { chatId: string } }) {
   const [roomName, setRoomName] = useState('');
   const [participants, setParticipants] = useState<string[]>([]);
   const [isRoomInfoLoaded, setIsRoomInfoLoaded] = useState(false);
-  const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const MySwal = withReactContent(Swal);
 
   const menuItems: MenuItem[] = [
@@ -147,7 +145,7 @@ export default function ChatPage({ params }: { params: { chatId: string } }) {
         message: inputMessage,
         senderId: session?.uuid || '',
       });
-      scrollToBottom(messagesEndRef);
+
       setInputMessage('');
     }
   };

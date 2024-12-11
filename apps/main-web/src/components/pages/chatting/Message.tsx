@@ -26,9 +26,18 @@ export default function MessageSection({
     Record<string, UserInfo>
   >({});
   const messagesContainerRef = useRef<HTMLDivElement | null>(null);
-  const topRef = useRef<HTMLDivElement | null>(null);
 
-  // 중복 메시지 제거 함수
+  // Scroll to bottom helper function
+  const scrollToBottom = () => {
+    const container = messagesContainerRef.current;
+    if (container) {
+      container.scrollTo({
+        top: container.scrollHeight,
+        behavior: 'smooth', // 부드러운 스크롤 이동
+      });
+    }
+  };
+  // Add unique messages to state
   const addUniqueMessages = (newMessages: MessageResponse[]) => {
     setMessages((prev) => {
       const existingIds = new Set(prev.map((msg) => msg.id));
@@ -39,7 +48,7 @@ export default function MessageSection({
     });
   };
 
-  // 이전 메시지 불러오기
+  // Load older messages when scrolling up
   const loadMoreMessages = async () => {
     if (isLoading || !hasMore) return;
     setIsLoading(true);
@@ -55,7 +64,7 @@ export default function MessageSection({
         addUniqueMessages(newMessages);
         setPage((prevPage) => prevPage + 1);
 
-        // 스크롤 위치 복원
+        // Restore scroll position after loading older messages
         setTimeout(() => {
           if (container) {
             const newScrollHeight = container.scrollHeight;
@@ -70,7 +79,7 @@ export default function MessageSection({
     }
   };
 
-  // SSE 메시지 수신
+  // SSE for receiving real-time messages
   useEffect(() => {
     const eventSource = connectEventSource(
       chatId,
@@ -78,16 +87,10 @@ export default function MessageSection({
       (newMessage) => {
         setMessages((prev) => [newMessage, ...prev]);
 
-        // 스크롤이 맨 아래에 있을 경우만 자동 스크롤
-        const container = messagesContainerRef.current;
-        if (
-          container &&
-          container.scrollTop + container.clientHeight >= container.scrollHeight
-        ) {
-          setTimeout(() => {
-            container.scrollTop = container.scrollHeight;
-          }, 0);
-        }
+        // Scroll to bottom when a new message is received
+        setTimeout(() => {
+          scrollToBottom();
+        }, 0);
       },
       () => {
         console.error('EventSource error occurred');
@@ -96,12 +99,12 @@ export default function MessageSection({
 
     return () => {
       if (eventSource) {
-        eventSource.close(); // 컴포넌트 언마운트 시 EventSource 닫기
+        eventSource.close();
       }
     };
   }, [chatId, session]);
 
-  // 초기화
+  // Initialize messages and profiles
   useEffect(() => {
     const initialize = async () => {
       try {
@@ -111,9 +114,9 @@ export default function MessageSection({
         const initialMessages = await fetchInitialMessages(chatId, 0);
         addUniqueMessages(initialMessages);
 
-        const container = messagesContainerRef.current;
+        // Scroll to bottom after loading initial messages
         setTimeout(() => {
-          if (container) container.scrollTop = container.scrollHeight;
+          scrollToBottom();
         }, 0);
       } catch (error) {
         console.error('Failed to initialize messages:', error);
@@ -123,7 +126,7 @@ export default function MessageSection({
     initialize();
   }, [chatId, participants]);
 
-  // 스크롤 이벤트 핸들러
+  // Scroll event handler for loading older messages
   const handleScroll = () => {
     const container = messagesContainerRef.current;
     if (!container || isLoading || !hasMore) return;
@@ -133,6 +136,15 @@ export default function MessageSection({
     }
   };
 
+  // Scroll to bottom whenever messages are updated
+  useEffect(() => {
+    if (messages.length > 0) {
+      setTimeout(() => {
+        scrollToBottom();
+      }, 0);
+    }
+  }, [messages]);
+
   return (
     <section
       ref={messagesContainerRef}
@@ -141,7 +153,6 @@ export default function MessageSection({
       aria-label="Chat messages"
     >
       <ul>
-        <div ref={topRef} />
         {messages
           .slice()
           .reverse()
@@ -156,7 +167,9 @@ export default function MessageSection({
             return (
               <li
                 key={message.id}
-                className={`flex gap-y-2 ${isUserMessage ? 'justify-end' : 'justify-start'}`}
+                className={`flex gap-y-2 ${
+                  isUserMessage ? 'justify-end' : 'justify-start'
+                }`}
               >
                 {!isUserMessage && (
                   <article className="flex max-w-[75%] flex-col gap-2">
@@ -165,7 +178,9 @@ export default function MessageSection({
                         <div className="h-8 w-8 overflow-hidden rounded-full bg-gray-200 sm:h-9 sm:w-9">
                           <img
                             src={userImageUrl}
-                            alt={`${senderProfile.nickname || 'User'}'s profile`}
+                            alt={`${
+                              senderProfile.nickname || 'User'
+                            }'s profile`}
                             className="h-full w-full object-cover"
                           />
                         </div>
