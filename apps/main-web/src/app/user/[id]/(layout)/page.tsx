@@ -3,20 +3,20 @@ import {
   getUserProfileByNicknameTag,
 } from '../../../../actions/user';
 
-import { Metadata } from 'next';
-import { getServerSession } from 'next-auth';
-import { notFound } from 'next/navigation';
-import { getProfileStats } from '../../../../actions/batch/batch';
-import { getFollowStatus } from '../../../../actions/follow/Follow';
 import FeedList from '../../../../components/pages/profile/FeedList';
 import FollowButton from '../../../../components/pages/profile/FollowButton';
 import MessageButton from '../../../../components/pages/profile/MessageButton';
+import { Metadata } from 'next';
 import PetList from '../../../../components/pages/profile/PetList';
+import ProfileAvatar from '../../../../components/ui/ProfileAvatar';
 import ProfileDescription from '../../../../components/pages/profile/ProfileDescription';
 import ProfileHeader from '../../../../components/pages/profile/ProfileHeader';
 import ProfileStats from '../../../../components/pages/profile/ProfileStats';
-import ProfileAvatar from '../../../../components/ui/ProfileAvatar';
+import { getFollowStatus } from '../../../../actions/follow/Follow';
 import { getMediaUrl } from '../../../../utils/media';
+import { getProfileStats } from '../../../../actions/batch/batch';
+import { getServerSession } from 'next-auth';
+import { notFound } from 'next/navigation';
 import { options } from '../../../api/auth/[...nextauth]/options';
 
 export async function generateMetadata({

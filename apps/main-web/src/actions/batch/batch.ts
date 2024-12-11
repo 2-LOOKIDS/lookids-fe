@@ -1,6 +1,6 @@
 import { CommonResponse } from '../../types/responseType';
-import { formatNumber } from '../../utils/formatNumber';
 import { fetchDataforCommon } from '../common/common';
+import { formatNumber } from '../../utils/formatNumber';
 
 export interface FollowCount {
   followingCount: number;
