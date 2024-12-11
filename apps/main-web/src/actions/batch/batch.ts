@@ -1,4 +1,5 @@
 import { CommonResponse } from '../../types/responseType';
+import { formatNumber } from '../../utils/formatNumber';
 import { fetchDataforCommon } from '../common/common';
 
 export interface FollowCount {
@@ -54,4 +55,28 @@ export async function getFavoriteCount(
     console.error('댓글 수 조회 중 오류 발생:', error);
     throw new Error(`댓글 수 조회 실패: ${error}`);
   }
+}
+
+export async function getProfileStats(uuid: string) {
+  const postData = await getFeedCount(uuid);
+  const followerData = await getFollowCount(uuid);
+
+  const stats = [
+    {
+      id: 0,
+      data: formatNumber(postData.count),
+      label: 'Posts',
+    },
+    {
+      id: 1,
+      data: formatNumber(followerData.followerCount),
+      label: 'Follower',
+    },
+    {
+      id: 2,
+      data: formatNumber(followerData.followingCount),
+      label: 'Following',
+    },
+  ];
+  return stats;
 }

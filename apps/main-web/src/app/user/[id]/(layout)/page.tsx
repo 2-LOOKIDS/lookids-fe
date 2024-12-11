@@ -6,6 +6,7 @@ import {
 import { Metadata } from 'next';
 import { getServerSession } from 'next-auth';
 import { notFound } from 'next/navigation';
+import { getProfileStats } from '../../../../actions/batch/batch';
 import { getFollowStatus } from '../../../../actions/follow/Follow';
 import FeedList from '../../../../components/pages/profile/FeedList';
 import FollowButton from '../../../../components/pages/profile/FollowButton';
@@ -40,7 +41,7 @@ export default async function page({ params }: { params: { id: string } }) {
   const imgUrl = getMediaUrl(userProfile.image);
   const followStatus = await getFollowStatus(data?.user.uuid, userProfile.uuid);
   const petList = await getPetList(userProfile.uuid);
-
+  const stats = await getProfileStats(userProfile.uuid);
   return (
     <>
       <ProfileHeader
@@ -55,7 +56,7 @@ export default async function page({ params }: { params: { id: string } }) {
               imgUrl={imgUrl}
               imgAlt={userProfile.nickname}
             />
-            <ProfileStats uuid={userProfile.uuid} />
+            <ProfileStats stats={stats} />
           </div>
 
           <ProfileDescription comment={userProfile.comment} />
