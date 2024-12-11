@@ -3,22 +3,17 @@ import { getPetList, getUserProfile } from '../../actions/user';
 import AddPet from '../../components/pages/mypage/AddPet';
 import EditCommentForm from '../../components/pages/mypage/EditCommentForm';
 
-import { EditDialog } from '../../components/pages/mypage/EditDialog';
+import { getServerSession } from 'next-auth';
+import Hr from '../../components/common/Hr';
+import InputFormDialog from '../../components/forms/InputFormDialog';
 import EditPassword from '../../components/pages/mypage/EditPassword';
-import { EditPetButton } from '../../components/pages/profile/PetList';
 import EditPets from '../../components/pages/mypage/EditPets';
 import EditProfileImage from '../../components/pages/mypage/EditProfileImage';
 import EditUserProfileForm from '../../components/pages/mypage/EditUserProfileForm';
-import FeedList from '../../components/pages/profile/FeedList';
-import Hr from '../../components/common/Hr';
-import InputFormDialog from '../../components/forms/InputFormDialog';
 import SignOut from '../../components/pages/mypage/SignOut';
+import FeedList from '../../components/pages/profile/FeedList';
+import { EditPetButton } from '../../components/pages/profile/PetList';
 import { formatDateString } from '../../utils/formatDate';
-import { cn } from '@repo/ui/lib/utils';
-import { formatDateString } from '../../utils/formatDate';
-import { genderColor } from '../../utils/font';
-import { getMediaUrl } from '../../utils/media';
-import { getServerSession } from 'next-auth';
 import { options } from '../api/auth/[...nextauth]/options';
 
 export default async function page() {
