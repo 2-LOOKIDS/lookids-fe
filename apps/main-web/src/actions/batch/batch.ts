@@ -9,7 +9,7 @@ export interface FollowCount {
 export async function getFollowCount(uuid: string): Promise<FollowCount> {
   try {
     const data = await fetchDataforCommon<CommonResponse<FollowCount>>(
-      `batch-service/read/count/follow?uuid=${uuid}`,
+      `batch-service/read/follow?uuid=${uuid}`,
       'GET',
       '',
       'no-cache'
@@ -25,9 +25,10 @@ export interface Counting {
   count: number;
 }
 export async function getFeedCount(uuid: string): Promise<Counting> {
+  console.log('uuid', uuid);
   try {
     const data = await fetchDataforCommon<CommonResponse<Counting>>(
-      `batch-service/read/count/feed?uuid=${uuid}`,
+      `batch-service/read/feed?uuid=${uuid}`,
       'GET',
       '',
       'no-cache'
@@ -43,6 +44,7 @@ export async function getFavoriteCount(
   targetCode: string,
   type: string
 ): Promise<Counting> {
+  console.log('targetCode', targetCode);
   try {
     const data = await fetchDataforCommon<CommonResponse<Counting>>(
       `batch-service/read/favorite?targetCode=${targetCode}&type=${type}`,
