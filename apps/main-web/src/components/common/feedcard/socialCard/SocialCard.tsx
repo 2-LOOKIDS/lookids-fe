@@ -4,24 +4,26 @@ import {
   AvatarFallback,
   AvatarImage,
 } from '@repo/ui/components/ui/avatar';
-import { Card, CardContent, CardFooter } from '@repo/ui/components/ui/card';
+import { Card, CardContent } from '@repo/ui/components/ui/card';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { getFavoriteCount } from '../../../../actions/batch/batch';
 import {
   getIsFavorite,
   putFavoriteComment,
-} from '../../../actions/favorite/favorite';
-import { getFeedDetail } from '../../../actions/feed/FeedCard';
-import { getPetDetail } from '../../../actions/user';
-import { SocialCardSkeleton } from '../../../components/ui/Skeletons/SocialCardSkeleton'; // Skeleton 추가
-import { FeedDetail } from '../../../types/feed/FeedType';
-import { PetDetail } from '../../../types/user';
-import { formatDate } from '../../../utils/formatDate';
-import { getMediaUrl } from '../../../utils/media';
+} from '../../../../actions/favorite/favorite';
+import { getCommentCount } from '../../../../actions/feed/comment';
+import { getFeedDetail } from '../../../../actions/feed/FeedCard';
+import { getPetDetail } from '../../../../actions/user';
+import { FeedDetail } from '../../../../types/feed/FeedType';
+import { PetDetail } from '../../../../types/user';
+import { formatDate } from '../../../../utils/formatDate';
+import { getMediaUrl } from '../../../../utils/media';
+import { SocialCardSkeleton } from '../../../ui/Skeletons/SocialCardSkeleton'; // Skeleton 추가
 import SocialCardReaction from './FeedCardReactSection';
 import { PetModal } from './PetModal';
 import { ShareModal } from './ShareModal';
@@ -41,6 +43,7 @@ export default function SocialCard({
   const [petDetail, setPetDetail] = useState<PetDetail[]>([]);
   const [likeCount, setLikeCount] = useState(0);
   const [isLiked, setIsLiked] = useState(false);
+  const [commentCount, setCommentCount] = useState(0);
   const [feedDetail, setFeedDetail] = useState<FeedDetail>({
     uuid: '',
     tag: '',
@@ -55,6 +58,17 @@ export default function SocialCard({
   });
 
   useEffect(() => {
+    const fetchCount = async () => {
+      try {
+        const commentCount = await getCommentCount(feedCode);
+        const favroiteCount = await getFavoriteCount(feedCode, '피드');
+        setCommentCount(commentCount.commentCount);
+        setLikeCount(favroiteCount.count);
+      } catch (error) {
+        console.error('Error fetching count data:', error);
+      }
+    };
+
     const fetchData = async () => {
       try {
         setIsLoading(true); // 로딩 시작
@@ -79,6 +93,7 @@ export default function SocialCard({
     };
 
     fetchData();
+    fetchCount();
   }, [feedCode]);
 
   const handleShareClick = () => {
@@ -175,49 +190,48 @@ export default function SocialCard({
           >
             {feedDetail.content}
           </p>
-        </CardContent>
-
-        {petDetail.length > 0 && (
-          <div className="px-2 py-3 border-t border-gray-100">
-            <h4 className="text-sm font-semibold text-gray-600 mb-2">
-              반려동물
-            </h4>
-            <div className="flex flex-wrap gap-2">
-              {petDetail.map((pet, index) => (
-                <div
-                  key={index}
-                  className="flex items-center space-x-2 bg-gray-50 rounded-full px-3 py-1 cursor-pointer"
-                  onClick={() => {
-                    setSelectedPet(pet);
-                    setIsPetModalOpen(true);
-                  }}
-                >
-                  <Avatar className="h-6 w-6">
-                    <AvatarImage
-                      src={getMediaUrl(pet.image)}
-                      alt={pet.name}
-                      className="object-cover"
-                    />
-                    <AvatarFallback>{pet.name.charAt(0)}</AvatarFallback>
-                  </Avatar>
-                  <span className="text-sm font-medium text-gray-700">
-                    {pet.name}
-                  </span>
-                </div>
-              ))}
+          {/** 반려동물 리스트 */}
+          {petDetail.length > 0 && (
+            <div className=" py-3 ">
+              <h4 className="text-sm font-semibold text-gray-600 mb-2">
+                반려동물
+              </h4>
+              <div className="flex flex-wrap gap-2">
+                {petDetail.map((pet, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center space-x-2 bg-gray-50 rounded-full px-3 py-1 cursor-pointer"
+                    onClick={() => {
+                      setSelectedPet(pet);
+                      setIsPetModalOpen(true);
+                    }}
+                  >
+                    <Avatar className="h-6 w-6">
+                      <AvatarImage
+                        src={getMediaUrl(pet.image)}
+                        alt={pet.name}
+                        className="object-cover"
+                      />
+                      <AvatarFallback>{pet.name.charAt(0)}</AvatarFallback>
+                    </Avatar>
+                    <span className="text-sm font-medium text-gray-700">
+                      {pet.name}
+                    </span>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
-        )}
+          )}
+          {/* SocialCard Reaction Section */}
 
-        {/* SocialCard Reaction Section */}
-        <CardFooter>
           <SocialCardReaction
             isLiked={isLiked}
             likeCount={likeCount}
+            commentCount={commentCount}
             onToggleLike={() => toggleLike(feedDetail)}
             onShareClick={handleShareClick}
           />
-        </CardFooter>
+        </CardContent>
       </Card>
       <ShareModal
         isOpen={isShareModalOpen}

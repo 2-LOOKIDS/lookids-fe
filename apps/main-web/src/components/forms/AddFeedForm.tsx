@@ -7,7 +7,7 @@ import Swal from 'sweetalert2';
 import { uploadFeedWithMedia } from '../../actions/feed/FeedCard';
 import { useImage } from '../../context/ImageContext';
 import { FeedPostType } from '../../types/feed/FeedType';
-import FeedTags from '../common/feedcard/FeedTags';
+import FeedTags from '../common/feedcard/addFeed/FeedTags';
 
 interface AddFeedFormProps {
   selectedPetCode: string[] | null;
