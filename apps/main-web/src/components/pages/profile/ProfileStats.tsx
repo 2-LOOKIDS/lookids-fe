@@ -1,26 +1,34 @@
-import React, { Fragment } from 'react';
-
+import { Fragment } from 'react';
+import {
+  Counting,
+  FollowCount,
+  getFeedCount,
+  getFollowCount,
+} from '../../../actions/batch/batch';
 import { formatNumber } from '../../../utils/formatNumber';
 
-const stats = [
-  {
-    id: 0,
-    data: formatNumber(20),
-    label: 'Posts',
-  },
-  {
-    id: 1,
-    data: formatNumber(10900000),
-    label: 'Follower',
-  },
-  {
-    id: 2,
-    data: formatNumber(909000000),
-    label: 'Following',
-  },
-];
+export default async function ProfileStats({ uuid }: { uuid: string }) {
+  const followerData: FollowCount = await getFollowCount(uuid);
+  const postData: Counting = await getFeedCount(uuid);
 
-export default function ProfileStats() {
+  const stats = [
+    {
+      id: 0,
+      data: formatNumber(postData.count),
+      label: 'Posts',
+    },
+    {
+      id: 1,
+      data: formatNumber(followerData.followerCount),
+      label: 'Follower',
+    },
+    {
+      id: 2,
+      data: formatNumber(followerData.followingCount),
+      label: 'Following',
+    },
+  ];
+
   return (
     <ul className="flex gap-4">
       {stats.map((item) => {

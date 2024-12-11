@@ -1,7 +1,7 @@
 import { CommonResponse } from '../../types/responseType';
 import { fetchDataforCommon } from '../common/common';
 
-interface FollowCount {
+export interface FollowCount {
   followingCount: number;
   followerCount: number;
 }
@@ -20,7 +20,7 @@ export async function getFollowCount(uuid: string): Promise<FollowCount> {
   }
 }
 
-interface Counting {
+export interface Counting {
   count: number;
 }
 export async function getFeedCount(uuid: string): Promise<Counting> {
@@ -38,7 +38,7 @@ export async function getFeedCount(uuid: string): Promise<Counting> {
   }
 }
 //댓글,피드
-export async function getCommentFavoriteCount(
+export async function getFavoriteCount(
   targetCode: string,
   type: string
 ): Promise<Counting> {

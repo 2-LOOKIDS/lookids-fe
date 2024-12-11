@@ -55,7 +55,7 @@ export default async function page({ params }: { params: { id: string } }) {
               imgUrl={imgUrl}
               imgAlt={userProfile.nickname}
             />
-            <ProfileStats />
+            <ProfileStats uuid={userProfile.uuid} />
           </div>
 
           <ProfileDescription comment={userProfile.comment} />
