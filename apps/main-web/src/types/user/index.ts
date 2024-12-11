@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 // 사람
 export const UserProfileSchema = z.object({
-  nickname: z.string().min(4, '닉네임을 입력해주세요'),
+  nickname: z.string().min(2, '닉네임을 입력해주세요'),
   birthDate: z.coerce
     .number()
     .nullable()

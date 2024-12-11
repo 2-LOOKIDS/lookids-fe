@@ -37,7 +37,7 @@ function UserResultItem({ content }: UserResultItemProps) {
         className="flex items-center gap-2"
       >
         <ProfileAvatar
-          className="h-[40px] w-[40px]"
+          className="h-10 w-10"
           imgUrl={content.profileImage}
           imgAlt={`${content.nickname}@${content.tag}`}
         />
