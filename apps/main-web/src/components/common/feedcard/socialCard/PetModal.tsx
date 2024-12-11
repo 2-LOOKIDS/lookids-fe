@@ -9,8 +9,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@repo/ui/components/ui/dialog';
-import { PetDetail } from '../../../types/user';
-import { getMediaUrl } from '../../../utils/media';
+import { PetDetail } from '../../../../types/user';
+import { getMediaUrl } from '../../../../utils/media';
 
 interface PetModalProps {
   isOpen: boolean;

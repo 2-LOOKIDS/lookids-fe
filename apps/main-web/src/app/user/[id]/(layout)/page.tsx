@@ -3,19 +3,20 @@ import {
   getUserProfileByNicknameTag,
 } from '../../../../actions/user';
 
+import { Metadata } from 'next';
+import { getServerSession } from 'next-auth';
+import { notFound } from 'next/navigation';
+import { getProfileStats } from '../../../../actions/batch/batch';
+import { getFollowStatus } from '../../../../actions/follow/Follow';
 import FeedList from '../../../../components/pages/profile/FeedList';
 import FollowButton from '../../../../components/pages/profile/FollowButton';
 import MessageButton from '../../../../components/pages/profile/MessageButton';
-import { Metadata } from 'next';
 import PetList from '../../../../components/pages/profile/PetList';
-import ProfileAvatar from '../../../../components/ui/ProfileAvatar';
 import ProfileDescription from '../../../../components/pages/profile/ProfileDescription';
 import ProfileHeader from '../../../../components/pages/profile/ProfileHeader';
 import ProfileStats from '../../../../components/pages/profile/ProfileStats';
-import { getFollowStatus } from '../../../../actions/follow/Follow';
+import ProfileAvatar from '../../../../components/ui/ProfileAvatar';
 import { getMediaUrl } from '../../../../utils/media';
-import { getServerSession } from 'next-auth';
-import { notFound } from 'next/navigation';
 import { options } from '../../../api/auth/[...nextauth]/options';
 
 export async function generateMetadata({
@@ -39,10 +40,13 @@ export default async function page({ params }: { params: { id: string } }) {
   const imgUrl = getMediaUrl(userProfile.image);
   const followStatus = await getFollowStatus(data?.user.uuid, userProfile.uuid);
   const petList = await getPetList(userProfile.uuid);
-
+  const stats = await getProfileStats(userProfile.uuid);
   return (
     <>
-      <ProfileHeader loginId={decodeURIComponent(params.id)} />
+      <ProfileHeader
+        loginId={decodeURIComponent(params.id)}
+        uuid={userProfile.uuid}
+      />
       <main>
         <section>
           <div className="flex items-center justify-between px-5 pt-8">
@@ -51,7 +55,7 @@ export default async function page({ params }: { params: { id: string } }) {
               imgUrl={imgUrl}
               imgAlt={userProfile.nickname}
             />
-            <ProfileStats />
+            <ProfileStats stats={stats} />
           </div>
 
           <ProfileDescription comment={userProfile.comment} />

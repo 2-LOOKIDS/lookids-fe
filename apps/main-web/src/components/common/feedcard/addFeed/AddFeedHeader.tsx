@@ -3,9 +3,9 @@ import { ChevronLeft } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { getUserProfile } from '../../../actions/user';
-import { useSession } from '../../../context/SessionContext';
-import { getMediaUrl } from '../../../utils/media';
+import { getUserProfile } from '../../../../actions/user';
+import { useSession } from '../../../../context/SessionContext';
+import { getMediaUrl } from '../../../../utils/media';
 export default function AddFeedHeader() {
   const session = useSession();
   const [myProfileImage, setMyProfileImage] = useState<string>('');

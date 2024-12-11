@@ -167,3 +167,18 @@ export const deletePet = async (
   revalidatePath('/mypage');
   return result;
 };
+
+export async function getRandomPetList(): Promise<PetDetail[]> {
+  try {
+    const data = await fetchDataforMembers<CommonResponse<PetDetail[]>>(
+      `user-service/read/petprofile/random?limit=5`,
+      'GET',
+      '',
+      'no-cache'
+    );
+    return data.result;
+  } catch (error) {
+    console.error('랜덤 펫 리스트 조회 실패:', error);
+    throw new Error(`랜덤 펫 리스트 조회 실패: ${error}`);
+  }
+}
