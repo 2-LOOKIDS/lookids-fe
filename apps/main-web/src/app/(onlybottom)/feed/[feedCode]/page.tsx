@@ -43,7 +43,7 @@ export default function FeedPage({ params }: { params: { feedCode: string } }) {
     if (result.isConfirmed) {
       const isDeleted = await deleteFeed(params.feedCode); // 서버 액션 호출
       Swal.fire('삭제 완료', '피드가 삭제되었습니다.', 'success').then(() => {
-        window.location.href = '/feed'; // 삭제 후 피드 목록으로 리다이렉트
+        window.location.href = '/'; // 삭제 후 피드 목록으로 리다이렉트
       });
     }
   };

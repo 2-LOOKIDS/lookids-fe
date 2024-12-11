@@ -34,7 +34,7 @@ export default function LoginForm() {
   };
 
   return (
-    <div className="mx-auto mt-2 w-96  rounded-lg bg-white p-8">
+    <div className="mx-auto mt-2 w-96 px-2 rounded-xl bg-white p-8">
       <form className="space-y-2" onSubmit={handleSubmit}>
         <div className="space-y-2">
           <Label htmlFor="id">아이디</Label>

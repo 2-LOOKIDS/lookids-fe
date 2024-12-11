@@ -127,7 +127,7 @@ export async function getMainFeedList(
     const data = await fetchDataforMembers<
       CommonResponse<responseList<FeedDetail>>
     >(
-      `feed-read-service/read/feed/feedList?page=${page}&size=10`,
+      `feed-read-service/read/feed/feedList?page=${page}&size=5`,
       'GET',
       null,
       'no-cache'
@@ -147,11 +147,12 @@ export async function getRandomFeedList(
     const data = await fetchDataforCommon<
       CommonResponse<responseList<FeedDetail>>
     >(
-      `feed-read-service/read/feed/random?page=${page}&size=10`,
+      `feed-read-service/read/feed/random?page=${page}&size=5`,
       'GET',
       null,
-      'no-cache'
+      'default'
     );
+    console.log('랜덤 피드 데이터', data.result);
     return data.result;
   } catch (error) {
     console.error('랜덤 피드 조회 중 오류 발생:', error);
