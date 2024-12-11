@@ -41,6 +41,7 @@ export default async function page({ params }: { params: { id: string } }) {
   const followStatus = await getFollowStatus(data?.user.uuid, userProfile.uuid);
   const petList = await getPetList(userProfile.uuid);
   const stats = await getProfileStats(userProfile.uuid);
+
   return (
     <>
       <ProfileHeader
