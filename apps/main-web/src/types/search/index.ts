@@ -14,9 +14,12 @@ export interface SearchContentFeed {
 }
 
 export interface SearchContentPet {
-  feedCode: string;
-  tagList: string[];
-  mediaUrlList: string[];
+  petName: string;
+  petType: string;
+  petImage: string;
+  petCode: string;
+  userNickname: string[];
+  userTag: string[];
 }
 
 export type SearchResultListUser = PaginationResponse<SearchContentUser>;
