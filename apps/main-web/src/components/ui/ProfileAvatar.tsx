@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import { cn } from '@repo/ui/lib/utils';
+import { getMediaUrl } from '../../utils/media';
 
 interface ProfileAvatarProps
   extends Pick<React.HTMLAttributes<HTMLDivElement>, 'className'> {
@@ -13,11 +14,12 @@ export default function ProfileAvatar({
   className,
   ...props
 }: ProfileAvatarProps) {
+  const imageUrl = getMediaUrl(imgUrl);
   return (
     <div className={cn('relative', className, { ...props })}>
       {imgUrl ? (
         <Image
-          src={imgUrl}
+          src={imageUrl}
           alt={imgAlt}
           fill
           sizes="(max-width: 400px) 50vw"

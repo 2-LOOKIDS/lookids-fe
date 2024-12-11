@@ -33,7 +33,6 @@ export async function generateMetadata({
 export default async function page({ params }: { params: { id: string } }) {
   const data = await getServerSession(options);
   const [nickname, tag] = decodeURIComponent(params.id).split('-');
-  console.log(nickname, tag);
   const userProfile = await getUserProfileByNicknameTag(nickname, tag);
   if (userProfile === null) {
     notFound();

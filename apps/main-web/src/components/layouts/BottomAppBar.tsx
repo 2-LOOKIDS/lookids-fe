@@ -1,6 +1,7 @@
 'use client';
 
 import { usePathname, useRouter } from 'next/navigation';
+
 import BottomAddIcon from '../icons/bottomNavBar/BottomAddIcon';
 import BottomDiaryIcon from '../icons/bottomNavBar/BottomDiaryIcon';
 import BottomHomeIcon from '../icons/bottomNavBar/BottomHomeIcon';
@@ -12,7 +13,7 @@ export default function BottomAppBar() {
   const currentPath = usePathname();
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 border-t border-gray-200 bg-white">
+    <div className="fixed bottom-0 w-full max-w-[430px] border-t border-gray-200 bg-white">
       <nav className="mx-auto max-w-md">
         <ul className="flex justify-around py-4">
           <li>

@@ -1,18 +1,16 @@
 'use client';
 
-import { useEffect } from 'react';
-import useSWRInfinite from 'swr/infinite';
 import {
   getMainFeedList,
   getRandomFeedList,
 } from '../../actions/feed/FeedCard';
+
 import SocialCard from '../../components/common/feedcard/socialCard/SocialCard';
 import MainSwiper from '../../components/icons/topNavBar/MainSwiper';
 import RecommendedPet from '../../components/pages/main/RecommendPet';
 import MainSwiperSkeleton from '../../components/ui/Skeletons/MainSwiperSkeleton';
 import { SocialCardSkeleton } from '../../components/ui/Skeletons/SocialCardSkeleton';
 import { useSession } from '../../context/SessionContext';
-import { FeedDetail } from '../../types/feed/FeedType';
 
 const PAGE_SIZE = 10;
 

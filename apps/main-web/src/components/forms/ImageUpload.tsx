@@ -3,6 +3,7 @@ import React, { useRef, useState } from 'react';
 import { ImageUp } from 'lucide-react';
 import { Input } from '@repo/ui/components/ui/input';
 import ProfileAvatar from '../ui/ProfileAvatar';
+import { extractCommonUrl } from '../../utils/media';
 import { useS3Upload } from 'next-s3-upload';
 
 interface ImageUploadProps {
@@ -26,7 +27,7 @@ export default function ImageUpload({
     }
     const url = await uploadToS3(file);
     const cdnUrl = `https://media.lookids.online/${url.key}`;
-    setPreview(cdnUrl);
+    setPreview(extractCommonUrl(cdnUrl));
     onChange(cdnUrl);
   };
 

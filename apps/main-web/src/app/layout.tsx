@@ -1,8 +1,8 @@
 import '@repo/ui/styles.css';
 
+import AuthContextProvider from '../providers/AuthContextProvider';
 import type { Metadata } from 'next';
 import { getServerSession } from 'next-auth';
-import AuthContextProvider from '../providers/AuthContextProvider';
 import { notoSansKr } from '../utils/font';
 import { options } from './api/auth/[...nextauth]/options';
 
