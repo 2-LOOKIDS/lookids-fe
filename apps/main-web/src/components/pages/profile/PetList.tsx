@@ -17,6 +17,7 @@ import {
 } from '@repo/ui/components/ui/alert-dialog';
 import { Grid, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { extractCommonUrl, getMediaUrl } from '../../../utils/media';
 
 import EditPetForm from '../mypage/EditPetForm';
 import InputFormDialog from '../../forms/InputFormDialog';
@@ -25,7 +26,6 @@ import { PetInfo } from '../../../types/user';
 import ProfileAvatar from '../../ui/ProfileAvatar';
 import React from 'react';
 import { deletePet } from '../../../actions/user';
-import { getMediaUrl } from '../../../utils/media';
 
 interface PetListProps {
   petList: PetInfo[];
@@ -48,7 +48,7 @@ function PetList({ petList, isEdit }: PetListProps) {
         className="petList"
       >
         {petList.map((pet, idx) => {
-          const image = getMediaUrl(pet.image);
+          const image = extractCommonUrl(pet.image);
           const defaultValues = pet;
           return (
             <SwiperSlide key={idx}>

@@ -26,10 +26,13 @@ interface AddPetFormProps {
   setOpen: (open: boolean) => void;
 }
 export default function AddPetForm({ setOpen }: AddPetFormProps) {
+  const basicImage = extractCommonUrl(
+    process.env.NEXT_PUBLIC_BASIC_PET_PROFILE_IMAGE ?? ''
+  );
   const form = useForm<PetProfileType>({
     resolver: zodResolver(PetProfileSchema),
     defaultValues: {
-      image: '',
+      image: basicImage,
       name: '',
       gender: undefined,
       age: 0,
@@ -38,7 +41,6 @@ export default function AddPetForm({ setOpen }: AddPetFormProps) {
       comment: '',
     },
   });
-  const BASIC_IMAGE = process.env.NEXT_PUBLIC_BASIC_PET_PROFILE_IMAGE;
 
   const onSubmit = async (values: PetProfileType) => {
     const image = extractCommonUrl(values.image);
@@ -72,7 +74,7 @@ export default function AddPetForm({ setOpen }: AddPetFormProps) {
                 shouldValidate: true,
               })
             }
-            initialImage={BASIC_IMAGE}
+            initialImage={basicImage}
           />
         </FormCustomField>
 

@@ -33,7 +33,7 @@ export default function EditPetForm({
   petCode,
   defaultValues,
 }: EditPetFormProps) {
-  const defaultImage = getMediaUrl(defaultValues.image);
+  const defaultImage = extractCommonUrl(defaultValues.image);
 
   const form = useForm<PetProfileType>({
     resolver: zodResolver(PetProfileSchema),

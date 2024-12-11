@@ -1,6 +1,14 @@
 'use client';
 
 import {
+  SearchContentFeed,
+  SearchContentPet,
+  SearchContentUser,
+  SearchResultListFeed,
+  SearchResultListPet,
+  SearchResultListUser,
+} from '../../../types/search';
+import {
   searchFeed,
   searchPet,
   searchUser,
@@ -8,16 +16,12 @@ import {
 import { useEffect, useState } from 'react';
 import useSWRInfinite, { SWRInfiniteKeyLoader } from 'swr/infinite';
 
+import { FeedResultList } from './FeedResult';
 import Link from 'next/link';
+import { PetResultList } from './PetResult';
 import { UserResultList } from './UserResult';
 import { useInView } from 'react-intersection-observer';
 import { useSearchParams } from 'next/navigation';
-
-const tabs = [
-  { id: 1, label: '유저', path: 'user' },
-  { id: 2, label: '피드', path: 'feed' },
-  { id: 3, label: '동물', path: 'pet' },
-];
 
 type Tab = 'user' | 'feed' | 'pet';
 
@@ -26,6 +30,23 @@ interface SearchResultProps {
 }
 
 export default function SearchResult({ query }: SearchResultProps) {
+  const tabs = [
+    {
+      id: 1,
+      label: '유저',
+      path: 'user',
+    },
+    {
+      id: 2,
+      label: '피드',
+      path: 'feed',
+    },
+    {
+      id: 3,
+      label: '동물',
+      path: 'pet',
+    },
+  ];
   const searchParams = useSearchParams();
   const [activeTab, setActiveTab] = useState<Tab>('user');
   const { ref, inView } = useInView();
@@ -38,7 +59,8 @@ export default function SearchResult({ query }: SearchResultProps) {
     }
   }, [searchParams]);
 
-  const fetcher = async (url: string) => {
+  const fetcher = async (url: string): Promise<SearchContent> => {
+    if (!query) return { content: [] };
     switch (tab) {
       case 'user': {
         return await searchUser(url);
@@ -53,6 +75,7 @@ export default function SearchResult({ query }: SearchResultProps) {
   };
 
   const getKey: SWRInfiniteKeyLoader = (pageIndex, previousPageData) => {
+    if (!query) return null;
     switch (tab) {
       case 'user': {
         return `/search-service/read/search/user?searchParam=${query}&page=${pageIndex}&size=10`;
@@ -66,7 +89,13 @@ export default function SearchResult({ query }: SearchResultProps) {
     }
   };
 
-  const { data, size, setSize, isLoading } = useSWRInfinite(getKey, fetcher);
+  interface SearchContent {
+    content: SearchContentUser[] | SearchContentFeed[] | SearchContentPet[];
+  }
+  const { data, size, setSize, isLoading } = useSWRInfinite<SearchContent>(
+    getKey,
+    fetcher
+  );
   const isEmpty = data?.[0]?.content.length === 0;
   const isLoadingMore =
     isLoading || (size > 0 && data && typeof data[size - 1] === 'undefined');
@@ -98,11 +127,38 @@ export default function SearchResult({ query }: SearchResultProps) {
           </li>
         ))}
       </ul>
+
+      {/* 각 탭에 따라 다른 컴포넌트를 렌더링 */}
       {data &&
         data.map((item, idx) => {
-          return <UserResultList key={idx} result={item?.content ?? []} />;
+          switch (activeTab) {
+            case 'user':
+              return (
+                <UserResultList
+                  key={idx}
+                  result={item?.content as SearchContentUser[]}
+                  query={query}
+                />
+              );
+            case 'feed':
+              return (
+                <FeedResultList
+                  key={idx}
+                  result={item?.content as SearchContentFeed[]}
+                />
+              );
+            case 'pet':
+              return (
+                <PetResultList
+                  key={idx}
+                  result={item?.content as SearchContentPet[]}
+                />
+              );
+            default:
+              return null;
+          }
         })}
-      {query}
+      <div ref={ref} />
     </section>
   );
 }

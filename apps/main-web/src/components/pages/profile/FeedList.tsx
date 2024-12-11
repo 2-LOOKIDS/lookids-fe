@@ -2,15 +2,15 @@
 
 import useSWRInfinite, { SWRInfiniteKeyLoader } from 'swr/infinite';
 
-import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
-import { useEffect } from 'react';
-import { useInView } from 'react-intersection-observer';
-import { getFeedThumbnails } from '../../../actions/feed/FeedList';
-import { getMediaUrl } from '../../../utils/media';
 import FeedThumbnail from './FeedThumbnail';
+import Link from 'next/link';
 import UserLikesTab from './UserLikesTab';
 import UserPostsTab from './UserPostsTab';
+import { getFeedThumbnails } from '../../../actions/feed/FeedList';
+import { getMediaUrl } from '../../../utils/media';
+import { useEffect } from 'react';
+import { useInView } from 'react-intersection-observer';
+import { useSearchParams } from 'next/navigation';
 
 interface Tab {
   id: number;
@@ -100,7 +100,7 @@ export default function FeedList({ uuid }: FeedListProps) {
                 );
               });
             })}
-          <div ref={ref}></div>
+          <div ref={ref} />
         </div>
       </div>
     </>

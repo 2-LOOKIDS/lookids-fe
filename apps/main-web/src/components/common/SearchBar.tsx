@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useEffect, useRef } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 import { Input } from '@repo/ui/components/ui/input';
 import { X } from 'lucide-react';
@@ -30,9 +30,9 @@ export default function SearchBar({ onClose, initialValue }: SearchBarProps) {
   const [debouncedSearchValue] = useDebounce(searchWord, 300);
 
   useEffect(() => {
+    const currentTab = searchParams.get('tab') || currentTabRef.current;
+    currentTabRef.current = currentTab;
     if (debouncedSearchValue.trim()) {
-      const currentTab = searchParams.get('tab') || currentTabRef.current;
-      currentTabRef.current = currentTab;
       router.push(
         `/search?tab=${currentTab}&q=${encodeURIComponent(debouncedSearchValue.trim())}`
       );
