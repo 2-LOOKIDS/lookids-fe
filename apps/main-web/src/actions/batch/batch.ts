@@ -45,7 +45,7 @@ export async function getFavoriteCount(
 ): Promise<Counting> {
   try {
     const data = await fetchDataforCommon<CommonResponse<Counting>>(
-      `batch-service/read/count/comment?targetCode=${targetCode}&type=${type}`,
+      `batch-service/read/favorite?targetCode=${targetCode}&type=${type}`,
       'GET',
       '',
       'no-cache'

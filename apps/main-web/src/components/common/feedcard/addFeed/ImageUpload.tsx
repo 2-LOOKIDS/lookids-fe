@@ -1,13 +1,13 @@
 'use client';
 
-import { Plus, X } from 'lucide-react';
+import { Plus } from 'lucide-react';
 
 import { Button } from '@repo/ui/components/ui/button';
-import ImageList from './ImageList';
-import { extractGpsData } from '../../../utils/exifUtil';
-import { useImage } from '../../../context/ImageContext';
 import { useRef } from 'react';
-import { useS3Uploader } from '../../../utils/s3Utils';
+import { useImage } from '../../../../context/ImageContext';
+import { extractGpsData } from '../../../../utils/exifUtil';
+import { useS3Uploader } from '../../../../utils/s3Utils';
+import ImageList from './ImageList';
 
 export default function ImageUpload() {
   const { images, setImages } = useImage();

@@ -1,8 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import AddFeedHeader from '../../../components/common/feedcard/AddFeedHeader';
-import ImageUpload from '../../../components/common/feedcard/ImageUpload';
+import AddFeedHeader from '../../../components/common/feedcard/addFeed/AddFeedHeader';
+import ImageUpload from '../../../components/common/feedcard/addFeed/ImageUpload';
 import AddFeedForm from '../../../components/forms/AddFeedForm';
 import ProfileCircle from '../../../components/ui/ProfileCircle';
 import { ImageProvider } from '../../../context/ImageContext';

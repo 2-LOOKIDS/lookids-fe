@@ -5,7 +5,7 @@ import { getCommentCount } from '../../../../actions/feed/comment';
 import { deleteFeed, getIsMyFeed } from '../../../../actions/feed/FeedCard';
 import AddFeedCommentSection from '../../../../components/common/comments/AddFeedCommentSection';
 import CommentSection from '../../../../components/common/comments/CommentSection';
-import SocialCard from '../../../../components/common/feedcard/SocialCard';
+import SocialCard from '../../../../components/common/feedcard/socialCard/SocialCard';
 import CommonHeader from '../../../../components/ui/CommonHeader';
 import { MenuItem } from '../../../../types/common/MenuType';
 
@@ -108,7 +108,7 @@ export default function FeedPage({ params }: { params: { feedCode: string } }) {
       ></CommonHeader>
       <div>
         <SocialCard isDetail={true} feedCode={params.feedCode}></SocialCard>
-        <section className="px-4 pb-8">
+        <section className="px-4 ">
           <h3 className="py-4 text-xl text-lookids">{`댓글 (${commentCount})`}</h3>
           <AddFeedCommentSection
             feedCode={params.feedCode}
