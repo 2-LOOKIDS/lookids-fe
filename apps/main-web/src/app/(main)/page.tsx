@@ -6,7 +6,7 @@ import {
   getMainFeedList,
   getRandomFeedList,
 } from '../../actions/feed/FeedCard';
-import SocialCardwithData from '../../components/common/feedcard/SocialCardwithData';
+import SocialCard from '../../components/common/feedcard/SocialCard';
 import MainSwiper from '../../components/icons/topNavBar/MainSwiper';
 import RecommendedPet from '../../components/pages/main/RecommendPet';
 import MainSwiperSkeleton from '../../components/ui/Skeletons/MainSwiperSkeleton';
@@ -86,9 +86,9 @@ export default function Page() {
         ) : (
           feedList.reduce<React.ReactNode[]>((acc, feed, index) => {
             acc.push(
-              <SocialCardwithData
+              <SocialCard
                 isDetail={false}
-                feedData={feed}
+                feedCode={feed.feedCode}
                 key={`feed-${index}`}
               />
             );
