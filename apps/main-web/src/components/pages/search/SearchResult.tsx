@@ -102,9 +102,10 @@ export default function SearchResult({ query }: SearchResultProps) {
   useEffect(() => {
     if (!inView || isLoadingMore || isReachingEnd) return;
     setSize((size) => size + 1);
+    console.log('size', size);
   }, [inView, isLoadingMore, isReachingEnd]);
 
-  console.log(data);
+  // console.log(data);
 
   return (
     <section className="pt-4 ">
