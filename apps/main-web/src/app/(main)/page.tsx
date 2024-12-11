@@ -1,12 +1,13 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import useSWRInfinite from 'swr/infinite';
 import {
   getMainFeedList,
   getRandomFeedList,
 } from '../../actions/feed/FeedCard';
 import SocialCard from '../../components/common/feedcard/socialCard/SocialCard';
+import LoginModal from '../../components/common/LoginModal';
 import MainSwiper from '../../components/icons/topNavBar/MainSwiper';
 import RecommendedPet from '../../components/pages/main/RecommendPet';
 import MainSwiperSkeleton from '../../components/ui/Skeletons/MainSwiperSkeleton';
@@ -17,15 +18,19 @@ import { FeedDetail } from '../../types/feed/FeedType';
 const PAGE_SIZE = 10;
 
 export default function Page() {
-  const auth = useSession().isAuth;
+  const { isAuth } = useSession();
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [hasScrolledToEnd, setHasScrolledToEnd] = useState(false);
+  const [isRenderingComplete, setIsRenderingComplete] = useState(false);
 
   const fetcher = (pageIndex: number) =>
-    auth ? getMainFeedList(pageIndex) : getRandomFeedList(pageIndex);
+    isAuth ? getMainFeedList(pageIndex) : getRandomFeedList(pageIndex);
+
   const { data, error, size, setSize, isValidating } = useSWRInfinite(
     (pageIndex, previousPageData) => {
       if (previousPageData && previousPageData.content.length === 0)
-        return null; // 마지막 페이지라면 요청 중단
-      return `/api/feed?page=${pageIndex}&size=${PAGE_SIZE}`; // pageIndex와 PAGE_SIZE를 명확히 설정
+        return null;
+      return `/api/feed?page=${pageIndex}&size=${PAGE_SIZE}`;
     },
     (url) => {
       const page = parseInt(
@@ -56,32 +61,43 @@ export default function Page() {
       !isReachingEnd &&
       !isValidating
     ) {
-      setSize(size + 1); // 다음 페이지 로드
+      setSize(size + 1);
+    }
+
+    // 페이지 하단 도달 확인
+    if (scrollTop + clientHeight >= scrollHeight - 10) {
+      setHasScrolledToEnd(true);
     }
   };
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
-
     return () => window.removeEventListener('scroll', handleScroll);
   }, [isReachingEnd, isValidating]);
+
+  useEffect(() => {
+    // 데이터 렌더링 완료 상태 업데이트
+    if (!isLoadingInitialData && !isLoadingMore) {
+      setTimeout(() => setIsRenderingComplete(true), 500); // 데이터 렌더링 시간 확보
+    }
+  }, [isLoadingInitialData, isLoadingMore]);
+
+  useEffect(() => {
+    // 스크롤이 하단에 도달하고 렌더링이 완료되었으며, 사용자가 로그인하지 않은 경우 모달 표시
+    if (hasScrolledToEnd && isRenderingComplete && !isAuth) {
+      setIsLoginModalOpen(true);
+    }
+  }, [hasScrolledToEnd, isRenderingComplete, isAuth]);
 
   if (error) return <div>데이터를 불러오는 중 오류가 발생했습니다.</div>;
 
   return (
     <main className="px-4">
       <div className="mb-20 mt-14 flex flex-col gap-4">
-        {isLoadingInitialData ? (
-          // MainSwiperSkeleton 표시
-          <MainSwiperSkeleton />
-        ) : (
-          // MainSwiper 표시
-          <MainSwiper />
-        )}
+        {isLoadingInitialData ? <MainSwiperSkeleton /> : <MainSwiper />}
         {feedList.length === 0 ? (
-          // 피드가 없을 때 표시할 메시지
           <div className="text-center text-gray-500">
-            팔로우중인 유저가 없습니다!
+            표시할 피드가 없습니다.
           </div>
         ) : (
           feedList.reduce<React.ReactNode[]>((acc, feed, index) => {
@@ -92,7 +108,6 @@ export default function Page() {
                 key={`feed-${index}`}
               />
             );
-            // 매 3번째 항목 뒤에 RecommendedPet 삽입
             if ((index + 1) % 3 === 0) {
               acc.push(<RecommendedPet key={`recommended-${index}`} />);
             }
@@ -104,9 +119,15 @@ export default function Page() {
             <SocialCardSkeleton key={`loading-skeleton-${i}`} />
           ))}
         {isReachingEnd && feedList.length > 0 && (
-          <div>더 이상 불러올 피드가 없습니다.</div>
+          <div className="text-center text-gray-500">
+            더 이상 불러올 피드가 없습니다.
+          </div>
         )}
       </div>
+      <LoginModal
+        isOpen={isLoginModalOpen}
+        onClose={() => setIsLoginModalOpen(false)}
+      />
     </main>
   );
 }

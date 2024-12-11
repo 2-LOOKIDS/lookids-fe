@@ -5,28 +5,28 @@ import {
   AvatarFallback,
   AvatarImage,
 } from '@repo/ui/components/ui/avatar';
+import { useEffect, useRef, useState } from 'react';
 import {
   checkOneOnOneChatRoom,
   createChatRoom,
   getChattingList,
 } from '../../../actions/chatting/Chatting';
-import { useEffect, useRef, useState } from 'react';
 
 import { Badge } from '@repo/ui/components/ui/badge';
 import { Button } from '@repo/ui/components/ui/button';
-import CommonHeader from '../../../components/ui/CommonHeader';
-import { EventSourcePolyfill } from 'event-source-polyfill';
-import { FollowerListModal } from '../../../components/pages/chatting/FollowerListModal';
-import Link from 'next/link';
-import { MenuItem } from '../../../types/common/MenuType';
-import { Plus } from 'lucide-react';
-import { RoomMessage } from '../../../types/chatting/ChattingType';
 import { ScrollArea } from '@repo/ui/components/ui/scroll-area';
-import { formatDate } from '../../../utils/formatDate';
-import { getUserProfile } from '../../../actions/user';
-import { responseList } from '../../../utils/chatting/fetchMessages';
+import { EventSourcePolyfill } from 'event-source-polyfill';
+import { Plus } from 'lucide-react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { getUserProfile } from '../../../actions/user';
+import { FollowerListModal } from '../../../components/pages/chatting/FollowerListModal';
+import CommonHeader from '../../../components/ui/CommonHeader';
 import { useSession } from '../../../context/SessionContext';
+import { RoomMessage } from '../../../types/chatting/ChattingType';
+import { MenuItem } from '../../../types/common/MenuType';
+import { responseList } from '../../../utils/chatting/fetchMessages';
+import { formatDate } from '../../../utils/formatDate';
 
 export default function Page() {
   const session = useSession();
@@ -178,7 +178,9 @@ export default function Page() {
                 <div className="relative">
                   <Avatar className="h-12 w-12">
                     <AvatarImage
-                      src="https://picsum.photos/200/300"
+                      src={
+                        'https://media.lookids.online/next-s3-uploads/media/default_profile_1.jpeg'
+                      }
                       alt={chat.roomId}
                     />
                     <AvatarFallback>{chat.roomName}</AvatarFallback>
