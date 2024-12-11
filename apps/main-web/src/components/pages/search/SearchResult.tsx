@@ -4,9 +4,6 @@ import {
   SearchContentFeed,
   SearchContentPet,
   SearchContentUser,
-  SearchResultListFeed,
-  SearchResultListPet,
-  SearchResultListUser,
 } from '../../../types/search';
 import {
   searchFeed,
@@ -16,10 +13,10 @@ import {
 import { useEffect, useState } from 'react';
 import useSWRInfinite, { SWRInfiniteKeyLoader } from 'swr/infinite';
 
-import { FeedResultList } from './FeedResult';
+import { FeedResultList } from './FeedResultList';
 import Link from 'next/link';
-import { PetResultList } from './PetResult';
-import { UserResultList } from './UserResult';
+import { PetResultList } from './PetResultList';
+import { UserResultList } from './UserResultList';
 import { useInView } from 'react-intersection-observer';
 import { useSearchParams } from 'next/navigation';
 

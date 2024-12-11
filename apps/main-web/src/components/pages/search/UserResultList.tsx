@@ -10,9 +10,11 @@ export function UserResultList({ result, query }: UserResultListProps) {
   return (
     <ul className="px-5 pt-5 flex flex-col gap-3">
       {result.length === 0 ? (
-        <li className="flex">
-          <p className="text-lookids">'{query}'</p>
-          <p>검색어가 포함된 닉네임을 가진 유저가 없습니다 ㅠ.ㅠ</p>
+        <li>
+          <p>
+            <span className="text-lookids">'{query}'</span> 검색어가 포함된
+            닉네임을 가진 유저가 없습니다 ㅠ.ㅠ
+          </p>
         </li>
       ) : (
         result.map((item, idx) => {
