@@ -11,7 +11,7 @@ interface HeaderProps {
   onMenuClick: () => void;
 }
 
-function NavMenus({ onMenuClick }: HeaderProps) {
+export default function NavMenus({ onMenuClick }: HeaderProps) {
   const {
     notificationData,
     isModalOpen,
@@ -50,5 +50,3 @@ function NavMenus({ onMenuClick }: HeaderProps) {
     </nav>
   );
 }
-
-export default NavMenus;

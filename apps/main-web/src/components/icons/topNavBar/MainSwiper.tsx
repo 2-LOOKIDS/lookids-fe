@@ -18,7 +18,6 @@ export default function MainSwiper() {
   useEffect(() => {
     const fetchPetData = async () => {
       const data = await getRandomPetList();
-      console.log('랜덤 펫 데이터', data);
       setPetData(data);
     };
 

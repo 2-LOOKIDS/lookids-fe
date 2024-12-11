@@ -21,7 +21,7 @@ const InputSection: React.FC<InputSectionProps> = ({
 
   return (
     <div className="sticky bottom-0 border-t border-gray-200 bg-white p-4 sm:p-5">
-      <div className="flex items-end justify-between gap-4">
+      <div className="flex items-center justify-between gap-4">
         <div className="flex-1">
           <input
             type="text"
