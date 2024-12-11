@@ -64,7 +64,6 @@ export async function enterChatRoom(
       '',
       'no-cache'
     );
-    console.log('들어왔다', data);
     return data.result;
   } catch (error) {
     console.error('채팅방 입장 중 오류 발생:', error);
@@ -136,7 +135,6 @@ export async function leaveChattingRoom(
       '',
       'no-cache'
     );
-    console.log('나갈때', data);
   } catch (error) {
     console.error('채팅방 나가기 중 오류 발생:', error);
     throw new Error(`채팅방 나가기 실패: ${error}`);

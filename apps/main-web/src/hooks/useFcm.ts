@@ -28,24 +28,16 @@ export function useFcm(
       Notification.requestPermission()
         .then((permission) => {
           if (permission === 'granted') {
-            console.log('알림 권한이 허용되었습니다.');
-
             // 서비스 워커 등록 및 FCM 토큰 가져오기
             navigator.serviceWorker
               .register('/firebase-messaging-sw.js')
               .then((registration) => {
-                console.log(
-                  'Service Worker registered with scope:',
-                  registration.scope
-                );
-
                 getToken(messaging, {
                   vapidKey: process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY,
                   serviceWorkerRegistration: registration,
                 })
                   .then((currentToken) => {
                     if (currentToken) {
-                      console.log('FCM Token:', currentToken);
                       postFcmToken(currentToken); // 서버로 FCM 토큰 전송
                     } else {
                       console.warn('No FCM token available.');
@@ -69,7 +61,6 @@ export function useFcm(
 
     // FCM 알림 수신 처리
     onMessage(messaging, (payload) => {
-      console.log('Message received: ', payload);
       setNotificationData((prev: any[]) => [...prev, payload.notification]);
       setHasNotification(true);
     });

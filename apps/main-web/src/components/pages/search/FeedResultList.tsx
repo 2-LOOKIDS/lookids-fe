@@ -6,7 +6,6 @@ interface FeedResultListProps {
 }
 
 export function FeedResultList({ result }: FeedResultListProps) {
-  console.log(result);
   return (
     <div>
       {result.map((item, idx) => {

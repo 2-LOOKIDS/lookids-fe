@@ -96,7 +96,6 @@ export default function ChatPage({ params }: { params: { chatId: string } }) {
         if (result.isConfirmed && result.value) {
           const newChatRoomName = result.value;
           // 여기에 원하는 함수 실행
-          console.log('새 채팅방 이름:', newChatRoomName);
           // 예: 채팅방 이름 업데이트 API 호출
           await updateChatRoomName(params.chatId, newChatRoomName);
           window.location.reload();

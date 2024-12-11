@@ -64,7 +64,6 @@ function InternalDialog<
   });
 
   const onSubmit = async (values: formType) => {
-    console.log(values);
     setOpen(false);
   };
 

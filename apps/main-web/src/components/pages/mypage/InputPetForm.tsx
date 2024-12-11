@@ -54,7 +54,6 @@ export default function InputPetForm<TParams>({
       weight: values.weight,
       comment: values.comment,
     };
-    console.log(body);
     const response = await action(body);
     if (response.isSuccess) {
       setOpen(false);

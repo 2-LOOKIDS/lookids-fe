@@ -21,13 +21,8 @@ export function useSse(
       }
     );
 
-    eventSource.onopen = () => {
-      console.log('SSE 연결 완료');
-    };
-
     eventSource.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      console.log('THIS IS FROM SSE', data);
       setNotificationData((prev) => [...prev, ...data]);
       setHasNotification(true);
     };

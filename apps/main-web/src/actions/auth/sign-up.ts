@@ -50,7 +50,6 @@ export const sendVerificationCodeToEmailApi = async (
 
   const result =
     (await response.json()) as CommonResponse<VerificationResponse>;
-  console.log('🚀 ~ result:', result);
   return result.result?.verification;
 };
 

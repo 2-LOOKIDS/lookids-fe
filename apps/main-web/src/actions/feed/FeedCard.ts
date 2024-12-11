@@ -15,14 +15,12 @@ import { uploadPin } from '../map/Pin';
 // 피드 업로드
 export async function uploadFeed(feed: FeedPostType): Promise<any> {
   try {
-    console.log('업로드할 피드 데이터:', feed);
     const data = await fetchDataforMembers<CommonResponse<any>>(
       `feed-service/write/feed`,
       'POST',
       feed,
       'no-cache'
     );
-    console.log('피드 업로드 응답:', data);
     return data;
   } catch (error) {
     console.error('피드 업로드 중 오류 발생:', error);
@@ -72,7 +70,6 @@ export async function uploadFeedWithMedia({
     for (const pindata of pin) {
       try {
         const pinRes = await uploadPin(pindata);
-        console.log('핀 업로드 성공:', pinRes);
       } catch (pinError) {
         console.error('핀 업로드 실패:', pindata, pinError);
       }
@@ -123,7 +120,6 @@ export async function getMainFeedList(
   page: number
 ): Promise<responseList<FeedDetail>> {
   try {
-    console.log('페이지:', page);
     const data = await fetchDataforMembers<
       CommonResponse<responseList<FeedDetail>>
     >(
@@ -152,7 +148,6 @@ export async function getRandomFeedList(
       null,
       'default'
     );
-    console.log('랜덤 피드 데이터', data.result);
     return data.result;
   } catch (error) {
     console.error('랜덤 피드 조회 중 오류 발생:', error);

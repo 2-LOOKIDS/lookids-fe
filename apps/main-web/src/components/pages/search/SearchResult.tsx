@@ -104,8 +104,6 @@ export default function SearchResult({ query }: SearchResultProps) {
     setSize((size) => size + 1);
   }, [inView, isLoadingMore, isReachingEnd]);
 
-  console.log(data);
-
   return (
     <section className="pt-4 ">
       {/* 사람 / 피드(태그) / 동물*/}

@@ -7,7 +7,6 @@ import {
 import { Pin } from '../../types/map/MapType';
 
 export default function MapMarkingList({ PinList }: { PinList: Pin[] }) {
-  console.log('PinList:', PinList);
   const [openMarkers, setOpenMarkers] = useState<{ [key: number]: boolean }>(
     {}
   );

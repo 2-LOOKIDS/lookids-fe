@@ -9,7 +9,6 @@ export async function postFcmToken(fcmToken: string): Promise<void> {
       { fcmToken },
       'force-cache'
     );
-    console.log('FCM토큰 전송', data);
   } catch (error) {
     console.error(error);
     throw Error('Failed to post FCM token');

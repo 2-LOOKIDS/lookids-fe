@@ -76,7 +76,6 @@ export async function putFollowToggle2(targetUuid: string): Promise<boolean> {
       followerUuid,
       'no-cache'
     );
-    console.log(data);
     return data.result;
   } catch (error) {
     console.error('error', error);
@@ -112,7 +111,6 @@ export async function putBlockUser(blockedUuid: string): Promise<void> {
       { blockedUuid },
       'no-cache'
     );
-    console.log(data);
   } catch (error) {
     console.error('error', error);
     throw new Error('error');

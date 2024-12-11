@@ -120,17 +120,14 @@ export default function Page() {
     followerId: string,
     followerNickName: string
   ) => {
-    console.log(`Selected follower: ${followerId}`);
     // ToDO : 해당 팔로워와 1:1 채팅방이 있는지 체크
     if (session?.uuid) {
       const response = await checkOneOnOneChatRoom(session.uuid, followerId);
 
       if (response.result) {
         // 채팅방으로 이동시키기 구현해줘
-        console.log('채팅방있음', response.roomId);
         router.push(`/chatting/${response.roomId}`);
       } else {
-        console.log('1:1 채팅방이 존재하지 않습니다.');
         await createChatRoom(
           `${followerNickName}과 ${myNickName}의 채팅방`,
           session.uuid,
@@ -151,7 +148,6 @@ export default function Page() {
     setIsFollowerListOpen(false);
   };
   const handleNewChat = () => {
-    console.log('New Chat');
     setIsFollowerListOpen(true);
   };
   const menuItems: MenuItem[] = [

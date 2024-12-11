@@ -11,14 +11,12 @@ export async function uploadComment(
   content: string
 ): Promise<any> {
   try {
-    console.log('업로드할 댓글 데이터:', content);
     const data = await fetchDataforMembers<CommonResponse<any>>(
       `comment-service/write/comment`,
       'POST',
       { feedCode, content },
       'no-cache'
     );
-    console.log('댓글 업로드 응답:', data);
     return data;
   } catch (error) {
     console.error('댓글 업로드 중 오류 발생:', error);
@@ -71,7 +69,6 @@ export async function getComments(
       'default',
       'updatecomments'
     );
-    console.log(data.result);
     return data.result;
   } catch (error) {
     console.error('댓글 데이터 요청 중 오류 발생:', error);
@@ -111,7 +108,6 @@ export async function getCommentCount(feedCode: string): Promise<commentCount> {
       '',
       'no-cache'
     );
-    console.log('댓글 수 조회 결과:', data.result);
     return data.result;
   } catch (error) {
     console.error('댓글 수 조회 중 오류 발생:', error);

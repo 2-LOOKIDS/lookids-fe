@@ -33,7 +33,6 @@ export default function EditProfileImage({
     const cdnurl = `https://media.lookids.online/${url.key}`;
     const mediaUrl = extractCommonUrl(cdnurl);
     await updateProfileImage(uuid, token, mediaUrl);
-    console.log('🚀 ~ handleImageUpload ~ cdnurl:', cdnurl);
   };
   const handleIconClick = () => {
     if (fileInputRef.current) {

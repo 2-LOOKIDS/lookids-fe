@@ -54,7 +54,6 @@ export default function AddPetForm({ setOpen }: AddPetFormProps) {
       weight: values.weight,
       comment: values.comment,
     };
-    console.log(body);
     const response = await registerPetProfile(body);
     if (response.isSuccess) {
       setOpen(false);
