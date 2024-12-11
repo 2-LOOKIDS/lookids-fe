@@ -104,7 +104,7 @@ export default function SocialCard({
     setIsLiked(!isLiked);
     setLikeCount(isLiked ? likeCount - 1 : likeCount + 1);
     try {
-      await putFavoriteComment(feedDetail.uuid, feedDetail.feedCode, '피드');
+      await putFavoriteComment(feedDetail.uuid, feedCode, '피드');
     } catch (error) {
       setIsLiked(!isLiked);
       setLikeCount(isLiked ? likeCount + 1 : likeCount - 1);
@@ -225,6 +225,7 @@ export default function SocialCard({
           {/* SocialCard Reaction Section */}
 
           <SocialCardReaction
+            feedCode={feedCode}
             isLiked={isLiked}
             likeCount={likeCount}
             commentCount={commentCount}

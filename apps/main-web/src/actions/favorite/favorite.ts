@@ -44,7 +44,6 @@ export async function putFavoriteComment(
       'no-cache'
     );
     revalidateTag('updateFeedFavorite');
-    console.log(' 좋아요 등록 결과', data);
   } catch (error) {
     console.error('좋아요 등록 중 오류 발생:', error);
     throw new Error(`좋아요 등록 중 실패: ${error}`);
