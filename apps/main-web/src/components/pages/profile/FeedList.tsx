@@ -94,7 +94,7 @@ export default function FeedList({ uuid }: FeedListProps) {
                   <FeedThumbnail
                     feedCode={item.feedCode}
                     key={idx}
-                    imgUrl={getMediaUrl(item.mediaUrl)}
+                    imgUrl={item.mediaUrl}
                     imgAlt={item.feedCode}
                   />
                 );
