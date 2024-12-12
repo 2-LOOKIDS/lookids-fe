@@ -16,7 +16,6 @@ import ProfileDescription from '../../../../components/pages/profile/ProfileDesc
 import ProfileHeader from '../../../../components/pages/profile/ProfileHeader';
 import ProfileStats from '../../../../components/pages/profile/ProfileStats';
 import ProfileAvatar from '../../../../components/ui/ProfileAvatar';
-import { getMediaUrl } from '../../../../utils/media';
 import { options } from '../../../api/auth/[...nextauth]/options';
 
 export async function generateMetadata({
@@ -37,7 +36,6 @@ export default async function page({ params }: { params: { id: string } }) {
   if (userProfile === null) {
     notFound();
   }
-  const imgUrl = getMediaUrl(userProfile.image);
   const followStatus = await getFollowStatus(data?.user.uuid, userProfile.uuid);
   const petList = await getPetList(userProfile.uuid);
   const stats = await getProfileStats(userProfile.uuid);
@@ -53,7 +51,7 @@ export default async function page({ params }: { params: { id: string } }) {
           <div className="flex items-center justify-between px-5 pt-8">
             <ProfileAvatar
               className="xs:h-[120px] xs:w-[120px] h-[100px] min-h-[80px] w-[100px] min-w-[80px]"
-              imgUrl={imgUrl}
+              imgUrl={userProfile.image}
               imgAlt={userProfile.nickname}
             />
             <ProfileStats stats={stats} />

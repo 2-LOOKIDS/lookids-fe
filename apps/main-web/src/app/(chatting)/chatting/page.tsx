@@ -165,7 +165,7 @@ export default function Page() {
       } else {
         console.log('1:1 채팅방이 존재하지 않습니다.');
         await createChatRoom(
-          `${followerNickName}과 ${myNickName}의 채팅방`,
+          `${followerNickName} ♥ ${myNickName}`,
           session.uuid,
           followerId
         );
