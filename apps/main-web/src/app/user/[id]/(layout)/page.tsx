@@ -13,7 +13,6 @@ import ProfileDescription from '../../../../components/pages/profile/ProfileDesc
 import ProfileHeader from '../../../../components/pages/profile/ProfileHeader';
 import ProfileStats from '../../../../components/pages/profile/ProfileStats';
 import { getFollowStatus } from '../../../../actions/follow/Follow';
-import { getMediaUrl } from '../../../../utils/media';
 import { getProfileStats } from '../../../../actions/batch/batch';
 import { getServerSession } from 'next-auth';
 import { notFound } from 'next/navigation';

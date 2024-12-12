@@ -56,7 +56,25 @@ export default function Page() {
     const fetchInitialRoomInfos = async () => {
       try {
         const data: responseList<RoomMessage> = await getChattingList(uuid, 0);
-        setRoomInfos(data?.content || []);
+        setRoomInfos((prevMessages) => {
+          const newMessages = data?.content || [];
+          const updatedMessages = [...prevMessages];
+
+          newMessages.forEach((newMessage) => {
+            const existingIndex = updatedMessages.findIndex(
+              (message) => message.roomId === newMessage.roomId
+            );
+            if (existingIndex !== -1) {
+              // 기존 메시지 업데이트
+              updatedMessages[existingIndex] = newMessage;
+            } else {
+              // 새로운 메시지 추가
+              updatedMessages.push(newMessage);
+            }
+          });
+
+          return updatedMessages;
+        });
       } catch (error) {
         console.error('Failed to fetch chatting list:', error);
         setRoomInfos([]);
@@ -82,7 +100,22 @@ export default function Page() {
 
       eventSource.onmessage = (event) => {
         const newMessage: RoomMessage = JSON.parse(event.data);
-        setRoomInfos((prevMessages) => [...prevMessages, newMessage]);
+        setRoomInfos((prevMessages) => {
+          // 기존 메시지에서 roomId가 같은 항목 찾기
+          const existingIndex = prevMessages.findIndex(
+            (message) => message.roomId === newMessage.roomId
+          );
+
+          if (existingIndex !== -1) {
+            // 기존 메시지 업데이트
+            const updatedMessages = [...prevMessages];
+            updatedMessages[existingIndex] = newMessage;
+            return updatedMessages;
+          } else {
+            // 새로운 메시지 추가
+            return [...prevMessages, newMessage];
+          }
+        });
       };
 
       eventSource.onerror = () => {
@@ -132,7 +165,7 @@ export default function Page() {
       } else {
         console.log('1:1 채팅방이 존재하지 않습니다.');
         await createChatRoom(
-          `${followerNickName}과 ${myNickName}의 채팅방`,
+          `${followerNickName} ♥ ${myNickName}`,
           session.uuid,
           followerId
         );
@@ -161,7 +194,7 @@ export default function Page() {
 
   return (
     <div className="mx-auto flex h-screen w-full max-w-md flex-col ">
-      <CommonHeader title={'채팅'} ismenu={true} menuItems={menuItems} />
+      <CommonHeader title={'채팅'} ismenu={false} menuItems={menuItems} />
       <ScrollArea className="flex-1">
         {roomInfos.length === 0 ? (
           <div className="flex h-full items-center justify-center text-gray-500">
