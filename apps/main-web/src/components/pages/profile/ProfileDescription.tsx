@@ -9,7 +9,7 @@ export default function ProfileDescription({
 }: ProfileDescriptionProps) {
   return (
     <section className="flex flex-col px-6 pt-4">
-      <p className="pt-2.5 text-[12px] text-[#838383]">{comment}</p>
+      <p className="pt-2.5 text-sm text-[#838383]">{comment}</p>
     </section>
   );
 }

@@ -5,6 +5,7 @@ import {
 
 import FeedList from '../../../../components/pages/profile/FeedList';
 import FollowButton from '../../../../components/pages/profile/FollowButton';
+import Hr from '../../../../components/common/Hr';
 import MessageButton from '../../../../components/pages/profile/MessageButton';
 import { Metadata } from 'next';
 import PetList from '../../../../components/pages/profile/PetList';
@@ -39,7 +40,6 @@ export default async function page({ params }: { params: { id: string } }) {
   const followStatus = await getFollowStatus(data?.user.uuid, userProfile.uuid);
   const petList = await getPetList(userProfile.uuid);
   const stats = await getProfileStats(userProfile.uuid);
-
   return (
     <>
       <ProfileHeader
@@ -59,7 +59,19 @@ export default async function page({ params }: { params: { id: string } }) {
 
           <ProfileDescription comment={userProfile.comment} />
 
-          <div className="flex justify-center gap-4 px-4 pt-10">
+          {data?.user.uuid !== userProfile.uuid ? (
+            <div className="flex justify-center gap-4 px-4 pt-10">
+              <FollowButton
+                token={data?.user.accessToken}
+                uuid={data?.user.uuid}
+                targetUuid={userProfile.uuid}
+                followStatus={followStatus}
+              />
+              <MessageButton />
+            </div>
+          ) : // <Hr />
+          null}
+          {/* <div className="flex justify-center gap-4 px-4 pt-10">
             <FollowButton
               token={data?.user.accessToken}
               uuid={data?.user.uuid}
@@ -67,14 +79,16 @@ export default async function page({ params }: { params: { id: string } }) {
               followStatus={followStatus}
             />
             <MessageButton />
-          </div>
+          </div> */}
         </section>
 
-        <section className="pt-10">
-          <PetList petList={petList} />
-        </section>
+        {petList.length === 0 ? null : (
+          <section className="pt-10">
+            <PetList petList={petList} />
+          </section>
+        )}
 
-        <section className="flex flex-col items-center justify-center px-4 pt-9">
+        <section className="flex flex-col items-center justify-center px-4 pt-3">
           <FeedList uuid={userProfile.uuid} />
         </section>
       </main>

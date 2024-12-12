@@ -8,6 +8,7 @@ import UserLikesTab from './UserLikesTab';
 import UserPostsTab from './UserPostsTab';
 import { getFeedThumbnails } from '../../../actions/feed/FeedList';
 import { getMediaUrl } from '../../../utils/media';
+import { mutate } from 'swr';
 import { useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { useSearchParams } from 'next/navigation';
@@ -59,6 +60,7 @@ export default function FeedList({ uuid }: FeedListProps) {
 
   const { data, size, setSize, isLoading } = useSWRInfinite(getKey, fetcher, {
     initialSize: 1,
+    revalidateAll: true,
   });
 
   const isEmpty = data?.[0]?.content.length === 0;
@@ -77,7 +79,6 @@ export default function FeedList({ uuid }: FeedListProps) {
       <ul className="flex w-full justify-center gap-4">
         {tabs.map((tab) => (
           <li key={tab.id} className="flex-1">
-            {/* TODO: headers()로 구현해보자! */}
             <Link href={`?tab=${tab.label}`} scroll={false}>
               <tab.component isActive={search === tab.label} />
             </Link>
