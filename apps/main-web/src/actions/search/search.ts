@@ -1,3 +1,5 @@
+'use server';
+
 import { CommonResponse, responseList } from '../../types/responseType';
 import {
   SearchResultListFeed,
@@ -23,6 +25,7 @@ export async function searchUser(url: string): Promise<SearchResultListUser> {
       null,
       'no-cache'
     );
+    console.log(url);
     return data.result;
   } catch (error) {
     throw error;

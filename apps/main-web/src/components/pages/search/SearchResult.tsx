@@ -78,7 +78,7 @@ export default function SearchResult({ query }: SearchResultProps) {
         return `/search-service/read/search/user?searchParam=${query}&page=${pageIndex}&size=10`;
       }
       case 'feed': {
-        return `/search-service/read/search/feed?searchParam=${query}&page=${pageIndex}&size=10`;
+        return `/search-service/read/search/feed?searchParam=${query}&page=${pageIndex}&size=15`;
       }
       case 'pet': {
         return `/search-service/read/search/pet?searchParam=${query}&page=${pageIndex}&size=10`;
@@ -102,11 +102,7 @@ export default function SearchResult({ query }: SearchResultProps) {
   useEffect(() => {
     if (!inView || isLoadingMore || isReachingEnd) return;
     setSize((size) => size + 1);
-    console.log('size', size);
   }, [inView, isLoadingMore, isReachingEnd]);
-
-  // console.log(data);
-
   return (
     <section className="pt-4 ">
       {/* 사람 / 피드(태그) / 동물*/}
@@ -143,6 +139,7 @@ export default function SearchResult({ query }: SearchResultProps) {
                 <FeedResultList
                   key={idx}
                   result={item?.content as SearchContentFeed[]}
+                  query={query}
                 />
               );
             case 'pet':
@@ -150,6 +147,7 @@ export default function SearchResult({ query }: SearchResultProps) {
                 <PetResultList
                   key={idx}
                   result={item?.content as SearchContentPet[]}
+                  query={query}
                 />
               );
             default:
