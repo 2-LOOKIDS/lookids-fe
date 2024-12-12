@@ -92,7 +92,7 @@ export default function MessageSection({
         }, 0);
       },
       () => {
-        console.error('EventSource error occurred');
+        console.log('Retrying to connect EventSource...');
       }
     );
 

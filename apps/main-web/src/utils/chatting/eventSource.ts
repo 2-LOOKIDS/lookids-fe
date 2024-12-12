@@ -31,6 +31,9 @@ export function connectEventSource(
   eventSource.onerror = () => {
     console.error('EventSource error, retrying...');
     eventSource.close();
+    setTimeout(() => {
+      connectEventSource(chatId, myAccessToken, onMessage, onError);
+    }, 1500);
     onError();
   };
 
