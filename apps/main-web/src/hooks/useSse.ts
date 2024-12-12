@@ -12,33 +12,45 @@ export function useSse(
     const uuid = session?.uuid;
     const myAccessToken = session?.accessToken;
 
-    if (!uuid) return;
+    if (!uuid) {
+      console.warn('유효한 세션 정보가 없습니다.');
+      return;
+    }
 
-    const eventSource = new EventSourcePolyfill(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/notification-service/read/notification/user/sse/${uuid}`,
-      {
-        headers: { Authorization: `Bearer ${myAccessToken}` },
-      }
-    );
+    const connectEventSource = () => {
+      const eventSource = new EventSourcePolyfill(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/notification-service/read/notification/user/sse/${uuid}`,
+        {
+          headers: { Authorization: `Bearer ${myAccessToken}` },
+        }
+      );
 
-    eventSource.onopen = () => {
-      console.log('SSE 연결 완료');
+      eventSource.onopen = () => {
+        console.log('SSE 연결 완료');
+      };
+
+      eventSource.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+        console.log('SSE 메시지 수신:', data);
+        setNotificationData((prev) => [...prev, ...data]);
+        setHasNotification(true);
+      };
+
+      eventSource.onerror = (error) => {
+        console.error('SSE 연결 오류:', error);
+        // 재연결을 위해 기존 연결을 닫지 않음
+      };
+
+      return eventSource;
     };
 
-    eventSource.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      console.log('THIS IS FROM SSE', data);
-      setNotificationData((prev) => [...prev, ...data]);
-      setHasNotification(true);
-    };
-
-    eventSource.onerror = (error) => {
-      console.error('SSE connection error:', error);
-      eventSource.close();
-    };
+    const eventSource = connectEventSource();
 
     return () => {
-      eventSource.close();
+      if (eventSource) {
+        eventSource.close();
+        console.log('SSE 연결 종료');
+      }
     };
   }, [session, setNotificationData, setHasNotification]);
 }
