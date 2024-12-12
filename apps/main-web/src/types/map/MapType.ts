@@ -4,6 +4,8 @@ export interface Pin {
   longitude: number;
   category: string;
   locationScore: number;
+  mediaUrl: string;
+  feedCode: string;
 }
 
 export interface Bounds {
