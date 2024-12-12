@@ -17,10 +17,8 @@ export function useSse(
       return;
     }
 
-    let eventSource: EventSourcePolyfill;
-
-    try {
-      eventSource = new EventSourcePolyfill(
+    const connectEventSource = () => {
+      const eventSource = new EventSourcePolyfill(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/notification-service/read/notification/user/sse/${uuid}`,
         {
           headers: { Authorization: `Bearer ${myAccessToken}` },
@@ -40,11 +38,13 @@ export function useSse(
 
       eventSource.onerror = (error) => {
         console.error('SSE 연결 오류:', error);
-        eventSource.close();
+        // 재연결을 위해 기존 연결을 닫지 않음
       };
-    } catch (error) {
-      console.error('SSE 초기화 중 오류 발생:', error);
-    }
+
+      return eventSource;
+    };
+
+    const eventSource = connectEventSource();
 
     return () => {
       if (eventSource) {
