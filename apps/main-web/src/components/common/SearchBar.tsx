@@ -1,12 +1,14 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { SearchWordSchema, SearchWordType } from '../../types/search';
+import { useEffect, useRef, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 import { Input } from '@repo/ui/components/ui/input';
 import { X } from 'lucide-react';
 import { useDebounce } from 'use-debounce';
 import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 interface SearchBarProps {
   onClose: () => void;
@@ -20,7 +22,17 @@ export default function SearchBar({ onClose, initialValue }: SearchBarProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const currentTabRef = useRef<string>(searchParams.get('tab') || 'user');
-  const { register, watch, setValue } = useForm<FormValues>({
+
+  const {
+    register,
+    watch,
+    setValue,
+    getValues,
+    setError,
+    clearErrors,
+    formState: { errors },
+  } = useForm<SearchWordType>({
+    resolver: zodResolver(SearchWordSchema),
     defaultValues: {
       searchWord: initialValue ?? '',
     },
@@ -32,21 +44,37 @@ export default function SearchBar({ onClose, initialValue }: SearchBarProps) {
   useEffect(() => {
     const currentTab = searchParams.get('tab') || currentTabRef.current;
     currentTabRef.current = currentTab;
-    if (debouncedSearchValue.trim()) {
+    const result = SearchWordSchema.safeParse({
+      searchWord: debouncedSearchValue.trim(),
+    });
+
+    if (debouncedSearchValue.trim() && result.success) {
       router.push(
         `/search?tab=${currentTab}&q=${encodeURIComponent(debouncedSearchValue.trim())}`
       );
-    } else if (window.location.pathname === '/search') {
-      router.push(`/search?tab=${currentTabRef.current}`);
+    } else if (debouncedSearchValue.trim() === '') {
+      router.push(`/search?tab=${currentTab}`);
     }
   }, [debouncedSearchValue, router, searchParams]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValue('searchWord', e.target.value);
+    const value = e.target.value;
+    const result = SearchWordSchema.safeParse({ searchWord: value });
+
+    if (!result.success) {
+      setError('searchWord', {
+        type: 'manual',
+        message:
+          result.error.errors[0]?.message || '특수 문자는 허용되지 않습니다.',
+      });
+    } else {
+      clearErrors('searchWord');
+      setValue('searchWord', value, { shouldValidate: true });
+    }
   };
 
   return (
-    <div className="flex items-center justify-center gap-2">
+    <form className="flex items-center justify-center gap-2">
       <Input
         {...register('searchWord')}
         autoFocus
@@ -56,6 +84,6 @@ export default function SearchBar({ onClose, initialValue }: SearchBarProps) {
       <div onClick={onClose}>
         <X color="#ffa200" size={22} />
       </div>
-    </div>
+    </form>
   );
 }

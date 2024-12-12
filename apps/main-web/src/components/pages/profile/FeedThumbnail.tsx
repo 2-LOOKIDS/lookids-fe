@@ -10,7 +10,7 @@ interface FeedThumbnailProps {
 
 function FeedThumbnail({ imgUrl, imgAlt, feedCode }: FeedThumbnailProps) {
   const BASE_URL = process.env.NEXT_PUBLIC_MEDIA_BASE_URL;
-  if (!imgUrl.startsWith(BASE_URL!)) {
+  if (imgUrl?.startsWith(BASE_URL!)) {
     imgUrl = BASE_URL + imgUrl;
   }
   return (
