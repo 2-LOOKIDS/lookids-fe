@@ -38,7 +38,10 @@ export function useSse(
 
       eventSource.onerror = (error) => {
         console.error('SSE 연결 오류:', error);
-        // 재연결을 위해 기존 연결을 닫지 않음
+        eventSource.close();
+        setTimeout(() => {
+          connectEventSource();
+        }, 3000);
       };
 
       return eventSource;
