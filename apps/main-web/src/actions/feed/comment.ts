@@ -71,7 +71,6 @@ export async function getComments(
       'default',
       'updatecomments'
     );
-    console.log(data.result);
     return data.result;
   } catch (error) {
     console.error('댓글 데이터 요청 중 오류 발생:', error);
@@ -111,11 +110,9 @@ export async function getCommentCount(feedCode: string): Promise<commentCount> {
       '',
       'no-cache'
     );
-    console.log('댓글 수 조회 결과:', data.result);
     return data.result;
   } catch (error) {
     console.error('댓글 수 조회 중 오류 발생:', error);
     return { commentCount: 0 };
-    throw new Error(`댓글 수 조회 실패: ${error}`);
   }
 }

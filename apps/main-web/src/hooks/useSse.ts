@@ -42,7 +42,7 @@ export function useSse(
         eventSource.close();
         setTimeout(() => {
           connectEventSource();
-        }, 500);
+        }, 1500);
       };
 
       return eventSource;
