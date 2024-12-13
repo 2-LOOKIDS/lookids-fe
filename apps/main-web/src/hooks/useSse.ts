@@ -30,10 +30,11 @@ export function useSse(
       };
 
       eventSource.onmessage = (event) => {
-        const data = JSON.parse(event.data);
-        console.log('SSE 메시지 수신:', data);
-        setNotificationData((prev) => [...prev, ...data]);
-        setHasNotification(true);
+        console.log('SSE메시지', event);
+        // const data = JSON.parse(event.data);
+        // console.log('SSE 메시지 수신:', data);
+        // setNotificationData((prev) => [...prev, ...data]);
+        // setHasNotification(true);
       };
 
       eventSource.onerror = (error) => {
@@ -41,7 +42,7 @@ export function useSse(
         eventSource.close();
         setTimeout(() => {
           connectEventSource();
-        }, 3000);
+        }, 1500);
       };
 
       return eventSource;

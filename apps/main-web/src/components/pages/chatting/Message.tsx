@@ -90,9 +90,6 @@ export default function MessageSection({
         setTimeout(() => {
           scrollToBottom();
         }, 0);
-      },
-      () => {
-        console.log('Retrying to connect EventSource...');
       }
     );
 
