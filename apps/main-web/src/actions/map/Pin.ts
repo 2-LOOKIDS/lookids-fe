@@ -19,14 +19,12 @@ export async function getMyPinList(bounds: Bounds): Promise<Pin[]> {
 
 export async function uploadPin(pin: PinType): Promise<any> {
   try {
-    console.log('업로드할 핀 데이터:', pin);
     const data = await fetchDataforMembers<CommonResponse<any>>(
       `map-service/write/map`,
       'POST',
       pin,
       'no-cache'
     );
-    console.log('핀 업로드 응답:', data);
     return data.result;
   } catch (error) {
     console.error('핀 업로드 중 오류 발생:', error);

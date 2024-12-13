@@ -17,7 +17,6 @@ export function NotificationModal({
 
   const hasNotification =
     notificationData && Object.keys(notificationData).length > 0;
-  console.log(notificationData);
   return (
     <div
       className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-start justify-center pt-20 z-50"

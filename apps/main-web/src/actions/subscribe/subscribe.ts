@@ -23,7 +23,6 @@ export async function deleteSubscribe(authorUuid: string): Promise<void> {
       { authorUuid },
       'no-cache'
     );
-    console.log('구독 취소 결과: ', data);
   } catch (error) {
     console.error(error);
     throw Error('Failed to unsubscribe');
@@ -62,7 +61,6 @@ export async function getIsSubscribed(
       'no-cache',
       'subscribe-service'
     );
-    console.log('현재 구독 결과: ', data.result);
     return data.result;
   } catch (error) {
     console.error(error);

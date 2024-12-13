@@ -1,5 +1,12 @@
 export { default } from 'next-auth/middleware';
 
 export const config = {
-  matcher: ['/mypage/:path*', '/like/:path*', '/cart'], // 모든 하위 경로 포함
+  matcher: [
+    '/chatting/:path*',
+    '/map/:path*',
+    '/addFeed/:path*',
+    '/notification/:path*',
+    '/mypage/:path*',
+    '/feed/:path*',
+  ], // 모든 하위 경로 포함
 };

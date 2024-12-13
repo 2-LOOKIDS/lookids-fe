@@ -52,7 +52,6 @@ export default function AddFeedForm({ selectedPetCode }: AddFeedFormProps) {
 
     const extractedTags = content.match(/#\S+/g) || []; // #으로 시작하는 단어들 찾기
     const uniqueTags = [...new Set([...selectedTags, ...extractedTags])]; // 중복 제거하여 배열 합치기
-    console.log(uniqueTags);
 
     const feedData: FeedPostType = {
       content,
@@ -66,12 +65,9 @@ export default function AddFeedForm({ selectedPetCode }: AddFeedFormProps) {
       feed: feedData,
       images: images,
     });
-    console.log(res);
     if (res.isSuccess) {
       alert('게시물이 성공적으로 등록되었습니다.');
       router.push('/');
-    } else {
-      console.log(res.message);
     }
   };
 
