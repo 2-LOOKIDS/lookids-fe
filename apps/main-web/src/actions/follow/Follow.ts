@@ -1,34 +1,84 @@
 'use server';
 
 import { CommonResponse, PaginationResponse } from '../../types/responseType';
+import {
+  FollowerList,
+  Following,
+  FollowingList,
+} from '../../types/follow/FollowType';
 
-import { Following } from '../../types/follow/FollowType';
 import { fetchDataforMembers } from '../common/common';
 import { responseList } from '../../utils/chatting/fetchMessages';
 import { revalidatePath } from 'next/cache';
 
 const BASE_URL = `${process.env.BACKEND_URL}/follow-block-service`;
-// const BASE_URL = '/api/follow-block-service';
 
 // 팔로잉 목록 조회
-export async function getFollowingList(): Promise<
-  PaginationResponse<Following>
-> {
-  try {
-    const data = await fetchDataforMembers<
-      CommonResponse<responseList<Following>>
-    >(
-      `follow-block-service/read/following?page=0&size=10`,
-      'GET',
-      null,
-      'no-cache'
-    );
-    return await data.result;
-  } catch (error) {
-    console.error('팔로잉 목록 조회 중 오류 발생:', error);
-    throw new Error(`팔로잉 목록 조회 실패: ${error}`);
-  }
-}
+// export async function getFollowingList(): Promise<
+//   PaginationResponse<Following>
+// > {
+//   try {
+//     const data = await fetchDataforMembers<
+//       CommonResponse<responseList<Following>>
+//     >(
+//       `follow-block-service/read/following?page=0&size=10`,
+//       'GET',
+//       null,
+//       'no-cache'
+//     );
+//     return await data.result;
+//   } catch (error) {
+//     console.error('팔로잉 목록 조회 중 오류 발생:', error);
+//     throw new Error(`팔로잉 목록 조회 실패: ${error}`);
+//   }
+// }
+
+// export const getFollowerList = async (url: string): Promise<FollowerList> => {
+//   try {
+//     const response = await fetchDataforMembers<CommonResponse<FollowerList>>(
+//       url,
+//       'GET',
+//       'no-cache'
+//     );
+//     return response.result;
+//   } catch (error) {
+//     console.error('팔로워 목록 조회 실패', error);
+//     throw new Error(`팔로워 목록 조회 실패 :, ${error}`);
+//   }
+// };
+
+export const getFollowingList = async (
+  url: string,
+  uuid: string
+): Promise<FollowingList> => {
+  const API_URL = `${BASE_URL}/${url}`;
+  const response = await fetch(`${BASE_URL}/${url}`, {
+    method: 'GET',
+    headers: {
+      uuid: uuid,
+    },
+  });
+  const result = (await response.json()) as CommonResponse<FollowingList>;
+  // console.log('🚀 ~ following:', result);
+  console.log('API_URL', API_URL);
+  return result.result;
+};
+
+export const getFollowerList = async (
+  url: string,
+  uuid: string
+): Promise<FollowerList> => {
+  const response = await fetch(`${BASE_URL}/${url}`, {
+    method: 'GET',
+    headers: {
+      uuid: uuid,
+    },
+  });
+  const result = (await response.json()) as CommonResponse<FollowerList>;
+  console.log('🚀 ~ follower:', result);
+  return result.result;
+};
+//
 
 export const getFollowStatus = async (
   uuid: string,
@@ -68,24 +118,6 @@ export const putFollowToggle = async (
   revalidatePath('/user/*');
   return result.result;
 };
-
-// 팔로우 토글 ( 1이랑 동일한 거)
-export async function putFollowToggle2(targetUuid: string): Promise<boolean> {
-  const followerUuid = { followerUuid: targetUuid };
-  try {
-    const data = await fetchDataforMembers<CommonResponse<boolean>>(
-      `/follow-block-service/write/follow`,
-      'PUT',
-      followerUuid,
-      'no-cache'
-    );
-    console.log(data);
-    return data.result;
-  } catch (error) {
-    console.error('error', error);
-    throw new Error('error');
-  }
-}
 
 // 차단 관련 API
 

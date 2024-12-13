@@ -2,12 +2,23 @@
 
 import { Button } from '@repo/ui/components/ui/button';
 import React from 'react';
+import { useRouter } from 'next/navigation';
 
 interface MessageButtonProps {
   followState: boolean;
+  token: string;
+  uuid: string;
+  targetUuid: string;
 }
 
-function MessageButton({ followState }: MessageButtonProps) {
+function MessageButton({
+  followState,
+  token,
+  uuid,
+  targetUuid,
+}: MessageButtonProps) {
+  const router = useRouter();
+
   return (
     <Button
       variant="outline"

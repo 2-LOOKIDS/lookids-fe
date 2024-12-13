@@ -1,11 +1,14 @@
 import {
+  getFollowStatus,
+  getFollowingList,
+} from '../../../../actions/follow/Follow';
+import {
   getPetList,
   getUserProfileByNicknameTag,
 } from '../../../../actions/user';
 
 import FeedList from '../../../../components/pages/profile/FeedList';
 import FollowButton from '../../../../components/pages/profile/FollowButton';
-import Hr from '../../../../components/common/Hr';
 import MessageButton from '../../../../components/pages/profile/MessageButton';
 import { Metadata } from 'next';
 import PetList from '../../../../components/pages/profile/PetList';
@@ -13,7 +16,6 @@ import ProfileAvatar from '../../../../components/ui/ProfileAvatar';
 import ProfileDescription from '../../../../components/pages/profile/ProfileDescription';
 import ProfileHeader from '../../../../components/pages/profile/ProfileHeader';
 import ProfileStats from '../../../../components/pages/profile/ProfileStats';
-import { getFollowStatus } from '../../../../actions/follow/Follow';
 import { getProfileStats } from '../../../../actions/batch/batch';
 import { getServerSession } from 'next-auth';
 import { notFound } from 'next/navigation';
@@ -40,6 +42,8 @@ export default async function page({ params }: { params: { id: string } }) {
   const followState = await getFollowStatus(data?.user.uuid, userProfile.uuid);
   const petList = await getPetList(userProfile.uuid);
   const stats = await getProfileStats(userProfile.uuid);
+  // const followingList = await getFollowingList(userProfile.uuid);
+  // console.log('🚀 ~ page ~ followingList:', followingList);
   return (
     <>
       <ProfileHeader
@@ -55,6 +59,7 @@ export default async function page({ params }: { params: { id: string } }) {
               imgAlt={userProfile.nickname}
             />
             <ProfileStats stats={stats} />
+            {/* <ProfileStats uuid={userProfile.uuid} /> */}
           </div>
 
           <ProfileDescription comment={userProfile.comment} />
@@ -67,7 +72,12 @@ export default async function page({ params }: { params: { id: string } }) {
                 targetUuid={userProfile.uuid}
                 followState={followState}
               />
-              <MessageButton followState={followState} />
+              <MessageButton
+                token={data?.user.accessToken}
+                uuid={data?.user.uuid}
+                targetUuid={userProfile.uuid}
+                followState={followState}
+              />
             </div>
           ) : null}
         </section>
