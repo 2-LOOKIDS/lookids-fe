@@ -37,7 +37,7 @@ export default async function page({ params }: { params: { id: string } }) {
   if (userProfile === null) {
     notFound();
   }
-  const followStatus = await getFollowStatus(data?.user.uuid, userProfile.uuid);
+  const followState = await getFollowStatus(data?.user.uuid, userProfile.uuid);
   const petList = await getPetList(userProfile.uuid);
   const stats = await getProfileStats(userProfile.uuid);
   return (
@@ -65,21 +65,11 @@ export default async function page({ params }: { params: { id: string } }) {
                 token={data?.user.accessToken}
                 uuid={data?.user.uuid}
                 targetUuid={userProfile.uuid}
-                followStatus={followStatus}
+                followState={followState}
               />
-              <MessageButton />
+              <MessageButton followState={followState} />
             </div>
-          ) : // <Hr />
-          null}
-          {/* <div className="flex justify-center gap-4 px-4 pt-10">
-            <FollowButton
-              token={data?.user.accessToken}
-              uuid={data?.user.uuid}
-              targetUuid={userProfile.uuid}
-              followStatus={followStatus}
-            />
-            <MessageButton />
-          </div> */}
+          ) : null}
         </section>
 
         {petList.length === 0 ? null : (

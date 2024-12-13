@@ -43,10 +43,6 @@
   display: flex;
 }
 
-/* .petList .swiper-pagination {
-  height: 10px;
-} */
-
 .petList .swiper-pagination-bullet {
   background-color: #fd9340;
 }
