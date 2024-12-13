@@ -44,7 +44,7 @@ function PetList({ petList, isEdit }: PetListProps) {
         pagination={true}
         grid={{ rows: 2 }}
         slidesPerView={1}
-        spaceBetween={20}
+        spaceBetween={30}
         className="petList"
       >
         {petList.map((pet, idx) => {

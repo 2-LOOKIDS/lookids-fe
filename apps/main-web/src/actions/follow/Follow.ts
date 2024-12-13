@@ -1,9 +1,11 @@
 'use server';
+
 import { CommonResponse, PaginationResponse } from '../../types/responseType';
 
 import { Following } from '../../types/follow/FollowType';
-import { responseList } from '../../utils/chatting/fetchMessages';
 import { fetchDataforMembers } from '../common/common';
+import { responseList } from '../../utils/chatting/fetchMessages';
+import { revalidatePath } from 'next/cache';
 
 const BASE_URL = `${process.env.BACKEND_URL}/follow-block-service`;
 // const BASE_URL = '/api/follow-block-service';
@@ -63,6 +65,7 @@ export const putFollowToggle = async (
     body: JSON.stringify(followerUuid),
   });
   const result = (await response.json()) as CommonResponse<boolean>;
+  revalidatePath('/user/*');
   return result.result;
 };
 

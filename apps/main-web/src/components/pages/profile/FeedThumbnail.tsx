@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
+import { getMediaUrl } from '../../../utils/media';
 
 interface FeedThumbnailProps {
   feedCode: string;
@@ -13,6 +14,7 @@ function FeedThumbnail({ imgUrl, imgAlt, feedCode }: FeedThumbnailProps) {
   if (imgUrl?.startsWith(BASE_URL!)) {
     imgUrl = BASE_URL + imgUrl;
   }
+  const imageUrl = getMediaUrl(imgUrl);
   return (
     <Link
       href={`/feed/${feedCode}`}
@@ -20,7 +22,7 @@ function FeedThumbnail({ imgUrl, imgAlt, feedCode }: FeedThumbnailProps) {
     >
       {imgUrl ? (
         <Image
-          src={imgUrl}
+          src={imageUrl}
           alt={imgAlt}
           fill
           sizes="(max-width: 400px) 50vw"
