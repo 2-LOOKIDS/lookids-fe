@@ -21,8 +21,6 @@ const PAGE_SIZE = 10;
 export default function Page() {
   const { isAuth } = useSession();
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
-  const [hasScrolledToEnd, setHasScrolledToEnd] = useState(false);
-  const [isRenderingComplete, setIsRenderingComplete] = useState(false);
 
   const fetcher = (pageIndex: number) =>
     isAuth ? getMainFeedList(pageIndex) : getRandomFeedList(pageIndex);
@@ -38,7 +36,8 @@ export default function Page() {
         new URLSearchParams(url.split('?')[1]).get('page') || '0'
       );
       return fetcher(page);
-    }
+    },
+    { revalidateOnFocus: false }
   );
 
   const feedList: FeedDetail[] = data
@@ -50,7 +49,9 @@ export default function Page() {
     isLoadingInitialData ||
     (size > 0 && data && typeof data[size - 1] === 'undefined');
   const isReachingEnd =
-    data && data[data.length - 1]?.content.length < PAGE_SIZE;
+    data &&
+    data[data.length - 1]?.content &&
+    data[data.length - 1]?.content.length < PAGE_SIZE;
 
   const handleScroll = () => {
     const scrollTop = window.scrollY;
@@ -62,12 +63,7 @@ export default function Page() {
       !isReachingEnd &&
       !isValidating
     ) {
-      setSize(size + 1);
-    }
-
-    // 페이지 하단 도달 확인
-    if (scrollTop + clientHeight >= scrollHeight - 10) {
-      setHasScrolledToEnd(true);
+      setSize((prevSize) => prevSize + 1);
     }
   };
 
@@ -75,20 +71,6 @@ export default function Page() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [isReachingEnd, isValidating]);
-
-  useEffect(() => {
-    // 데이터 렌더링 완료 상태 업데이트
-    if (!isLoadingInitialData && !isLoadingMore) {
-      setTimeout(() => setIsRenderingComplete(true), 500); // 데이터 렌더링 시간 확보
-    }
-  }, [isLoadingInitialData, isLoadingMore]);
-
-  useEffect(() => {
-    // 스크롤이 하단에 도달하고 렌더링이 완료되었으며, 사용자가 로그인하지 않은 경우 모달 표시
-    if (hasScrolledToEnd && isRenderingComplete && !isAuth) {
-      setIsLoginModalOpen(true);
-    }
-  }, [hasScrolledToEnd, isRenderingComplete, isAuth]);
 
   if (error) return <div>데이터를 불러오는 중 오류가 발생했습니다.</div>;
 
@@ -101,19 +83,12 @@ export default function Page() {
             표시할 피드가 없습니다.
           </div>
         ) : (
-          feedList.reduce<React.ReactNode[]>((acc, feed, index) => {
-            acc.push(
-              <SocialCard
-                isDetail={false}
-                feedCode={feed.feedCode}
-                key={`feed-${index}`}
-              />
-            );
-            if ((index + 1) % 3 === 0) {
-              acc.push(<RecommendedPet key={`recommended-${index}`} />);
-            }
-            return acc;
-          }, [])
+          feedList.map((feed, index) => (
+            <div key={`feed-wrapper-${index}`}>
+              <SocialCard isDetail={false} feedCode={feed.feedCode} />
+              {(index + 1) % 3 === 0 && <RecommendedPet />}
+            </div>
+          ))
         )}
         {isLoadingMore &&
           Array.from({ length: PAGE_SIZE }, (_, i) => (
