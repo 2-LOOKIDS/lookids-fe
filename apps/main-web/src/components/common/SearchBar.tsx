@@ -81,6 +81,7 @@ export default function SearchBar({ onClose, initialValue }: SearchBarProps) {
         autoFocus
         placeholder="검색어를 입력해주세요"
         onChange={handleInputChange}
+        className="text-[16px]"
       />
       <div onClick={onClose}>
         <X color="#ffa200" size={22} />
