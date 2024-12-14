@@ -1,26 +1,26 @@
 'use client';
 
 import {
-  FormCustomField,
-  FormInputField,
-  FormTextAreaField,
-} from '../../forms/FormFields';
-import { PetProfileSchema, PetProfileType } from '../../../types/user';
-import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from '@repo/ui/components/ui/select';
+import { PetProfileSchema, PetProfileType } from '../../../types/user';
+import {
+  FormCustomField,
+  FormInputField,
+  FormTextAreaField,
+} from '../../forms/FormFields';
 
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@repo/ui/components/ui/button';
 import { Form } from '@repo/ui/components/ui/form';
-import ImageUpload from '../../forms/ImageUpload';
-import { extractCommonUrl } from '../../../utils/media';
-import { registerPetProfile } from '../../../actions/user';
 import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { registerPetProfile } from '../../../actions/user';
+import { extractCommonUrl } from '../../../utils/media';
+import ImageUpload from '../../forms/ImageUpload';
 
 interface AddPetFormProps {
   setOpen: (open: boolean) => void;

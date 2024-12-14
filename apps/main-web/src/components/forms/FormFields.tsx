@@ -6,7 +6,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@repo/ui/components/ui/form';
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 
 import { Input } from '@repo/ui/components/ui/input';
 import { Textarea } from '@repo/ui/components/ui/textarea';
