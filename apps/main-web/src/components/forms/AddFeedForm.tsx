@@ -14,7 +14,7 @@ interface AddFeedFormProps {
 }
 export default function AddFeedForm({ selectedPetCode }: AddFeedFormProps) {
   const [content, setContent] = useState<string>('');
-  const tags = ['#디자인', '#배고프다', '#집가고싶다'];
+  const tags = ['#강아지', '#고양이', '#산책'];
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const { images } = useImage();
   const router = useRouter();
