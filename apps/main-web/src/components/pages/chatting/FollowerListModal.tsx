@@ -88,12 +88,14 @@ export function FollowerListModal({
               </div>
               <Button
                 className="text-lookids bg-slate-100"
-                onClick={() =>
-                  onSelectFollower(
-                    followers[index].followerUuid,
-                    follower.nickname
-                  )
-                }
+                onClick={() => {
+                  if (onSelectFollower) {
+                    onSelectFollower(
+                      followers[index].followerUuid,
+                      follower.nickname
+                    );
+                  }
+                }}
               >
                 메시지 보내기
               </Button>

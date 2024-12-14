@@ -31,10 +31,14 @@ export function useSse(
 
       eventSource.onmessage = (event) => {
         console.log('SSE메시지', event);
-        // const data = JSON.parse(event.data);
-        // console.log('SSE 메시지 수신:', data);
-        // setNotificationData((prev) => [...prev, ...data]);
-        // setHasNotification(true);
+        try {
+          const data = JSON.parse(event.data);
+          console.log('SSE 메시지 수신:', data);
+          setNotificationData((prev) => [...prev, ...data]);
+          setHasNotification(true);
+        } catch (error) {
+          console.error('SSE 데이터 파싱 오류:', error);
+        }
       };
 
       eventSource.onerror = (error) => {

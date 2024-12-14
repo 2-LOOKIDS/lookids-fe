@@ -11,5 +11,5 @@ export interface Following {
 export interface FollowerListModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSelectFollower: (followerId: string, followerNickName: string) => void;
+  onSelectFollower?: (followerId: string, followerNickName: string) => void;
 }
