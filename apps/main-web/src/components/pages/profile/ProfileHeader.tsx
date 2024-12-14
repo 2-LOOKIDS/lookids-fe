@@ -80,7 +80,6 @@ export default function ProfileHeader({ loginId, uuid }: HeaderProps) {
           {
             label: '유저 알림받기',
             onClick: async () => {
-              console.log('찍히나', uuid);
               const result = await Swal.fire({
                 title: '해당 유저의 알림을 받으시겠습니까?',
                 showCancelButton: true,

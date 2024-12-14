@@ -5,28 +5,28 @@ import {
   AvatarFallback,
   AvatarImage,
 } from '@repo/ui/components/ui/avatar';
+import { useEffect, useRef, useState } from 'react';
 import {
   checkOneOnOneChatRoom,
   createChatRoom,
   getChattingList,
 } from '../../../actions/chatting/Chatting';
-import { useEffect, useRef, useState } from 'react';
 
 import { Badge } from '@repo/ui/components/ui/badge';
 import { Button } from '@repo/ui/components/ui/button';
-import CommonHeader from '../../../components/ui/CommonHeader';
-import { EventSourcePolyfill } from 'event-source-polyfill';
-import { FollowerListModal } from '../../../components/pages/chatting/FollowerListModal';
-import Link from 'next/link';
-import { MenuItem } from '../../../types/common/MenuType';
-import { Plus } from 'lucide-react';
-import { RoomMessage } from '../../../types/chatting/ChattingType';
 import { ScrollArea } from '@repo/ui/components/ui/scroll-area';
-import { formatDate } from '../../../utils/formatDate';
-import { getUserProfile } from '../../../actions/user';
-import { responseList } from '../../../utils/chatting/fetchMessages';
+import { EventSourcePolyfill } from 'event-source-polyfill';
+import { Plus } from 'lucide-react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { getUserProfile } from '../../../actions/user';
+import { FollowerListModal } from '../../../components/pages/chatting/FollowerListModal';
+import CommonHeader from '../../../components/ui/CommonHeader';
 import { useSession } from '../../../context/SessionContext';
+import { RoomMessage } from '../../../types/chatting/ChattingType';
+import { MenuItem } from '../../../types/common/MenuType';
+import { responseList } from '../../../utils/chatting/fetchMessages';
+import { formatDate } from '../../../utils/formatDate';
 
 export default function Page() {
   const session = useSession();
@@ -153,19 +153,16 @@ export default function Page() {
     followerId: string,
     followerNickName: string
   ) => {
-    console.log(`Selected follower: ${followerId}`);
     // ToDO : 해당 팔로워와 1:1 채팅방이 있는지 체크
     if (session?.uuid) {
       const response = await checkOneOnOneChatRoom(session.uuid, followerId);
 
       if (response.result) {
         // 채팅방으로 이동시키기 구현해줘
-        console.log('채팅방있음', response.roomId);
         router.push(`/chatting/${response.roomId}`);
       } else {
-        console.log('1:1 채팅방이 존재하지 않습니다.');
         await createChatRoom(
-          `${followerNickName} ♥ ${myNickName}`,
+          `${followerNickName}님과 ${myNickName}님의 채팅방`,
           session.uuid,
           followerId
         );
@@ -185,7 +182,6 @@ export default function Page() {
   };
 
   const handleNewChat = () => {
-    console.log('New Chat');
     setIsFollowerListOpen(true);
   };
 

@@ -1,6 +1,6 @@
 import { CommonResponse } from '../../types/responseType';
-import { fetchDataforCommon } from '../common/common';
 import { formatNumber } from '../../utils/formatNumber';
+import { fetchDataforCommon } from '../common/common';
 
 export interface FollowCount {
   followingCount: number;
@@ -25,7 +25,6 @@ export interface Counting {
   count: number;
 }
 export async function getFeedCount(uuid: string): Promise<Counting> {
-  console.log('uuid', uuid);
   try {
     const data = await fetchDataforCommon<CommonResponse<Counting>>(
       `batch-service/read/feed?uuid=${uuid}`,
@@ -44,7 +43,6 @@ export async function getFavoriteCount(
   targetCode: string,
   type: string
 ): Promise<Counting> {
-  console.log('targetCode', targetCode);
   try {
     const data = await fetchDataforCommon<CommonResponse<Counting>>(
       `batch-service/read/favorite?targetCode=${targetCode}&type=${type}`,

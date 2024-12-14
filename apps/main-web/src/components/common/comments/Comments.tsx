@@ -30,7 +30,6 @@ export default function Comments({
   const getCommentReplies = async () => {
     try {
       const response = await getCommentReply(comment.commentCode);
-      console.log(response);
       setReplies(response);
     } catch (error) {
       console.error('Error fetching replies:', error);

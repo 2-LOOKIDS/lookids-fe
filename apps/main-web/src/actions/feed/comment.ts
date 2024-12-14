@@ -11,14 +11,12 @@ export async function uploadComment(
   content: string
 ): Promise<any> {
   try {
-    console.log('업로드할 댓글 데이터:', content);
     const data = await fetchDataforMembers<CommonResponse<any>>(
       `comment-service/write/comment`,
       'POST',
       { feedCode, content },
       'no-cache'
     );
-    console.log('댓글 업로드 응답:', data);
     return data;
   } catch (error) {
     console.error('댓글 업로드 중 오류 발생:', error);

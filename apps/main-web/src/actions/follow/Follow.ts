@@ -2,10 +2,10 @@
 
 import { CommonResponse, PaginationResponse } from '../../types/responseType';
 
-import { Following } from '../../types/follow/FollowType';
-import { fetchDataforMembers } from '../common/common';
-import { responseList } from '../../utils/chatting/fetchMessages';
 import { revalidatePath } from 'next/cache';
+import { Following } from '../../types/follow/FollowType';
+import { responseList } from '../../utils/chatting/fetchMessages';
+import { fetchDataforMembers } from '../common/common';
 
 const BASE_URL = `${process.env.BACKEND_URL}/follow-block-service`;
 // const BASE_URL = '/api/follow-block-service';
@@ -79,7 +79,6 @@ export async function putFollowToggle2(targetUuid: string): Promise<boolean> {
       followerUuid,
       'no-cache'
     );
-    console.log(data);
     return data.result;
   } catch (error) {
     console.error('error', error);
@@ -115,7 +114,6 @@ export async function putBlockUser(blockedUuid: string): Promise<void> {
       { blockedUuid },
       'no-cache'
     );
-    console.log(data);
   } catch (error) {
     console.error('error', error);
     throw new Error('error');

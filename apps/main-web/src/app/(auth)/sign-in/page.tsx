@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import CatJelly from '../../../components/icons/CatJelly';
 import LookidsLogo from '../../../components/icons/LookidsLogo';
 import LoginForm from '../../../components/layouts/LoginForm';
 
@@ -15,7 +14,7 @@ export default function Page() {
           Register
         </Link>
       </p>
-      <CatJelly />
+      {/* <CatJelly /> */}
     </div>
   );
 }

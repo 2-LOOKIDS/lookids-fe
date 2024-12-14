@@ -23,7 +23,6 @@ export function connectEventSource(
 
   eventSource.onmessage = (event) => {
     const data = JSON.parse(event.data);
-    console.log('Received data from EventSource:', data);
     onMessage(data);
   };
 

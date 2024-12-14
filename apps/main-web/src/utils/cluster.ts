@@ -31,7 +31,6 @@ export function clusterPins(pins: Pin[], bounds: Bounds, radius: number) {
       });
     }
   });
-  console.log('Clustered:', clustered);
   return clustered;
 }
 
