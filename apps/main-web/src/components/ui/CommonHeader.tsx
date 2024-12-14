@@ -9,7 +9,7 @@ export default function CommonHeader({
   menuItems = [],
 }: CommonHeaderProps) {
   return (
-    <section className="relative mt-[52px] flex h-12 items-center">
+    <section className="relative  flex h-12 items-center">
       <ChevronLeft
         className="absolute left-3"
         onClick={() => window.history.back()}
