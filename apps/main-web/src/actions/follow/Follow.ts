@@ -80,7 +80,7 @@ export const getFollowerList = async (
 };
 //
 
-export const getFollowStatus = async (
+export const getFollowState = async (
   uuid: string,
   targetUuid: string
 ): Promise<boolean> => {

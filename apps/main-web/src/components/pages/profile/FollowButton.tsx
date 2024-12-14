@@ -14,6 +14,8 @@ import {
 
 import { Button } from '@repo/ui/components/ui/button';
 import { cn } from '@repo/ui/lib/utils';
+import { deleteChattingRoom } from '../../../actions/chatting/Chatting';
+import { isRoomExist } from '../../../types/chatting/ChattingType';
 import { putFollowToggle } from '../../../actions/follow/Follow';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -23,21 +25,30 @@ interface FollowButtonProps {
   uuid: string;
   targetUuid: string;
   followState: boolean;
+  checkChatRoom: isRoomExist;
 }
 function FollowButton({
   token,
   uuid,
   targetUuid,
   followState,
+  checkChatRoom,
 }: FollowButtonProps) {
   const [hasToken, setHasToken] = useState(true);
   const router = useRouter();
 
   const handleFollow = async () => {
     if (!token) {
-      router.push('/sign-in');
-    } else {
-      const response = await putFollowToggle(token, uuid, targetUuid);
+      return router.push('/sign-in');
+    }
+    const response = await putFollowToggle(token, uuid, targetUuid);
+  };
+
+  // 채팅방 삭제
+  const deleteChatRoom = async (roomId: string) => {
+    if (!followState) {
+      await deleteChattingRoom(roomId);
+      console.log('delete chat room', roomId);
     }
   };
 

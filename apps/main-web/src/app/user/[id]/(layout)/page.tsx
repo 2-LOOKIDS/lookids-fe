@@ -1,9 +1,10 @@
 import {
-  getFollowStatus,
+  getFollowState,
   getFollowingList,
 } from '../../../../actions/follow/Follow';
 import {
   getPetList,
+  getUserProfile,
   getUserProfileByNicknameTag,
 } from '../../../../actions/user';
 
@@ -16,6 +17,7 @@ import ProfileAvatar from '../../../../components/ui/ProfileAvatar';
 import ProfileDescription from '../../../../components/pages/profile/ProfileDescription';
 import ProfileHeader from '../../../../components/pages/profile/ProfileHeader';
 import ProfileStats from '../../../../components/pages/profile/ProfileStats';
+import { checkOneOnOneChatRoom } from '../../../../actions/chatting/Chatting';
 import { getProfileStats } from '../../../../actions/batch/batch';
 import { getServerSession } from 'next-auth';
 import { notFound } from 'next/navigation';
@@ -35,15 +37,18 @@ export async function generateMetadata({
 export default async function page({ params }: { params: { id: string } }) {
   const data = await getServerSession(options);
   const [nickname, tag] = decodeURIComponent(params.id).split('-');
+  const myProfile = await getUserProfile(data?.user.uuid);
   const userProfile = await getUserProfileByNicknameTag(nickname, tag);
   if (userProfile === null) {
     notFound();
   }
-  const followState = await getFollowStatus(data?.user.uuid, userProfile.uuid);
+  const followState = await getFollowState(data?.user.uuid, userProfile.uuid);
   const petList = await getPetList(userProfile.uuid);
   const stats = await getProfileStats(userProfile.uuid);
-  // const followingList = await getFollowingList(userProfile.uuid);
-  // console.log('🚀 ~ page ~ followingList:', followingList);
+  const checkChatRoom = await checkOneOnOneChatRoom(
+    data?.user.uuid,
+    userProfile.uuid
+  );
   return (
     <>
       <ProfileHeader
@@ -71,12 +76,16 @@ export default async function page({ params }: { params: { id: string } }) {
                 uuid={data?.user.uuid}
                 targetUuid={userProfile.uuid}
                 followState={followState}
+                checkChatRoom={checkChatRoom}
               />
               <MessageButton
                 token={data?.user.accessToken}
                 uuid={data?.user.uuid}
+                nickname={myProfile.nickname}
+                targetNickname={userProfile.nickname}
                 targetUuid={userProfile.uuid}
                 followState={followState}
+                checkChatRoom={checkChatRoom}
               />
             </div>
           ) : null}
