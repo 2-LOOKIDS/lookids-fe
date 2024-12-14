@@ -43,6 +43,7 @@ export default function LoginForm() {
             id="id"
             placeholder="아이디를 입력하세요"
             type="text"
+            className="text-[16px]"
           />
         </div>
         <div className="space-y-2">
@@ -52,6 +53,7 @@ export default function LoginForm() {
             id="password"
             placeholder="********"
             type="password"
+            className="text-[16px]"
           />
         </div>
         {loginError && <p className="text-sm text-red-500">{loginError}</p>}
