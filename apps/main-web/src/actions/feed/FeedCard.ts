@@ -106,7 +106,7 @@ export async function getFeedDetail(feedCode: string): Promise<FeedDetail> {
       `feed-read-service/read/feed/detail?feedCode=${feedCode}`,
       'GET',
       null,
-      'no-cache'
+      'force-cache'
     );
     return data.result;
   } catch (error) {
@@ -162,7 +162,7 @@ export async function getIsMyFeed(feedCode: string) {
       `feed-read-service/read/feed/check?feedCode=${feedCode}`,
       'GET',
       null,
-      'no-cache'
+      'force-cache'
     );
     return data.result;
   } catch (error) {
