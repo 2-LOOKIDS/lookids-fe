@@ -1,13 +1,13 @@
-import { Check, X } from "lucide-react";
+import { Check, X } from 'lucide-react';
 
 export interface CustomToastProps {
   message: string;
-  iconType: "success" | "error";
+  iconType: 'success' | 'error';
 }
 
 export default function CustomToast({ message, iconType }: CustomToastProps) {
   const icon =
-    iconType === "success" ? (
+    iconType === 'success' ? (
       <Check size={26} color="white" className="rounded-full bg-[#18c00c]" />
     ) : (
       <X size={26} color="white" className="rounded-full bg-[#f50000]" />

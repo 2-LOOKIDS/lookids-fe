@@ -1,11 +1,15 @@
+'use client';
+
 import Link from 'next/link';
 import ProfileAvatar from '../../ui/ProfileAvatar';
 import { SearchContentUser } from '../../../types/search';
+import { useRouter } from 'next/navigation';
 
 interface UserResultListProps {
   result: SearchContentUser[];
   query: string;
 }
+
 export function UserResultList({ result, query }: UserResultListProps) {
   return result.length === 0 ? (
     <p className="px-5 pt-5">
@@ -26,21 +30,25 @@ interface UserResultItemProps {
 }
 
 function UserResultItem({ content }: UserResultItemProps) {
+  const router = useRouter();
   return (
-    <li>
-      <Link
+    <li
+      className="flex items-center gap-2 cursor-pointer"
+      onClick={() => router.push(`user/${content.nickname}-${content.tag}`)}
+    >
+      {/* <Link
         href={`user/${content.nickname}-${content.tag}`}
         className="flex items-center gap-2"
-      >
-        <ProfileAvatar
-          className="h-10 w-10"
-          imgUrl={content.profileImage}
-          imgAlt={`${content.nickname}@${content.tag}`}
-        />
-        <p>
-          {content.nickname}@{content.tag}
-        </p>
-      </Link>
+      > */}
+      <ProfileAvatar
+        className="h-10 w-10"
+        imgUrl={content.profileImage}
+        imgAlt={`${content.nickname}@${content.tag}`}
+      />
+      <p>
+        {content.nickname}@{content.tag}
+      </p>
+      {/* </Link> */}
     </li>
   );
 }

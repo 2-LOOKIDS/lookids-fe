@@ -1,11 +1,15 @@
 import {
+  getFollowState,
+  getFollowingList,
+} from '../../../../actions/follow/Follow';
+import {
   getPetList,
+  getUserProfile,
   getUserProfileByNicknameTag,
 } from '../../../../actions/user';
 
 import FeedList from '../../../../components/pages/profile/FeedList';
 import FollowButton from '../../../../components/pages/profile/FollowButton';
-import Hr from '../../../../components/common/Hr';
 import MessageButton from '../../../../components/pages/profile/MessageButton';
 import { Metadata } from 'next';
 import PetList from '../../../../components/pages/profile/PetList';
@@ -13,7 +17,7 @@ import ProfileAvatar from '../../../../components/ui/ProfileAvatar';
 import ProfileDescription from '../../../../components/pages/profile/ProfileDescription';
 import ProfileHeader from '../../../../components/pages/profile/ProfileHeader';
 import ProfileStats from '../../../../components/pages/profile/ProfileStats';
-import { getFollowStatus } from '../../../../actions/follow/Follow';
+import { checkOneOnOneChatRoom } from '../../../../actions/chatting/Chatting';
 import { getProfileStats } from '../../../../actions/batch/batch';
 import { getServerSession } from 'next-auth';
 import { notFound } from 'next/navigation';
@@ -33,13 +37,19 @@ export async function generateMetadata({
 export default async function page({ params }: { params: { id: string } }) {
   const data = await getServerSession(options);
   const [nickname, tag] = decodeURIComponent(params.id).split('-');
+  const myProfile = await getUserProfile(data?.user.uuid);
   const userProfile = await getUserProfileByNicknameTag(nickname, tag);
   if (userProfile === null) {
     notFound();
   }
-  const followState = await getFollowStatus(data?.user.uuid, userProfile.uuid);
+  const followState = await getFollowState(data?.user.uuid, userProfile.uuid);
   const petList = await getPetList(userProfile.uuid);
   const stats = await getProfileStats(userProfile.uuid);
+  const checkChatRoom = await checkOneOnOneChatRoom(
+    data?.user.uuid,
+    userProfile.uuid
+  );
+
   return (
     <>
       <ProfileHeader
@@ -55,6 +65,7 @@ export default async function page({ params }: { params: { id: string } }) {
               imgAlt={userProfile.nickname}
             />
             <ProfileStats stats={stats} />
+            {/* <ProfileStats uuid={userProfile.uuid} /> */}
           </div>
 
           <ProfileDescription comment={userProfile.comment} />
@@ -66,8 +77,17 @@ export default async function page({ params }: { params: { id: string } }) {
                 uuid={data?.user.uuid}
                 targetUuid={userProfile.uuid}
                 followState={followState}
+                checkChatRoom={checkChatRoom}
               />
-              <MessageButton followState={followState} />
+              <MessageButton
+                token={data?.user.accessToken}
+                uuid={data?.user.uuid}
+                nickname={myProfile.nickname}
+                targetNickname={userProfile.nickname}
+                targetUuid={userProfile.uuid}
+                followState={followState}
+                checkChatRoom={checkChatRoom}
+              />
             </div>
           ) : null}
         </section>
