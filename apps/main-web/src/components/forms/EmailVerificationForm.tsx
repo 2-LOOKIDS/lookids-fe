@@ -133,6 +133,12 @@ export default function EmailVerificationForm({
                     placeholder="이메일"
                     type="email"
                     {...field}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault();
+                        validateEmailAndSendVerificationCodeToEmail();
+                      }
+                    }}
                   />
                 </FormControl>
                 <div className="flex justify-center">
