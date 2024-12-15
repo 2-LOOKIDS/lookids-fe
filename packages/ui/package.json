@@ -12,6 +12,14 @@
     "./tailwind.config": "./tailwind.config.ts",
     "./postcss.config": "./postcss.config.mjs",
     "./lib/*": "./src/lib/*.ts",
+    "./utils/*": [
+      "./src/utils/*.tsx",
+      "./src/utils/*.ts"
+    ],
+    "./hooks/*": [
+      "./src/hooks/*.tsx",
+      "./src/hooks/*.ts"
+    ],
     "./components/*": [
       "./src/components/*.tsx",
       "./src/components/*.ts"

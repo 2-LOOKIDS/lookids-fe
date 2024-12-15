@@ -1,13 +1,33 @@
 'use client';
 
 import {
-  checkOneOnOneChatRoom,
-  createChatRoom,
-} from '../../../actions/chatting/Chatting';
+  Alert,
+  AlertDescription,
+  AlertTitle,
+} from '@repo/ui/components/ui/alert';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@repo/ui/components/ui/alert-dialog';
+import { useEffect, useState } from 'react';
 
 import { Button } from '@repo/ui/components/ui/button';
+import ShowToast from '@repo/ui/utils/ShowToast';
+import { Terminal } from 'lucide-react';
+import { ToastAction } from '@repo/ui/components/ui/toast';
+import { createChatRoom } from '../../../actions/chatting/Chatting';
 import { isRoomExist } from '../../../types/chatting/ChattingType';
 import { useRouter } from 'next/navigation';
+import { useToast } from '../../../../../../packages/ui/src/hooks/use-toast';
+
+// import { useToast } from '@repo/ui/hooks/use-toast';
 
 interface MessageButtonProps {
   followState: boolean;
@@ -25,9 +45,11 @@ function MessageButton({
   uuid,
   targetUuid,
   checkChatRoom,
+  nickname,
+  targetNickname,
 }: MessageButtonProps) {
   const router = useRouter();
-  const { toast } = useToast();
+  const [isOpen, setIsOpen] = useState(false);
 
   const isLoggedIn = (token: string) => {
     if (!token) {
@@ -35,37 +57,54 @@ function MessageButton({
     }
   };
 
-  const isFollowed = (followState: boolean) => {
-    if (!followState) {
-    }
-  };
-
   const goToChatRoom = async () => {
     isLoggedIn(token);
-    isFollowed(followState);
+    if (!followState) {
+      return setIsOpen(true);
+    }
 
     if (checkChatRoom.result) {
       router.push(`/chatting/${checkChatRoom.roomId}`);
     } else {
-      // const response = await createChatRoom('채팅방입니다',uuid, targetUuid)
+      const response = await createChatRoom(
+        `${nickname}님과 ${targetNickname}님의 채팅방`,
+        uuid,
+        targetUuid
+      );
+      if (response.isSuccess) {
+        router.push(`/chatting/${response.result.roomId}`);
+      }
     }
   };
 
-  // TODO: 모바일에서 팔로우 버튼 tailwind 안먹음, 채팅 메세지 라우팅
-  // 메세지 보내기 버튼 누르면
-  // 1. 로그인 여부 확인(로그인이 아니면 로그인 페이지로 이동)
-  // 2. 팔로우 상태 확인 (팔로우가 아니면 팔로우하세요)
-  // 3. 채팅 방이 존재 하는지 확인(존재하면 채팅룸으로 이동 / 존재하지 않으면 채팅룸 생성 후 이동)
   return (
-    <Button
-      variant="outline"
-      onClick={goToChatRoom}
-      className="border-lookids text-lookids hover:bg-lookids w-3/5 rounded-[12px] border py-5 hover:text-white sm:p-2"
-    >
-      <p className="font-poppins text-base font-semibold leading-6">
-        메세지 보내기
-      </p>
-    </Button>
+    <>
+      <Button
+        variant="outline"
+        onClick={goToChatRoom}
+        className="border-lookids text-lookids hover:bg-lookids w-3/5 rounded-[12px] border py-5 hover:text-white sm:p-2"
+      >
+        <p className="font-poppins text-base font-semibold leading-6">
+          메세지 보내기
+        </p>
+      </Button>
+
+      <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>팔로우를 먼저 해주세요!</AlertDialogTitle>
+            <AlertDialogDescription>
+              팔로우한 유저에게만 메세지를 보낼 수 있습니다
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="!mt-0">
+            <AlertDialogAction className="bg-white border-lookids text-lookids hover:bg-lookids w-1/5 rounded-[12px] border py-5 hover:text-white sm:p-2">
+              확인
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
   );
 }
 
