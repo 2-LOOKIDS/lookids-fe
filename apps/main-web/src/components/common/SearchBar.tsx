@@ -1,14 +1,14 @@
 'use client';
 
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useRef } from 'react';
 import { SearchWordSchema, SearchWordType } from '../../types/search';
+import { useEffect, useRef } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 
-import { zodResolver } from '@hookform/resolvers/zod';
 import { Input } from '@repo/ui/components/ui/input';
 import { X } from 'lucide-react';
-import { useForm } from 'react-hook-form';
 import { useDebounce } from 'use-debounce';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 interface SearchBarProps {
   onClose: () => void;
@@ -75,7 +75,10 @@ export default function SearchBar({ onClose, initialValue }: SearchBarProps) {
   };
 
   return (
-    <form className="flex items-center text-[16px] justify-center gap-2">
+    <form
+      onSubmit={(e) => e.preventDefault()}
+      className="flex items-center text-[16px] justify-center gap-2"
+    >
       <Input
         {...register('searchWord')}
         autoFocus
