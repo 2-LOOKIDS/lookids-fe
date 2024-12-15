@@ -27,12 +27,23 @@ function MessageButton({
   checkChatRoom,
 }: MessageButtonProps) {
   const router = useRouter();
-  // console.log(targetUuid);
+  const { toast } = useToast();
+
+  const isLoggedIn = (token: string) => {
+    if (!token) {
+      router.push('/sign-in');
+    }
+  };
+
+  const isFollowed = (followState: boolean) => {
+    if (!followState) {
+    }
+  };
 
   const goToChatRoom = async () => {
-    if (!token) {
-      return router.push('/sign-in');
-    }
+    isLoggedIn(token);
+    isFollowed(followState);
+
     if (checkChatRoom.result) {
       router.push(`/chatting/${checkChatRoom.roomId}`);
     } else {
