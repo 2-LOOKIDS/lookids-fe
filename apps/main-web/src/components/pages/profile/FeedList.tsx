@@ -59,11 +59,9 @@ export default function FeedList({ uuid }: FeedListProps) {
     }
   };
 
-  const { data, size, setSize, isLoading } = useSWRInfinite(
-    getKey,
-    fetcher,
-    {}
-  );
+  const { data, size, setSize, isLoading } = useSWRInfinite(getKey, fetcher, {
+    revalidateFirstPage: true,
+  });
 
   const isEmpty = data?.[0]?.content.length === 0;
   const isLoadingMore =
@@ -78,6 +76,7 @@ export default function FeedList({ uuid }: FeedListProps) {
   useEffect(() => {
     if (!inView || isLoadingMore || isReachingEnd) return;
     setSize((size) => size + 1);
+    console.log(data);
   }, [inView, isLoadingMore, isReachingEnd]);
 
   return (
