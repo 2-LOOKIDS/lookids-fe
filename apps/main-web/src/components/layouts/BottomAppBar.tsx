@@ -1,72 +1,83 @@
 'use client';
 
+import {
+  HomeIcon,
+  MapPin,
+  MessageCircle,
+  PenBoxIcon,
+  User,
+} from 'lucide-react';
 import { usePathname, useRouter } from 'next/navigation';
+import PencilWrite from '../lottie/PencilWrite';
 
-import BottomAddIcon from '../icons/bottomNavBar/BottomAddIcon';
-import BottomDiaryIcon from '../icons/bottomNavBar/BottomDiaryIcon';
-import BottomHomeIcon from '../icons/bottomNavBar/BottomHomeIcon';
-import BottomMapIcon from '../icons/bottomNavBar/BottomMapIcon';
-import BottomMyPageIcon from '../icons/bottomNavBar/BottomMyPageIcon';
+export const bottomNavMenuData = [
+  {
+    name: '홈',
+    url: '/',
+    icon: HomeIcon,
+  },
+  {
+    name: '지도',
+    url: '/map',
+    icon: MapPin,
+  },
+  {
+    name: '글쓰기',
+    url: '/addfeed',
+    icon: PenBoxIcon,
+  },
+  {
+    name: '채팅',
+    url: '/chatting',
+    icon: MessageCircle,
+  },
+  {
+    name: '마이페이지',
+    url: '/mypage',
+    icon: User,
+  },
+];
 
 export default function BottomAppBar() {
   const router = useRouter();
   const currentPath = usePathname();
 
   return (
-    <div className="fixed bottom-0 w-full max-w-[430px] border-t border-gray-200 bg-white">
-      <nav className="mx-auto max-w-md">
-        <ul className="flex justify-around py-4">
-          <li>
-            <button
-              onClick={() => {
-                router.push('/');
-              }}
-              className="flex flex-col items-center"
-            >
-              <BottomHomeIcon isActive={currentPath === '/'} />
-            </button>
-          </li>
-          <li>
-            <button
-              onClick={() => {
-                router.push('/map');
-              }}
-              className="flex flex-col items-center"
-            >
-              <BottomMapIcon isActive={currentPath === '/map'} />
-            </button>
-          </li>
-          <li>
-            <button
-              onClick={() => {
-                router.push('/addfeed');
-              }}
-              className="flex flex-col items-center"
-            >
-              <BottomAddIcon />
-            </button>
-          </li>
-          <li>
-            <button
-              onClick={() => {
-                router.push('/chatting');
-              }}
-              className="flex flex-col items-center"
-            >
-              <BottomDiaryIcon isActive={currentPath === '/chatting'} />
-            </button>
-          </li>
-          <li>
-            <button
-              onClick={() => {
-                router.push('/mypage');
-              }}
-              className="flex flex-col items-center"
-            >
-              <BottomMyPageIcon isActive={currentPath === '/mypage'} />
-            </button>
-          </li>
+    <div className="fixed bottom-0 left-0 right-0 border-t border-gray-200 bg-white">
+      <nav className="mx-auto relative pt-2 pb-4">
+        <ul className="flex justify-between items-center px-8">
+          {bottomNavMenuData.map((menu, index) =>
+            menu.name !== '글쓰기' ? (
+              <li
+                onClick={() => router.push(menu.url)}
+                key={index}
+                className={`p-3 rounded-full ${currentPath === menu.url ? 'bg-gray-800' : 'bg-gray-100'} transition-all`}
+              >
+                <menu.icon
+                  size={currentPath === menu.url ? 20 : 16}
+                  color={currentPath === menu.url ? 'white' : 'gray'}
+                />
+              </li>
+            ) : (
+              <li key={index} className={`p-8 rounded-full`}></li>
+            )
+          )}
         </ul>
+        <div
+          className="bg-[#fd9340] rounded-full"
+          style={{
+            width: '80px',
+            height: '80px',
+            position: 'absolute',
+            border: '3px solid #fff',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            top: '-10px',
+            boxShadow: '0px 10px 10px rgba(0, 0, 0, 0.3)',
+          }}
+        >
+          <PencilWrite />
+        </div>
       </nav>
     </div>
   );
