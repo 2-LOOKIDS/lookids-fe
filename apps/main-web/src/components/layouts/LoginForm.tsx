@@ -1,16 +1,41 @@
 'use client';
 
 import { Button } from '@repo/ui/components/ui/button';
-import GoogleSign from '../icons/signIn/GoogleSign';
 import { Input } from '@repo/ui/components/ui/input';
-import KakaoSign from '../icons/signIn/KakaoSign';
 import { Label } from '@repo/ui/components/ui/label';
-import NaverSign from '../icons/signIn/NaverSign';
 import { signIn } from 'next-auth/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import GoogleSign from '../icons/signIn/GoogleSign';
+import KakaoSign from '../icons/signIn/KakaoSign';
+import NaverSign from '../icons/signIn/NaverSign';
 
-export default function LoginForm() {
+export default function LoginForm({
+  autoLogin = false,
+}: {
+  autoLogin?: boolean;
+}) {
   const [loginError, setLoginError] = useState<string | null>(null); // 에러 메시지 상태
+
+  // autoLogin 값이 true일 경우 자동으로 로그인
+  useEffect(() => {
+    if (autoLogin) {
+      (async () => {
+        const result = await signIn('credentials', {
+          loginId: 'storyoser',
+          password: '12345678',
+          callbackUrl: '/',
+          redirect: false, // 에러 핸들링을 위해 redirect를 false로 설정
+        });
+
+        if (result?.error) {
+          setLoginError('자동 로그인에 실패했습니다.');
+        } else {
+          setLoginError(null);
+          window.location.href = '/'; // 성공 시 리다이렉트
+        }
+      })();
+    }
+  }, [autoLogin]);
 
   const handleSubmit: (
     e: React.FormEvent<HTMLFormElement>
@@ -26,9 +51,9 @@ export default function LoginForm() {
     });
 
     if (result?.error) {
-      setLoginError('아이디 혹은 비밀번호가 일치하지 않습니다.'); // 에러 메시지 설정
+      setLoginError('아이디 혹은 비밀번호가 일치하지 않습니다.');
     } else {
-      setLoginError(null); // 에러 없으면 초기화
+      setLoginError(null);
       window.location.href = '/'; // 성공 시 리다이렉트
     }
   };
