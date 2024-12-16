@@ -1,12 +1,7 @@
 'use client';
 import Script from 'next/script';
 import { useEffect, useState } from 'react';
-import {
-  Map,
-  MapMarker,
-  MarkerClusterer,
-  useKakaoLoader,
-} from 'react-kakao-maps-sdk';
+import { Map, useKakaoLoader } from 'react-kakao-maps-sdk';
 import { useDebouncedCallback } from 'use-debounce';
 import { getMyPinList } from '../../actions/map/Pin';
 import { Bounds, Pin } from '../../types/map/MapType';
@@ -35,13 +30,11 @@ export default function KakaoMap() {
       pa: bound.getNorthEast().getLat(),
       qa: bound.getNorthEast().getLng(),
     });
-    console.log('Bounds:', bounds);
     // 비동기 API 호출 처리
     if (bounds) {
       try {
         getMyPinList(bounds)
           .then((data) => {
-            console.log('Fetched pin list:', data);
             setMyPinList(data);
             // 필요한 데이터 처리 로직 추가
           })
@@ -57,11 +50,9 @@ export default function KakaoMap() {
   }, 300);
 
   const handleScriptLoad = () => {
-    console.log('Kakao SDK 로드 완료');
     if (window.kakao) {
       try {
         window.kakao.maps.load(() => {
-          console.log('Kakao Maps 로드 완료');
           setIsMapLoaded(true);
         });
       } catch (error) {
@@ -73,16 +64,13 @@ export default function KakaoMap() {
   };
 
   const handleMapError = () => {
-    console.log('Kakao SDK 로드 실패');
     setMapError('Failed to load Kakao Maps. Please try again later.');
   };
 
   useEffect(() => {
     if (navigator.geolocation) {
-      console.log('위치 권한 요청 중...');
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          console.log('위치 정보 가져오기 성공:', position.coords);
           setCurrentPosition({
             lat: position.coords.latitude,
             lng: position.coords.longitude,
@@ -94,7 +82,6 @@ export default function KakaoMap() {
         }
       );
     } else {
-      console.log('Geolocation이 지원되지 않는 브라우저입니다.');
       setMapError('Geolocation is not supported by this browser.');
     }
   }, []);
@@ -128,9 +115,6 @@ export default function KakaoMap() {
           onBoundsChanged={handleMyPinList}
         >
           <MapMarkingList PinList={myPinList}></MapMarkingList>
-          {currentPosition && (
-            <MapMarker position={currentPosition}>현재위치</MapMarker>
-          )}
         </Map>
       )}
     </div>

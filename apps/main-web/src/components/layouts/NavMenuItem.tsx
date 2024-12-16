@@ -5,7 +5,7 @@ function NavMenuItem({
   onClick,
 }: {
   children: React.ReactNode;
-  onClick: () => void;
+  onClick?: () => void;
 }) {
   return <li onClick={onClick}>{children}</li>;
 }

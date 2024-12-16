@@ -1,44 +1,40 @@
-import { useState } from 'react';
-import {
-  CustomOverlayMap,
-  MapMarker,
-  MarkerClusterer,
-} from 'react-kakao-maps-sdk';
+'use client';
+import { useRouter } from 'next/navigation';
+import { CustomOverlayMap } from 'react-kakao-maps-sdk';
 import { Pin } from '../../types/map/MapType';
+import { getMediaUrl } from '../../utils/media';
 
 export default function MapMarkingList({ PinList }: { PinList: Pin[] }) {
-  console.log('PinList:', PinList);
-  const [openMarkers, setOpenMarkers] = useState<{ [key: number]: boolean }>(
-    {}
-  );
+  const router = useRouter();
 
-  const handleMarkerClick = (index: number) => {
-    setOpenMarkers((prevState) => ({
-      ...prevState,
-      [index]: !prevState[index], // 클릭한 마커의 상태만 토글
-    }));
+  const handleMarkerClick = (feedCode: string) => {
+    router.push(`/feed/${feedCode}`);
   };
 
   return (
-    <MarkerClusterer averageCenter={true} minLevel={10}>
+    <>
       {PinList.map((pin, index) => (
-        <MapMarker
+        <CustomOverlayMap
           key={index}
           position={{ lat: pin.latitude, lng: pin.longitude }}
-          onClick={() => handleMarkerClick(index)}
+          clickable // 클릭 이벤트를 활성화
         >
-          {openMarkers[index] && (
-            <CustomOverlayMap
-              position={{
-                lat: pin.latitude,
-                lng: pin.longitude,
-              }}
-            >
-              <div>안녕 클레오 파트라</div>
-            </CustomOverlayMap>
-          )}
-        </MapMarker>
+          <div
+            onClick={() => handleMarkerClick(pin.feedCode)}
+            style={{
+              width: '50px', // 너비
+              height: '50px', // 높이
+              backgroundImage: `url(${getMediaUrl(pin.mediaUrl)})`, // 이미지 경로
+              backgroundSize: 'cover', // 이미지 크기
+              backgroundRepeat: 'no-repeat', // 반복 방지
+              backgroundPosition: 'center', // 이미지 가운데 정렬
+              borderRadius: '50%', // 원형 스타일
+              boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)', // 그림자 효과
+              cursor: 'pointer', // 클릭 커서
+            }}
+          ></div>
+        </CustomOverlayMap>
       ))}
-    </MarkerClusterer>
+    </>
   );
 }

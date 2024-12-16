@@ -1,8 +1,8 @@
 'use client';
 
+import { BookLock, HomeIcon, MapPin, PenBoxIcon, User } from 'lucide-react';
 import { usePathname, useRouter } from 'next/navigation';
 import PencilWrite from '../lottie/PencilWrite';
-import { BookLock, HomeIcon, MapPin, PenBoxIcon, User } from 'lucide-react';
 
 export const bottomNavMenuData = [
   {
@@ -17,12 +17,12 @@ export const bottomNavMenuData = [
   },
   {
     name: '글쓰기',
-    url: '/subscribe/test',
+    url: '/addfeed',
     icon: PenBoxIcon,
   },
   {
-    name: '일기',
-    url: '/diary',
+    name: '채팅',
+    url: '/chatting',
     icon: BookLock,
   },
   {

@@ -115,6 +115,7 @@ export default function PushNotificationManager() {
             placeholder="Enter notification message"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
+            className="text-[16px]"
           />
           <Button onClick={sendTestNotification}>Send Test</Button>
         </>

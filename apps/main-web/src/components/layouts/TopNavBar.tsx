@@ -1,5 +1,7 @@
 'use client';
+
 import { useEffect, useRef, useState } from 'react';
+
 import NavMenus from './NavMenus';
 
 interface HeaderProps {
@@ -11,6 +13,7 @@ export default function TopNavBar({ onMenuClick }: HeaderProps) {
   const prevScrollY = useRef(0);
   const ticking = useRef(false);
 
+  // 스크롤 조작
   const handleScroll = () => {
     if (!ticking.current) {
       ticking.current = true;
@@ -47,8 +50,9 @@ export default function TopNavBar({ onMenuClick }: HeaderProps) {
   return (
     <header
       className={`flex justify-between items-center px-4 py-[0.8rem] transition-transform duration-300 
-      fixed top-0 left-0 right-0 z-[20]
-      backdrop-blur-md
+       z-[20] max-w-[430px] w-full
+       fixed top-0
+      backdrop-blur-md 
       ${isView ? 'translate-y-0' : '-translate-y-full'}`}
     >
       <NavMenus onMenuClick={onMenuClick} />

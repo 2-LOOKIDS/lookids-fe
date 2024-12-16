@@ -7,8 +7,7 @@ import { MessageResponse } from '../../types/chatting/ChattingType';
 export function connectEventSource(
   chatId: string,
   myAccessToken: string,
-  onMessage: (data: MessageResponse) => void,
-  onError: () => void
+  onMessage: (data: MessageResponse) => void
 ) {
   if (!myAccessToken) {
     console.error('Missing access token');
@@ -24,14 +23,15 @@ export function connectEventSource(
 
   eventSource.onmessage = (event) => {
     const data = JSON.parse(event.data);
-    console.log('Received data from EventSource:', data);
     onMessage(data);
   };
 
   eventSource.onerror = () => {
     console.error('EventSource error, retrying...');
     eventSource.close();
-    onError();
+    setTimeout(() => {
+      connectEventSource(chatId, myAccessToken, onMessage);
+    }, 1500);
   };
 
   return eventSource;

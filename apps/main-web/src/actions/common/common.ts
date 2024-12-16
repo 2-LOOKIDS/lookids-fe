@@ -22,8 +22,8 @@ export const fetchDataforMembers = async <T>(
     method,
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-      Uuid: session?.user.uuid,
+      'Authorization': `Bearer ${token}`,
+      'Uuid': session?.user.uuid || '1',
     },
     cache,
   };
@@ -61,8 +61,8 @@ export const fetchDataforCommon = async <T>(
   if (tag) {
     fetchOptions.next = { tags: [tag] };
   }
+  const res = await fetch(`${process.env.BACKEND_URL}/${apiUrl}`, fetchOptions);
 
-  const res = await fetch(apiUrl, fetchOptions);
   const data = (await res.json()) as T;
   return data;
 };

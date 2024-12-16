@@ -1,23 +1,25 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 
 import { ImageUp } from 'lucide-react';
 import ProfileAvatar from '../../ui/ProfileAvatar';
+import { extractCommonUrl } from '../../../utils/media';
+import { updateProfileImage } from '../../../actions/user';
 import { useS3Upload } from 'next-s3-upload';
 
 interface EditProfileImageProps {
   imgUrl: string;
   imgAlt: string;
+  uuid: string;
+  token: string;
 }
 export default function EditProfileImage({
   imgUrl,
   imgAlt,
+  uuid,
+  token,
 }: EditProfileImageProps) {
-  if (imgUrl === '기본 이미지') {
-    imgUrl = '/jihunpistol.jpg';
-  }
-  const [newImgUrl, setNewimgUrl] = useState<string>(imgUrl);
   const { uploadToS3 } = useS3Upload();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -29,7 +31,8 @@ export default function EditProfileImage({
 
     let url = await uploadToS3(newImage);
     const cdnurl = `https://media.lookids.online/${url.key}`;
-    setNewimgUrl(cdnurl);
+    const mediaUrl = extractCommonUrl(cdnurl);
+    await updateProfileImage(uuid, token, mediaUrl);
   };
   const handleIconClick = () => {
     if (fileInputRef.current) {
@@ -41,7 +44,7 @@ export default function EditProfileImage({
     <div className="relative">
       <ProfileAvatar
         className="h-[162px] w-[162px]"
-        imgUrl={newImgUrl}
+        imgUrl={imgUrl}
         imgAlt={imgAlt}
       />
       <div

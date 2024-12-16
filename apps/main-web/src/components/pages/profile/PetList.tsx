@@ -4,25 +4,39 @@ import 'swiper/css';
 import 'swiper/css/grid';
 import 'swiper/css/pagination';
 
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@repo/ui/components/ui/alert-dialog';
 import { Grid, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { extractCommonUrl, getMediaUrl } from '../../../utils/media';
 
-import { EditDialog } from '../mypage/EditDialog';
+import EditPetForm from '../mypage/EditPetForm';
+import InputFormDialog from '../../forms/InputFormDialog';
+import { PencilLine } from 'lucide-react';
+import { PetInfo } from '../../../types/user';
 import ProfileAvatar from '../../ui/ProfileAvatar';
-
-const petList = [
-  { id: 0, name: '신지훈1', imgUrl: '/pome.jpg' },
-  { id: 1, name: '신지훈2', imgUrl: '/jihunpistol.jpg' },
-  { id: 2, name: '신지훈3', imgUrl: '/pome.jpg' },
-  { id: 3, name: '신지훈4', imgUrl: '/jihunpistol.jpg' },
-  { id: 4, name: '신지훈5', imgUrl: '/pome.jpg' },
-];
+import React from 'react';
+import { deletePet } from '../../../actions/user';
 
 interface PetListProps {
+  petList: PetInfo[];
   isEdit?: boolean;
 }
 
-function PetList({ isEdit }: PetListProps) {
+function PetList({ petList, isEdit }: PetListProps) {
+  const onDeletePet = async (petUuid: string) => {
+    await deletePet(petUuid);
+  };
+
   return (
     <>
       <Swiper
@@ -30,46 +44,69 @@ function PetList({ isEdit }: PetListProps) {
         pagination={true}
         grid={{ rows: 2 }}
         slidesPerView={1}
-        spaceBetween={20}
+        spaceBetween={30}
         className="petList"
       >
-        {petList.map((item) => {
+        {petList.map((pet, idx) => {
+          const image = extractCommonUrl(pet.image);
+          const defaultValues = pet;
           return (
-            <SwiperSlide key={item.id}>
+            <SwiperSlide key={idx}>
               <ProfileAvatar
-                imgUrl={item.imgUrl}
+                imgUrl={image}
                 className="h-[77px] min-h-[77px] w-[77px] min-w-[77px]"
-                imgAlt={item.name}
+                imgAlt={pet.name}
               />
 
-              <div className="relative flex max-w-[297px] flex-col gap-1">
-                <p className="font-semibold">{item.name}</p>
-                <p className="text-grey text-sm">허스키 2살 남자아이</p>
-                <p className="text-grey text-xs">
-                  웃겨보려고 한건 아니지만 웃긴다... 피식... 2년동안 얼굴 하나로
-                  먹고 살고 있다.
+              <div className="relative flex max-w-[297px] flex-col gap-1 pl-4">
+                <p className="font-semibold">
+                  {pet.name} {pet.age}
                 </p>
-                <p className="text-grey text-xs">허수키 견생 2회차..</p>
+                <div className="flex gap-1">
+                  <p className="text-grey text-sm">{pet.type} /</p>
+                  <p className="text-grey text-sm">{pet.gender} /</p>
+                  <p className="text-grey text-sm">{pet.weight}kg</p>
+                </div>
+                <div>
+                  <p className="text-grey text-sm">{pet.comment}</p>
+                </div>
               </div>
+
               {isEdit && (
-                <div className="absolute right-1 top-0">
-                  <EditDialog
-                    type={'petProfile'}
-                    fields={[
-                      { label: '이름', field: 'nickname' },
-                      { label: '종류', field: 'type' },
-                      { label: '성별', field: 'gender' },
-                      { label: '몸무게', field: 'weight' },
-                      { label: '생일', field: 'birthdate' },
-                    ]}
-                    defaultValues={{
-                      nickname: '',
-                      type: '동물 종류 선택',
-                      gender: '성별 선택',
-                      weight: '',
-                      birthdate: '',
+                <div className="absolute right-1 top-0 flex flex-col gap-2">
+                  <InputFormDialog
+                    TriggerComponent={<EditPetButton />}
+                    FormComponent={EditPetForm}
+                    formProps={{
+                      petCode: pet.petCode,
+                      defaultValues: defaultValues,
                     }}
                   />
+                  <AlertDialog>
+                    <AlertDialogTrigger className="bg-lookids hover:bg-lookids/90 h-7 rounded-sm">
+                      <p className="text-white text-sm">삭제</p>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent className="w-3/4">
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>
+                          <AlertDialogDescription>
+                            삭제 하시겠습니까?
+                          </AlertDialogDescription>
+                        </AlertDialogTitle>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogAction
+                          className="bg-lookids hover:bg-lookids/90 h-8"
+                          onClick={() => onDeletePet(pet.petCode)}
+                        >
+                          삭제
+                        </AlertDialogAction>
+                        <AlertDialogCancel className="h-8 m-0">
+                          취소
+                        </AlertDialogCancel>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
                 </div>
               )}
             </SwiperSlide>
@@ -79,5 +116,21 @@ function PetList({ isEdit }: PetListProps) {
     </>
   );
 }
+
+export const EditPetButton = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>((props, ref) => {
+  return (
+    <div
+      ref={ref}
+      className={`text-lookids hover:bg-lookids/90 border-lookids flex h-7 items-center justify-center gap-1 rounded border bg-[rgba(255,233,221,0.2)] px-1 py-[6px] hover:text-white ${props.className}`}
+      {...props}
+    >
+      <PencilLine className="h-4 w-4" />
+      <p className="text-sm">수정</p>
+    </div>
+  );
+});
 
 export default PetList;

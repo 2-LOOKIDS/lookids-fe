@@ -1,5 +1,7 @@
+import { PaginationResponse } from '../responseType';
+
 export interface FeedPostType {
-  petCode?: string;
+  petCode?: string[];
   content: string;
   tagList?: string[];
   mediaUrlList?: string[];
@@ -25,6 +27,18 @@ export interface ImageGpsInfo {
   latitude: number;
 }
 
+export interface FeedDetail {
+  uuid: string;
+  tag: string;
+  nickname: string;
+  image: string;
+  petCode?: string[];
+  content: string;
+  tagList?: string[];
+  mediaUrlList: string[];
+  createdAt: string;
+  feedCode: string;
+}
 //피드 카드 내부의 섹션들
 export interface ContentSection {
   petName: string;
@@ -37,4 +51,15 @@ export interface ReactionSection {
   likeCount: number;
   commentCount: number;
   isLiked: boolean;
+}
+
+export interface Thumbnail {
+  feedCode: string;
+  mediaUrl: string;
+}
+export type FeedThumbnailList = PaginationResponse<Thumbnail>;
+export interface searchFeedResult {
+  feedCode: string;
+  tagList?: string[];
+  mediaUrlList: string[];
 }

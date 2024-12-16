@@ -16,9 +16,8 @@ export const options: NextAuthOptions = {
       },
       async authorize(credentials) {
         if (!credentials?.loginId || !credentials?.password) {
-          return null;
+          throw new Error('Missing credentials');
         }
-        // 로그인 요청을 보낼 URL
         const res = await fetch(
           `${process.env.BACKEND_URL}/auth-service/auth/sign-in`,
           {
@@ -30,8 +29,9 @@ export const options: NextAuthOptions = {
         if (res.ok) {
           const user = await res.json();
           return user.result;
+        } else {
+          throw new Error('Invalid credentials');
         }
-        return null;
       },
     }),
     KakaoProvider({
@@ -45,8 +45,24 @@ export const options: NextAuthOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID || '',
       clientSecret: process.env.GOOGLE_CLIENT_SECRET || '',
+      authorization: {
+        params: {
+          scope: 'openid email profile',
+        },
+      },
     }),
   ],
+  cookies: {
+    state: {
+      name: 'next-auth.state-token',
+      options: {
+        httpOnly: true,
+        sameSite: 'lax',
+        secure: process.env.NODE_ENV === 'production',
+        path: '/',
+      },
+    },
+  },
   callbacks: {
     async signIn({ profile, user, account }) {
       if (
@@ -54,57 +70,63 @@ export const options: NextAuthOptions = {
         account?.provider === 'naver' ||
         account?.provider === 'google'
       ) {
-        const res = await fetch(
-          `${process.env.BACKEND_URL}/auth-service/auth/social-sign`,
-          {
-            method: 'POST',
-            body: JSON.stringify({
-              provider: account.provider,
-              providerAccountId: account.providerAccountId,
-            }),
-            headers: { 'Content-Type': 'application/json' },
-          }
-        );
+        try {
+          const res = await fetch(
+            `${process.env.BACKEND_URL}/auth-service/auth/social-sign`,
+            {
+              method: 'POST',
+              body: JSON.stringify({
+                provider: account.provider,
+                providerAccountId: account.providerAccountId,
+              }),
+              headers: { 'Content-Type': 'application/json' },
+            }
+          );
 
-        if (res.ok) {
-          const data = await res.json();
-          user.accessToken = data.result.accessToken;
-          user.refreshToken = data.result.refreshToken;
-          user.uuid = data.result.uuid;
-          return true;
-        } else {
+          if (res.ok) {
+            const data = await res.json();
+            user.accessToken = data.result.accessToken;
+            user.refreshToken = data.result.refreshToken;
+            user.uuid = data.result.uuid;
+            return true;
+          } else {
+            console.error('Social login failed:', await res.text());
+            return false;
+          }
+        } catch (error) {
+          console.error('Error during social sign-in:', error);
           return false;
         }
       }
       return true;
     },
     async jwt({ token, user, account }) {
-      // 초기 로그인 시 AccessToken과 RefreshToken 설정
       if (account && user) {
         token.accessToken = user.accessToken;
         token.refreshToken = user.refreshToken;
         token.uuid = user.uuid;
         token.AccessTokenExpiredTime = user.AccessTokenExpiredTime;
       }
-      // 만료된 토큰인지 확인 후 갱신 로직 실행
-      if (Date.now() > token.AccessTokenExpiredTime && token.refreshToken) {
+
+      if (
+        token.refreshToken &&
+        token.AccessTokenExpiredTime &&
+        Date.now() > token.AccessTokenExpiredTime
+      ) {
         try {
           const data = await refreshToken(
             token.refreshToken as string,
             token.uuid as string
           );
-          token.accessToken = data.result.accessToken; // 갱신된 AccessToken 저장
-          token.AccessTokenExpiredTime = data.result.AccessTokenExpiredTime; // 갱신된 AccessToken 만료 시간 저장
+          token.accessToken = data.result.accessToken;
+          token.AccessTokenExpiredTime = data.result.AccessTokenExpiredTime;
         } catch (error) {
-          console.error('Token 갱신 실패:', error);
-
-          return { ...token, redirect: '/sign-out' };
+          console.error('Token refresh failed:', error);
+          token.error = 'RefreshTokenError';
         }
       }
-
       return token;
     },
-
     async session({ session, token }) {
       session.user = {
         ...session.user,
@@ -112,6 +134,7 @@ export const options: NextAuthOptions = {
         refreshToken: token.refreshToken,
         accessToken: token.accessToken,
       };
+
       return session;
     },
   },
@@ -119,4 +142,5 @@ export const options: NextAuthOptions = {
     signIn: '/sign-in',
     error: '/error',
   },
+  debug: true, // 디버깅 로그 활성화
 };
