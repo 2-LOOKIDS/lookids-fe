@@ -3,6 +3,7 @@
 import useSWRInfinite, { SWRInfiniteKeyLoader } from 'swr/infinite';
 
 import FeedThumbnail from './FeedThumbnail';
+import FeedThumbnailSkeleton from '../../ui/Skeletons/FeedThumbnailSkeleton';
 import Link from 'next/link';
 import UserLikesTab from './UserLikesTab';
 import UserPostsTab from './UserPostsTab';
@@ -107,7 +108,7 @@ export default function FeedList({ uuid }: FeedListProps) {
               });
             })} */}
           {isLoading ? (
-            <div>loading</div>
+            <FeedThumbnailSkeleton />
           ) : (
             data?.map((item) => {
               return item?.content?.map((item, idx) => {

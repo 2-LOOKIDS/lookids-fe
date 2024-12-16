@@ -6,8 +6,9 @@ export interface getfollowingResponse {
 }
 
 export interface Following {
-  followerUuid: string;
-  followingUuid: string;
+  nickname: string;
+  tag: string;
+  image: string;
 }
 
 export interface FollowerListModalProps {
