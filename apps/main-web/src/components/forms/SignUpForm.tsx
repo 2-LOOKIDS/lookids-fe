@@ -2,7 +2,6 @@
 
 import { Step1, Step2, Step3 } from '../../types/auth/signup';
 
-import CommonHeader from '../ui/CommonHeader';
 import EmailVerificationForm from './EmailVerificationForm';
 import TermsConsentForm from './TermsConsentForm';
 import UserInfoForm from './UserInfoForm';
@@ -22,7 +21,6 @@ export default function SignUpForm() {
   });
   return (
     <>
-      <CommonHeader title="회원가입" ismenu={false} />
       <funnel.Render
         step1={({ history }) => (
           <TermsConsentForm

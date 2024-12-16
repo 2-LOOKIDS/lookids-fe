@@ -5,28 +5,28 @@ import {
   AvatarFallback,
   AvatarImage,
 } from '@repo/ui/components/ui/avatar';
-import { useEffect, useRef, useState } from 'react';
 import {
   checkOneOnOneChatRoom,
   createChatRoom,
   getChattingList,
 } from '../../../actions/chatting/Chatting';
+import { useEffect, useRef, useState } from 'react';
 
 import { Badge } from '@repo/ui/components/ui/badge';
 import { Button } from '@repo/ui/components/ui/button';
-import { ScrollArea } from '@repo/ui/components/ui/scroll-area';
-import { EventSourcePolyfill } from 'event-source-polyfill';
-import { Plus } from 'lucide-react';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { getUserProfile } from '../../../actions/user';
-import { FollowerListModal } from '../../../components/pages/chatting/FollowerListModal';
 import CommonHeader from '../../../components/ui/CommonHeader';
-import { useSession } from '../../../context/SessionContext';
-import { RoomMessage } from '../../../types/chatting/ChattingType';
+import { EventSourcePolyfill } from 'event-source-polyfill';
+import { FollowerListModal } from '../../../components/pages/chatting/FollowerListModal';
+import Link from 'next/link';
 import { MenuItem } from '../../../types/common/MenuType';
-import { responseList } from '../../../utils/chatting/fetchMessages';
+import { Plus } from 'lucide-react';
+import { RoomMessage } from '../../../types/chatting/ChattingType';
+import { ScrollArea } from '@repo/ui/components/ui/scroll-area';
 import { formatDate } from '../../../utils/formatDate';
+import { getUserProfile } from '../../../actions/user';
+import { responseList } from '../../../utils/chatting/fetchMessages';
+import { useRouter } from 'next/navigation';
+import { useSession } from '../../../context/SessionContext';
 
 export default function Page() {
   const session = useSession();

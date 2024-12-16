@@ -5,31 +5,33 @@ import {
   AvatarFallback,
   AvatarImage,
 } from '@repo/ui/components/ui/avatar';
-import { Button } from '@repo/ui/components/ui/button';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from '@repo/ui/components/ui/dialog';
-import { ScrollArea } from '@repo/ui/components/ui/scroll-area';
-import Link from 'next/link';
-import { useEffect, useState } from 'react';
-import { getFollowingList1 } from '../../../actions/follow/Follow';
-import { getUserProfile } from '../../../actions/user';
 import {
   FollowerListModalProps,
   Following,
+  FollowingUser,
 } from '../../../types/follow/FollowType';
+import { useEffect, useState } from 'react';
+
+import { Button } from '@repo/ui/components/ui/button';
+import Link from 'next/link';
+import { ScrollArea } from '@repo/ui/components/ui/scroll-area';
 import { UserInfo } from '../../../types/user';
+import { getFollowingList1 } from '../../../actions/follow/Follow';
 import { getMediaUrl } from '../../../utils/media';
+import { getUserProfile } from '../../../actions/user';
 
 export function FollowerListModal({
   isOpen,
   onClose,
   onSelectFollower,
 }: FollowerListModalProps) {
-  const [followers, setFollowers] = useState<Following[]>([]);
+  const [followers, setFollowers] = useState<FollowingUser[]>([]);
   const [followerProfile, setFollowerProfile] = useState<UserInfo[]>([]);
   const [isFetching, setIsFetching] = useState(false);
 
@@ -40,11 +42,11 @@ export function FollowerListModal({
       setIsFetching(true); // 요청 시작
       try {
         const response = await getFollowingList1();
-        const Follwers: Following[] = response.content;
+        const Follwers: FollowingUser[] = response.content;
 
         const profiles = await Promise.all(
           Follwers.map(async (follower) => {
-            const user: UserInfo = await getUserProfile(follower.followerUuid);
+            const user: UserInfo = await getUserProfile(follower.uuid);
             return user;
           })
         );
@@ -90,10 +92,7 @@ export function FollowerListModal({
                 className="text-lookids bg-slate-100"
                 onClick={() => {
                   if (onSelectFollower) {
-                    onSelectFollower(
-                      followers[index].followerUuid,
-                      follower.nickname
-                    );
+                    onSelectFollower(followers[index].uuid, follower.nickname);
                   }
                 }}
               >

@@ -6,6 +6,12 @@ export interface getfollowingResponse {
 }
 
 export interface Following {
+  followerUuid: string;
+  followingUuid: string;
+}
+
+export interface FollowingUser {
+  uuid: string;
   nickname: string;
   tag: string;
   image: string;
@@ -17,5 +23,5 @@ export interface FollowerListModalProps {
   onSelectFollower?: (followerId: string, followerNickName: string) => void;
 }
 
-export type FollowerList = PaginationResponse<Following>;
+export type FollowerList = PaginationResponse<FollowingUser>;
 export type FollowingList = FollowerList;

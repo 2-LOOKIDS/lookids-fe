@@ -1,13 +1,14 @@
 'use client';
 
-import { Button } from '@repo/ui/components/ui/button';
-import { Input } from '@repo/ui/components/ui/input';
-import { Label } from '@repo/ui/components/ui/label';
-import { signIn } from 'next-auth/react';
 import { useEffect, useState } from 'react';
+
+import { Button } from '@repo/ui/components/ui/button';
 import GoogleSign from '../icons/signIn/GoogleSign';
+import { Input } from '@repo/ui/components/ui/input';
 import KakaoSign from '../icons/signIn/KakaoSign';
+import { Label } from '@repo/ui/components/ui/label';
 import NaverSign from '../icons/signIn/NaverSign';
+import { signIn } from 'next-auth/react';
 
 export default function LoginForm({
   autoLogin = false,
@@ -59,7 +60,7 @@ export default function LoginForm({
   };
 
   return (
-    <div className="mx-auto mt-2 w-96 px-2 rounded-xl bg-white p-8 text-[16px]">
+    <div className="mx-auto mt-2 w-96 px-2 rounded-xl bg-[#F9F9F9] p-8 ">
       <form className="space-y-2" onSubmit={handleSubmit}>
         <div className="space-y-2">
           <Label htmlFor="id">아이디</Label>
