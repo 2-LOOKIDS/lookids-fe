@@ -41,7 +41,7 @@ export default function NavMenus({ onMenuClick }: HeaderProps) {
               <MainTopLogo />
             </NavMenuItem>
           </ul>
-          <ul className="flex items-center gap-x-2">
+          <ul className="flex items-center gap-x-4">
             <NavMenuItem>
               <NotificationBellIcon
                 hasNotification={hasNotification}

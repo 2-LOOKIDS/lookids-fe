@@ -82,7 +82,7 @@ export default async function page({ params }: { params: { id: string } }) {
               <MessageButton
                 token={data?.user.accessToken}
                 uuid={data?.user.uuid}
-                nickname={myProfile.nickname}
+                nickname={myProfile?.nickname}
                 targetNickname={userProfile.nickname}
                 targetUuid={userProfile.uuid}
                 followState={followState}

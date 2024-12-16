@@ -1,15 +1,15 @@
 'use server';
 
+import { CommonResponse, PaginationResponse } from '../../types/responseType';
 import {
   FollowerList,
   Following,
   FollowingList,
 } from '../../types/follow/FollowType';
-import { CommonResponse, PaginationResponse } from '../../types/responseType';
 
-import { revalidatePath } from 'next/cache';
-import { responseList } from '../../utils/chatting/fetchMessages';
 import { fetchDataforMembers } from '../common/common';
+import { responseList } from '../../utils/chatting/fetchMessages';
+import { revalidatePath } from 'next/cache';
 
 const BASE_URL = `${process.env.BACKEND_URL}/follow-block-service`;
 
@@ -51,7 +51,6 @@ export const getFollowingList = async (
   url: string,
   uuid: string
 ): Promise<FollowingList> => {
-  const API_URL = `${BASE_URL}/${url}`;
   const response = await fetch(`${BASE_URL}/${url}`, {
     method: 'GET',
     headers: {
@@ -59,8 +58,7 @@ export const getFollowingList = async (
     },
   });
   const result = (await response.json()) as CommonResponse<FollowingList>;
-  // console.log('🚀 ~ following:', result);
-  console.log('API_URL', API_URL);
+
   return result.result;
 };
 
@@ -75,7 +73,6 @@ export const getFollowerList = async (
     },
   });
   const result = (await response.json()) as CommonResponse<FollowerList>;
-  console.log('🚀 ~ follower:', result);
   return result.result;
 };
 //

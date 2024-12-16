@@ -3,6 +3,7 @@
 import useSWRInfinite, { SWRInfiniteKeyLoader } from 'swr/infinite';
 
 import FeedThumbnail from './FeedThumbnail';
+import FeedThumbnailSkeleton from '../../ui/Skeletons/FeedThumbnailSkeleton';
 import Link from 'next/link';
 import UserLikesTab from './UserLikesTab';
 import UserPostsTab from './UserPostsTab';
@@ -59,11 +60,9 @@ export default function FeedList({ uuid }: FeedListProps) {
     }
   };
 
-  const { data, size, setSize, isLoading } = useSWRInfinite(
-    getKey,
-    fetcher,
-    {}
-  );
+  const { data, size, setSize, isLoading } = useSWRInfinite(getKey, fetcher, {
+    revalidateFirstPage: false,
+  });
 
   const isEmpty = data?.[0]?.content.length === 0;
   const isLoadingMore =
@@ -71,13 +70,14 @@ export default function FeedList({ uuid }: FeedListProps) {
   const isReachingEnd =
     isEmpty || (data && (data[data.length - 1]?.content ?? []).length < 10);
 
-  useEffect(() => {
-    mutate(() => true, undefined, { revalidate: false });
-  }, [uuid]);
+  // useEffect(() => {
+  //   mutate(() => true, undefined, { revalidate: false });
+  // }, [uuid]);
 
   useEffect(() => {
     if (!inView || isLoadingMore || isReachingEnd) return;
     setSize((size) => size + 1);
+    console.log(data);
   }, [inView, isLoadingMore, isReachingEnd]);
 
   return (
@@ -108,7 +108,7 @@ export default function FeedList({ uuid }: FeedListProps) {
               });
             })} */}
           {isLoading ? (
-            <div>loading</div>
+            <FeedThumbnailSkeleton />
           ) : (
             data?.map((item) => {
               return item?.content?.map((item, idx) => {

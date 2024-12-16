@@ -33,7 +33,7 @@ export default async function RootLayout({
       <body
         className={`${notoSansKr.className} flex justify-center bg-[#F9F9F9] font-sans`}
       >
-        <div className="min-h-screen w-full max-w-[430px] bg-white">
+        <div className="min-h-screen w-full max-w-[430px] bg-[#F9F9F9]">
           <AuthContextProvider
             isAuth={isAuth}
             uuid={uuid}
