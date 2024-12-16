@@ -9,8 +9,8 @@ import {
 } from '../../types/chatting/ChattingType';
 
 import { CommonResponse } from '../../types/responseType';
-import { responseList } from '../../utils/chatting/fetchMessages';
 import { fetchDataforMembers } from '../common/common';
+import { responseList } from '../../utils/chatting/fetchMessages';
 
 export async function getChattingList(
   userId: string,
@@ -118,6 +118,7 @@ export async function createChatRoom(
       { roomName, participants },
       'no-cache'
     );
+    return data;
   } catch (error) {
     console.error('채팅방 생성 중 오류 발생:', error);
     throw new Error(`채팅방 생성 실패: ${error}`);

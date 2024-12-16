@@ -65,17 +65,19 @@ export async function getProfileStats(uuid: string) {
     {
       id: 0,
       data: formatNumber(postData.count),
-      label: 'Posts',
+      label: '피드 수',
     },
     {
       id: 1,
+      uuid: uuid,
       data: formatNumber(followerData.followerCount),
-      label: 'Follower',
+      label: '팔로워',
     },
     {
       id: 2,
+      uuid: uuid,
       data: formatNumber(followerData.followingCount),
-      label: 'Following',
+      label: '팔로잉',
     },
   ];
   return stats;

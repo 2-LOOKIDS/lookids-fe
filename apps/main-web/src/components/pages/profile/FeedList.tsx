@@ -53,9 +53,9 @@ export default function FeedList({ uuid }: FeedListProps) {
   const getKey: SWRInfiniteKeyLoader = (pageIndex, previousPageData) => {
     if (previousPageData && previousPageData.length) return null;
     if (search === 'post') {
-      return `/feed-read-service/read/feed/thumbnailList?page=${pageIndex}&size=10`;
+      return `/feed-read-service/read/feed/thumbnailList?page=${pageIndex}&size=12`;
     } else if (search === 'liked') {
-      return `/feed-read-service/read/feed/favoriteList?page=${pageIndex}&size=10`;
+      return `/feed-read-service/read/feed/favoriteList?page=${pageIndex}&size=12`;
     }
   };
 
