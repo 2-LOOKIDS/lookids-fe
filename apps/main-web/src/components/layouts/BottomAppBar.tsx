@@ -79,6 +79,7 @@ export default function BottomAppBar() {
             top: '-10px',
             boxShadow: '0px 10px 10px rgba(0, 0, 0, 0.3)',
           }}
+          onClick={() => router.push('/addfeed')}
         >
           <PencilWrite />
         </div>
