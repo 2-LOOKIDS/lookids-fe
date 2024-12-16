@@ -126,7 +126,7 @@ export async function getMainFeedList(
       `feed-read-service/read/feed/feedList?page=${page}&size=10`,
       'GET',
       null,
-      'force-cache'
+      'no-store'
     );
     return data.result;
   } catch (error) {
