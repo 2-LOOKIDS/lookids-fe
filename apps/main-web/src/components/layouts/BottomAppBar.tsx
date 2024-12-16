@@ -1,6 +1,12 @@
 'use client';
 
-import { BookLock, HomeIcon, MapPin, PenBoxIcon, User } from 'lucide-react';
+import {
+  HomeIcon,
+  MapPin,
+  MessageCircle,
+  PenBoxIcon,
+  User,
+} from 'lucide-react';
 import { usePathname, useRouter } from 'next/navigation';
 import PencilWrite from '../lottie/PencilWrite';
 
@@ -23,7 +29,7 @@ export const bottomNavMenuData = [
   {
     name: '채팅',
     url: '/chatting',
-    icon: BookLock,
+    icon: MessageCircle,
   },
   {
     name: '마이페이지',
