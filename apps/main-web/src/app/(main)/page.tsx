@@ -1,21 +1,21 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import useSWRInfinite from 'swr/infinite';
 import {
   getMainFeedList,
   getRandomFeedList,
 } from '../../actions/feed/FeedCard';
+import { useEffect, useState } from 'react';
 
-import SocialCard from '../../components/common/feedcard/socialCard/SocialCard';
+import { FeedDetail } from '../../types/feed/FeedType';
 import LoginModal from '../../components/common/LoginModal';
 import MainSwiper from '../../components/icons/topNavBar/MainSwiper';
+import MainSwiperSkeleton from '../../components/ui/Skeletons/MainSwiperSkeleton';
 import PencilWrite from '../../components/lottie/PencilWrite';
 import RecommendedPet from '../../components/pages/main/RecommendPet';
-import MainSwiperSkeleton from '../../components/ui/Skeletons/MainSwiperSkeleton';
+import SocialCard from '../../components/common/feedcard/socialCard/SocialCard';
 import { SocialCardSkeleton } from '../../components/ui/Skeletons/SocialCardSkeleton';
+import useSWRInfinite from 'swr/infinite';
 import { useSession } from '../../context/SessionContext';
-import { FeedDetail } from '../../types/feed/FeedType';
 
 const PAGE_SIZE = 10;
 
@@ -98,23 +98,37 @@ export default function Page() {
     data[data.length - 1]?.content &&
     data[data.length - 1]?.content.length < PAGE_SIZE;
 
-  const handleScroll = () => {
-    const scrollTop = window.scrollY;
-    const clientHeight = window.innerHeight;
-    const scrollHeight = document.documentElement.scrollHeight;
+  // const handleScroll = () => {
+  //   const scrollTop = window.scrollY;
+  //   const clientHeight = window.innerHeight;
+  //   const scrollHeight = document.documentElement.scrollHeight;
 
-    if (
-      scrollTop + clientHeight >= scrollHeight - 10 &&
-      !isReachingEnd &&
-      !isValidating
-    ) {
-      setSize((prevSize) => prevSize + 1);
-    }
-  };
+  //   if (
+  //     scrollTop + clientHeight >= scrollHeight - 10 &&
+  //     !isReachingEnd &&
+  //     !isValidating
+  //   ) {
+  //     setSize((prevSize) => prevSize + 1);
+  //   }
+  // };
 
   useEffect(() => {
-    console.log('isFallback:', isFallback);
-    console.log('feedList:', feedList);
+    if (typeof window === 'undefined') return;
+
+    const handleScroll = () => {
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      const clientHeight = window.innerHeight;
+      const scrollHeight = document.documentElement.scrollHeight;
+
+      if (
+        scrollTop + clientHeight >= scrollHeight - 10 &&
+        !isReachingEnd &&
+        !isValidating
+      ) {
+        setSize((prevSize) => prevSize + 1);
+      }
+    };
+
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [isReachingEnd, isValidating]);

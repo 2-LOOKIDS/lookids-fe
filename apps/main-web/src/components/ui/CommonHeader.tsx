@@ -1,9 +1,9 @@
 'use client';
 
 import { ChevronLeft } from 'lucide-react';
-import { useRouter } from 'next/navigation';
 import { CommonHeaderProps } from '../../types/common/MenuType';
 import CommonMenu from '../common/CommonMenu';
+import { useRouter } from 'next/navigation';
 
 export default function CommonHeader({
   title,
@@ -12,8 +12,7 @@ export default function CommonHeader({
 }: CommonHeaderProps) {
   const router = useRouter();
   return (
-    // mt-[52px]
-    <section className="relative flex h-12 items-center">
+    <section className="pt-[52px] pb-[39px] relative flex h-12 items-center">
       <ChevronLeft
         className="absolute left-3 cursor-pointer"
         onClick={() => {

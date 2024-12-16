@@ -5,6 +5,7 @@ import {
   FollowerList,
   Following,
   FollowingList,
+  FollowingUser,
 } from '../../types/follow/FollowType';
 
 import { fetchDataforMembers } from '../common/common';
@@ -15,18 +16,20 @@ const BASE_URL = `${process.env.BACKEND_URL}/follow-block-service`;
 
 // 팔로잉 목록 조회
 export async function getFollowingList1(): Promise<
-  PaginationResponse<Following>
+  // PaginationResponse<Following>
+  PaginationResponse<FollowingUser>
 > {
   try {
     const data = await fetchDataforMembers<
-      CommonResponse<responseList<Following>>
+      // CommonResponse<responseList<Following>>
+      CommonResponse<responseList<FollowingUser>>
     >(
       `follow-block-service/read/following?page=0&size=10`,
       'GET',
       null,
       'no-cache'
     );
-    return await data.result;
+    return data.result;
   } catch (error) {
     console.error('팔로잉 목록 조회 중 오류 발생:', error);
     throw new Error(`팔로잉 목록 조회 실패: ${error}`);
@@ -51,6 +54,7 @@ export const getFollowingList = async (
   url: string,
   uuid: string
 ): Promise<FollowingList> => {
+  const API_URL = `${BASE_URL}/${url}`;
   const response = await fetch(`${BASE_URL}/${url}`, {
     method: 'GET',
     headers: {
@@ -73,6 +77,7 @@ export const getFollowerList = async (
     },
   });
   const result = (await response.json()) as CommonResponse<FollowerList>;
+  console.log('🚀 ~ follower:', result);
   return result.result;
 };
 //

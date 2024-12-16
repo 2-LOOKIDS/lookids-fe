@@ -8,13 +8,13 @@ export default function LookidsLogo() {
   return (
     <div
       onClick={() => router.push('/')}
-      className="mx-auto mt-2 hover: cursor-pointer"
+      className="mx-auto pt-12 hover: cursor-pointer"
     >
       <Image
         src="/lookids.png"
         alt={'루키즈'}
         layout="intrinsic"
-        width={300}
+        width={200}
         height={150}
         priority
       />
