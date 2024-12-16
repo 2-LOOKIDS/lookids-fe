@@ -60,7 +60,7 @@ export default function FeedList({ uuid }: FeedListProps) {
   };
 
   const { data, size, setSize, isLoading } = useSWRInfinite(getKey, fetcher, {
-    revalidateFirstPage: true,
+    revalidateFirstPage: false,
   });
 
   const isEmpty = data?.[0]?.content.length === 0;
@@ -69,9 +69,9 @@ export default function FeedList({ uuid }: FeedListProps) {
   const isReachingEnd =
     isEmpty || (data && (data[data.length - 1]?.content ?? []).length < 10);
 
-  useEffect(() => {
-    mutate(() => true, undefined, { revalidate: false });
-  }, [uuid]);
+  // useEffect(() => {
+  //   mutate(() => true, undefined, { revalidate: false });
+  // }, [uuid]);
 
   useEffect(() => {
     if (!inView || isLoadingMore || isReachingEnd) return;
