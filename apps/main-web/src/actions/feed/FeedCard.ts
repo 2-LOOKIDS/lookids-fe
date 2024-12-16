@@ -126,7 +126,7 @@ export async function getMainFeedList(
       `feed-read-service/read/feed/feedList?page=${page}&size=10`,
       'GET',
       null,
-      'no-cache'
+      'force-cache'
     );
     return data.result;
   } catch (error) {
@@ -143,10 +143,10 @@ export async function getRandomFeedList(
     const data = await fetchDataforCommon<
       CommonResponse<responseList<FeedDetail>>
     >(
-      `feed-read-service/read/feed/random?page=${page}&size=5`,
+      `feed-read-service/read/feed/random?page=${page}&size=10`,
       'GET',
       null,
-      'default'
+      'no-store'
     );
     return data.result;
   } catch (error) {

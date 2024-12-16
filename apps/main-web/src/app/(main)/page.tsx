@@ -21,21 +21,65 @@ const PAGE_SIZE = 10;
 export default function Page() {
   const { isAuth } = useSession();
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const [isFallback, setIsFallback] = useState(false); // Fallback 상태 추가
 
-  const fetcher = (pageIndex: number) =>
-    isAuth ? getMainFeedList(pageIndex) : getRandomFeedList(pageIndex);
+  const fetcher = async (url: string) => {
+    const pageIndex = parseInt(
+      new URLSearchParams(url.split('?')[1]).get('page') || '0'
+    );
+
+    if (isFallback) {
+      return getRandomFeedList(pageIndex); // RandomFeed 요청
+    }
+    const result = await getMainFeedList(pageIndex);
+
+    // Fallback으로 전환 필요 여부 확인
+    if (!result || result.content.length === 0) {
+      setIsFallback(true);
+      return getRandomFeedList(pageIndex);
+    }
+    return result;
+  };
 
   const { data, error, size, setSize, isValidating } = useSWRInfinite(
     (pageIndex, previousPageData) => {
-      if (previousPageData && previousPageData.content.length === 0)
-        return null;
-      return `/api/feed?page=${pageIndex}&size=${PAGE_SIZE}`;
+      console.log(
+        'getKey - pageIndex:',
+        pageIndex,
+        'previousPageData:',
+        previousPageData
+      );
+
+      if (previousPageData && previousPageData.content.length === 0) {
+        console.log('getKey - returning null');
+        return null; // 마지막 페이지에 도달했을 경우 요청 중단
+      }
+
+      const key = `/api/feed?page=${pageIndex}&size=${PAGE_SIZE}&fallback=${isFallback}`;
+      console.log('getKey - returning key:', key);
+      return key;
     },
-    (url) => {
-      const page = parseInt(
+    async (url) => {
+      console.log('fetcher - url:', url); // fetcher 호출 확인
+      const pageIndex = parseInt(
         new URLSearchParams(url.split('?')[1]).get('page') || '0'
       );
-      return fetcher(page);
+
+      if (isFallback) {
+        console.log('fetcher - calling getRandomFeedList');
+        return getRandomFeedList(pageIndex);
+      }
+
+      console.log('fetcher - calling getMainFeedList');
+      const result = await getMainFeedList(pageIndex);
+
+      if (!result || result.content.length === 0) {
+        console.log('fetcher - switching to fallback');
+        setIsFallback(true);
+        return getRandomFeedList(pageIndex);
+      }
+
+      return result;
     },
     { revalidateOnFocus: false }
   );
@@ -68,6 +112,8 @@ export default function Page() {
   };
 
   useEffect(() => {
+    console.log('isFallback:', isFallback);
+    console.log('feedList:', feedList);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [isReachingEnd, isValidating]);
