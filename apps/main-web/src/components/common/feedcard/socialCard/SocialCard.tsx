@@ -7,10 +7,9 @@ import { Card, CardContent } from '@repo/ui/components/ui/card';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import useSWR from 'swr';
 import { getFavoriteCount } from '../../../../actions/batch/batch';
 import {
   getIsFavorite,
@@ -39,51 +38,74 @@ export default function SocialCard({
   const [selectedPet, setSelectedPet] = useState<PetDetail | null>(null);
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
 
-  const { data: feedDetail, error: feedError } = useSWR(
-    `/api/feed/${feedCode}`,
-    () => getFeedDetail(feedCode),
-    { revalidateOnFocus: false, revalidateOnReconnect: false }
-  );
+  // 상태 관리
+  const [feedDetail, setFeedDetail] = useState<any>(null);
+  const [petDetails, setPetDetails] = useState<PetDetail[]>([]);
+  const [likeCount, setLikeCount] = useState<number>(0);
+  const [isLiked, setIsLiked] = useState<boolean>(false);
+  const [commentCount, setCommentCount] = useState<number>(0);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const { data: isLiked, mutate: mutateIsLiked } = useSWR(
-    `/api/favorite/${feedCode}`,
-    () => getIsFavorite(feedCode),
-    { revalidateOnFocus: false, revalidateOnReconnect: false }
-  );
+  // 초기 데이터 로드
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setIsLoading(true);
 
-  const { data: petDetails, error: petError } = useSWR(
-    feedDetail?.petCode
-      ? `/api/pets?codes=${feedDetail.petCode.join(',')}`
-      : null,
-    () =>
-      feedDetail?.petCode
-        ? Promise.all(
-            feedDetail.petCode.map((petCode) => getPetDetail(petCode))
-          )
-        : Promise.resolve([]),
-    { revalidateOnFocus: false, revalidateOnReconnect: false }
-  );
+        // Feed Detail 가져오기
+        const feedData = await getFeedDetail(feedCode);
+        setFeedDetail(feedData);
 
-  const { data: likeCount } = useSWR(`/api/favorite/count/${feedCode}`, () =>
-    getFavoriteCount(feedCode, '피드')
-  );
+        // 반려동물 정보 가져오기
+        if (feedData?.petCode) {
+          const pets = await Promise.all(
+            feedData.petCode.map((petCode: string) => getPetDetail(petCode))
+          );
+          setPetDetails(pets);
+        }
 
-  const { data: commentCount } = useSWR(`/api/comments/count/${feedCode}`, () =>
-    getCommentCount(feedCode)
-  );
+        // 좋아요 카운트 및 상태 가져오기
+        const [likeData, favoriteState] = await Promise.all([
+          getFavoriteCount(feedCode, '피드'),
+          getIsFavorite(feedCode),
+        ]);
+        setLikeCount(likeData?.count ?? 0);
+        setIsLiked(favoriteState ?? false);
 
+        // 댓글 수 가져오기
+        const comments = await getCommentCount(feedCode);
+        setCommentCount(comments?.commentCount ?? 0);
+      } catch (error) {
+        console.error('데이터 로드 중 에러:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [feedCode]);
+
+  // 좋아요 토글
   const toggleLike = async () => {
     try {
       if (!feedDetail) return;
-      mutateIsLiked(!isLiked, false); // Optimistic UI 업데이트
+
+      // Optimistic UI
+      setIsLiked((prev) => !prev);
+      setLikeCount((prev) => (isLiked ? prev - 1 : prev + 1));
+
+      // 서버 요청
       await putFavoriteComment(feedDetail.uuid, feedCode, '피드');
     } catch (error) {
       console.error(`좋아요 등록 중 실패: ${error}`);
-      mutateIsLiked(!isLiked, false); // 실패 시 상태 롤백
+
+      // 실패 시 상태 롤백
+      setIsLiked((prev) => !prev);
+      setLikeCount((prev) => (isLiked ? prev + 1 : prev - 1));
     }
   };
 
-  if (!feedDetail || !likeCount || !commentCount) {
+  if (isLoading || !feedDetail) {
     return <SocialCardSkeleton />;
   }
 
@@ -98,22 +120,19 @@ export default function SocialCard({
             pagination={{ clickable: true }}
             className="rounded-lg overflow-hidden"
           >
-            {feedDetail.mediaUrlList.map((url, index) => {
-              return (
-                <SwiperSlide key={index}>
-                  <Image
-                    src={getMediaUrl(url)}
-                    alt={`Feed image ${index + 1}`}
-                    width={500}
-                    height={300}
-                    className="w-full object-cover"
-                  />
-                </SwiperSlide>
-              );
-            })}
+            {feedDetail.mediaUrlList.map((url: string, index: number) => (
+              <SwiperSlide key={index}>
+                <Image
+                  src={getMediaUrl(url)}
+                  alt={`Feed image ${index + 1}`}
+                  width={500}
+                  height={300}
+                  className="w-full object-cover"
+                />
+              </SwiperSlide>
+            ))}
           </Swiper>
         )}
-        {/* Feed 이미지 및 내용 표시 */}
         {!isDetail && (
           <div className="relative">
             <Link href={`/feed/${feedCode}`}>
@@ -127,8 +146,6 @@ export default function SocialCard({
             </Link>
           </div>
         )}
-
-        {/* 나머지 Card 내용 */}
         <CardContent className="mt-4 px-2">
           <div className="flex items-start justify-between">
             <div
@@ -159,7 +176,7 @@ export default function SocialCard({
           <p className="w-full text-sm text-gray-400 text-ellipsis whitespace-pre-wrap">
             {feedDetail.content}
           </p>
-          {petDetails && petDetails.length > 0 && (
+          {petDetails.length > 0 && (
             <div className="py-3">
               <h4 className="text-sm font-semibold text-gray-600 mb-2">
                 반려동물
@@ -190,12 +207,11 @@ export default function SocialCard({
               </div>
             </div>
           )}
-          {/* Reaction Section */}
           <SocialCardReaction
             feedCode={feedCode}
-            isLiked={isLiked ?? false}
-            likeCount={likeCount?.count ?? 0}
-            commentCount={commentCount?.commentCount ?? 0}
+            isLiked={isLiked}
+            likeCount={likeCount}
+            commentCount={commentCount}
             onToggleLike={toggleLike}
             onShareClick={() => setIsShareModalOpen(true)}
           />

@@ -10,6 +10,7 @@ import {
 import SocialCard from '../../components/common/feedcard/socialCard/SocialCard';
 import LoginModal from '../../components/common/LoginModal';
 import MainSwiper from '../../components/icons/topNavBar/MainSwiper';
+import PencilWrite from '../../components/lottie/PencilWrite';
 import RecommendedPet from '../../components/pages/main/RecommendPet';
 import MainSwiperSkeleton from '../../components/ui/Skeletons/MainSwiperSkeleton';
 import { SocialCardSkeleton } from '../../components/ui/Skeletons/SocialCardSkeleton';

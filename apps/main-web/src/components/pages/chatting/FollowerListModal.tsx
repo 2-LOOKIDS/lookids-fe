@@ -15,7 +15,7 @@ import {
 import { ScrollArea } from '@repo/ui/components/ui/scroll-area';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { getFollowingList } from '../../../actions/follow/Follow';
+import { getFollowingList1 } from '../../../actions/follow/Follow';
 import { getUserProfile } from '../../../actions/user';
 import {
   FollowerListModalProps,
@@ -39,7 +39,7 @@ export function FollowerListModal({
 
       setIsFetching(true); // 요청 시작
       try {
-        const response = await getFollowingList();
+        const response = await getFollowingList1();
         const Follwers: Following[] = response.content;
 
         const profiles = await Promise.all(
