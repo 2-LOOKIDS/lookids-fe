@@ -7,8 +7,12 @@ import {
   PenBoxIcon,
   User,
 } from 'lucide-react';
+import dynamic from 'next/dynamic';
 import { usePathname, useRouter } from 'next/navigation';
-import PencilWrite from '../lottie/PencilWrite';
+
+const PencilWrite = dynamic(() => import('../lottie/PencilWrite'), {
+  ssr: false,
+});
 
 export const bottomNavMenuData = [
   {
