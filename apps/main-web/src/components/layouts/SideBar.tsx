@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { X } from 'lucide-react';
 import { signOut } from 'next-auth/react';
 import { useEffect } from 'react';
@@ -52,15 +53,18 @@ export function Sidebar({ open, onClose }: SidebarProps) {
           </div>
         </div>
         <div className="flex flex-col flex-wrap gap-8 px-4 z-50">
-          <p
-            className="text-white text-xs font-bold bg-[#FFFFFF60] w-fit py-1 px-2 rounded-full"
+          <div
+            className="text-white text-xs font-bold bg-[#FFFFFF60] w-fit py-1 px-2 rounded-full hover:cursor-pointer"
             onClick={handleLogout}
           >
             로그아웃
-          </p>
-          <p className="text-white text-xs font-bold bg-[#FFFFFF60] w-fit py-1 px-2 rounded-full">
-            다라
-          </p>
+          </div>
+          <Link
+            href="/licenses"
+            className="text-white text-xs font-bold bg-[#FFFFFF60] w-fit py-1 px-2 rounded-full"
+          >
+            라이센스
+          </Link>
           {/* {data.map((category) => (
             <p className="text-white text-xs font-bold bg-[#FFFFFF60] w-fit py-1 px-2 rounded-full">
               {category.name}

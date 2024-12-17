@@ -1,7 +1,8 @@
-import { initializeApp } from 'firebase/app';
 import { getMessaging, getToken, onMessage } from 'firebase/messaging';
-import { useEffect } from 'react';
+
+import { initializeApp } from 'firebase/app';
 import { postFcmToken } from '../actions/notification/notification';
+import { useEffect } from 'react';
 
 // Firebase 초기화
 const firebaseConfig = {
@@ -21,14 +22,13 @@ export function useFcm(
   setHasNotification: (status: boolean) => void
 ) {
   useEffect(() => {
-    const messaging = getMessaging();
-
     if (!('Notification' in window) || !('serviceWorker' in navigator)) {
       console.warn(
         '푸시 알림 또는 Service Worker를 지원하지 않는 브라우저입니다.'
       );
       return;
     }
+    const messaging = getMessaging();
 
     Notification.requestPermission()
       .then((permission) => {
@@ -40,6 +40,7 @@ export function useFcm(
             .then((registration) => {
               console.log('Service Worker 등록 성공:', registration.scope);
 
+              const messaging = getMessaging();
               getToken(messaging, {
                 vapidKey: process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY,
                 serviceWorkerRegistration: registration,
