@@ -70,9 +70,9 @@ export default function FeedList({ uuid }: FeedListProps) {
   const isReachingEnd =
     isEmpty || (data && (data[data.length - 1]?.content ?? []).length < 10);
 
-  // useEffect(() => {
-  //   mutate(() => true, undefined, { revalidate: false });
-  // }, [uuid]);
+  useEffect(() => {
+    mutate(() => true, undefined, { revalidate: false });
+  }, [uuid]);
 
   useEffect(() => {
     if (!inView || isLoadingMore || isReachingEnd) return;
