@@ -64,31 +64,23 @@ const backEndLibraries = [
 const externalServices = [
   {
     serviceName: '카카오 맵 API',
-    licenseName: 'Apache License 2.0',
-    licenseNotice: '네이버에서 제공한 저작권 및 상표권 관련 문구',
-    url: 'https://developers.naver.com/docs/login/api/api.md',
-    copyright: 'Copyright © NAVER Corp. All Rights Reserved.',
+    url: 'https://github.com/kakao/kakao.github.io?tab=readme-ov-file',
+    license: 'MIT license',
   },
   {
     serviceName: '구글 로그인 API',
-    licenseName: '구글 API 이용약관',
-    licenseNotice: '카카오에서 제공한 저작권 및 상표권 관련 문구',
-    url: 'https://developers.kakao.com/docs/latest/ko/kakaologin/common',
-    copyright: 'Copyright © Google Corp. All Rights Reserved.',
+    url: 'https://github.com/google/google-authenticator',
+    license: 'Apache License 2.0',
   },
   {
     serviceName: '카카오 로그인 API',
-    licenseName: 'Google Maps Platform Terms of Service',
-    licenseNotice: 'Google에서 제공한 저작권 및 상표권 관련 문구',
-    url: 'https://cloud.google.com/maps-platform/terms',
-    copyright: 'Copyright © KaKao LLC. All Rights Reserved.',
+    url: 'https://github.com/kakao/kakao.github.io?tab=readme-ov-file',
+    license: 'MIT license',
   },
   {
     serviceName: '네이버 로그인 API',
-    licenseName: 'Facebook Platform Policy',
-    licenseNotice: 'Facebook에서 제공한 저작권 및 상표권 관련 문구',
-    url: 'https://developers.facebook.com/policy/',
-    copyright: 'Copyright © Naver Platforms, Inc. All Rights Reserved.',
+    url: 'https://github.com/naver/naveridlogin-sdk-android',
+    license: 'Apache License 2.0',
   },
 ];
 
@@ -235,35 +227,21 @@ export default function page() {
             </ul>
           </section>
 
-          <section className="max-w-full overflow-scroll flex flex-col gap-4 !mt-0">
+          <section className="max-w-full flex flex-col gap-4 !mt-0">
             <h3 className="text-xl font-semibold">External Services</h3>
             {externalServices.map((service, index) => (
-              <div key={index} className="mb-4">
-                <p>{service.serviceName}</p>
-                <ul className="space-y-2 text-sm">
-                  <li>
-                    <span className="font-medium">License:</span>{' '}
-                    {service.licenseName}
-                  </li>
-                  <li>
-                    <span className="font-medium">Notice:</span>{' '}
-                    {service.licenseNotice}
-                  </li>
-                  <li>
-                    <span className="font-medium">URL:</span>{' '}
-                    <a
-                      href={service.url}
-                      className="text-blue-600 hover:underline"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {service.url}
-                    </a>
-                  </li>
-                  <li>
-                    <span className="font-medium">Copyright:</span>{' '}
-                    {service.copyright}
-                  </li>
+              <div key={index} className="flex flex-col gap-1">
+                <p className="text-sm">
+                  {service.serviceName} - {service.license}
+                </p>
+                <ul className="flex flex-col gap-1 text-xs">
+                  <Link
+                    href={`${service.url}`}
+                    target="_blank"
+                    className="text-[#0000EE]"
+                  >
+                    {service.url}
+                  </Link>
                 </ul>
               </div>
             ))}
