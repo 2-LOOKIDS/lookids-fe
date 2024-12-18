@@ -70,8 +70,6 @@ export function useFcm(
     // FCM 알림 수신 처리
     onMessage(messaging, (payload) => {
       console.log('Message received: ', payload);
-      setNotificationData((prev: any[]) => [...prev, payload.notification]);
-      setHasNotification(true);
     });
   }, [setNotificationData, setHasNotification]);
 }

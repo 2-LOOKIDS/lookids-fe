@@ -3,7 +3,9 @@ import { useEffect } from 'react';
 import { useSession } from '../context/SessionContext';
 
 export function useSse(
-  setNotificationData: (data: ((prev: any[]) => any[]) | any[]) => void,
+  setNotificationData: (
+    data: ((prev: Notification[]) => Notification[]) | any[]
+  ) => void,
   setHasNotification: (status: boolean) => void
 ) {
   const session = useSession();
@@ -30,11 +32,17 @@ export function useSse(
       };
 
       eventSource.onmessage = (event) => {
-        console.log('SSE메시지', event);
+        console.log('SSE 메시지', event);
         try {
           const data = JSON.parse(event.data);
           console.log('SSE 메시지 수신:', data);
-          setNotificationData((prev) => [...prev, ...data]);
+
+          // data가 배열인지 확인하고 처리
+          if (Array.isArray(data)) {
+            setNotificationData((prev) => [...prev, ...data]);
+          } else {
+            setNotificationData((prev) => [...prev, data]); // 단일 객체를 배열로 추가
+          }
           setHasNotification(true);
         } catch (error) {
           console.error('SSE 데이터 파싱 오류:', error);
