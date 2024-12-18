@@ -123,7 +123,7 @@ export async function getMainFeedList(
     const data = await fetchDataforMembers<
       CommonResponse<responseList<FeedDetail>>
     >(
-      `feed-read-service/read/feed/feedList?page=${page}&size=10`,
+      `feed-read-service/read/feed/feedList?page=${page}&size=5`,
       'GET',
       null,
       'no-store'
