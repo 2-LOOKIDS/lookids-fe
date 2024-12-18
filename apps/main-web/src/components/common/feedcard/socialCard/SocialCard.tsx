@@ -1,3 +1,4 @@
+'use client';
 import {
   Avatar,
   AvatarFallback,
@@ -10,12 +11,6 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { getFavoriteCount } from '../../../../actions/batch/batch';
-import {
-  getIsFavorite,
-  putFavoriteComment,
-} from '../../../../actions/favorite/favorite';
-import { getCommentCount } from '../../../../actions/feed/comment';
 import { getFeedDetail } from '../../../../actions/feed/FeedCard';
 import { getPetDetail } from '../../../../actions/user';
 import { PetDetail } from '../../../../types/user';
@@ -41,11 +36,8 @@ export default function SocialCard({
   // 상태 관리
   const [feedDetail, setFeedDetail] = useState<any>(null);
   const [petDetails, setPetDetails] = useState<PetDetail[]>([]);
-  const [likeCount, setLikeCount] = useState<number>(0);
-  const [isLiked, setIsLiked] = useState<boolean>(false);
-  const [commentCount, setCommentCount] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-
+  const [authorUuid, setAuthorUuid] = useState<string>('');
   // 초기 데이터 로드
   useEffect(() => {
     const fetchData = async () => {
@@ -55,6 +47,7 @@ export default function SocialCard({
         // Feed Detail 가져오기
         const feedData = await getFeedDetail(feedCode);
         setFeedDetail(feedData);
+        setAuthorUuid(feedData.uuid);
 
         // 반려동물 정보 가져오기
         if (feedData?.petCode) {
@@ -63,18 +56,6 @@ export default function SocialCard({
           );
           setPetDetails(pets);
         }
-
-        // 좋아요 카운트 및 상태 가져오기
-        const [likeData, favoriteState] = await Promise.all([
-          getFavoriteCount(feedCode, '피드'),
-          getIsFavorite(feedCode),
-        ]);
-        setLikeCount(likeData?.count ?? 0);
-        setIsLiked(favoriteState ?? false);
-
-        // 댓글 수 가져오기
-        const comments = await getCommentCount(feedCode);
-        setCommentCount(comments?.commentCount ?? 0);
       } catch (error) {
         console.error('데이터 로드 중 에러:', error);
       } finally {
@@ -84,26 +65,6 @@ export default function SocialCard({
 
     fetchData();
   }, [feedCode]);
-
-  // 좋아요 토글
-  const toggleLike = async () => {
-    try {
-      if (!feedDetail) return;
-
-      // Optimistic UI
-      setIsLiked((prev) => !prev);
-      setLikeCount((prev) => (isLiked ? prev - 1 : prev + 1));
-
-      // 서버 요청
-      await putFavoriteComment(feedDetail.uuid, feedCode, '피드');
-    } catch (error) {
-      console.error(`좋아요 등록 중 실패: ${error}`);
-
-      // 실패 시 상태 롤백
-      setIsLiked((prev) => !prev);
-      setLikeCount((prev) => (isLiked ? prev + 1 : prev - 1));
-    }
-  };
 
   if (isLoading || !feedDetail) {
     return <SocialCardSkeleton />;
@@ -176,6 +137,8 @@ export default function SocialCard({
           <p className="w-full text-sm text-gray-400 text-ellipsis whitespace-pre-wrap">
             {feedDetail.content}
           </p>
+
+          {/* 반려동물 쪽 */}
           {petDetails.length > 0 && (
             <div className="py-3">
               <h4 className="text-sm font-semibold text-gray-600 mb-2">
@@ -209,10 +172,7 @@ export default function SocialCard({
           )}
           <SocialCardReaction
             feedCode={feedCode}
-            isLiked={isLiked}
-            likeCount={likeCount}
-            commentCount={commentCount}
-            onToggleLike={toggleLike}
+            authorUuid={authorUuid}
             onShareClick={() => setIsShareModalOpen(true)}
           />
         </CardContent>

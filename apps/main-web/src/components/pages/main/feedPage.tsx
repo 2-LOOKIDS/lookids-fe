@@ -1,7 +1,7 @@
 'use client';
 
 import throttle from 'lodash/throttle';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import useSWRInfinite from 'swr/infinite';
 import {
   getMainFeedList,
@@ -22,7 +22,7 @@ export default function FeedPage({ initialData }: { initialData: any }) {
   // 데이터 fetcher 함수
   const fetcher = async (url: string) => {
     const pageIndex = parseInt(
-      new URLSearchParams(url.split('?')[1]).get('page') || '0'
+      new URLSearchParams(url.split('?')[1]).get('page') || '1'
     );
 
     if (isFallback) return getRandomFeedList(pageIndex);
@@ -46,9 +46,10 @@ export default function FeedPage({ initialData }: { initialData: any }) {
   );
 
   // 피드 리스트 병합
-  const feedList: FeedDetail[] = data
-    ? data.flatMap((page) => page.content)
-    : [];
+  const feedList: FeedDetail[] = useMemo(
+    () => (data ? data.flatMap((page) => page.content) : []),
+    [data]
+  );
 
   // 로딩 및 끝 페이지 상태 계산
   const isLoadingMore =
@@ -93,7 +94,7 @@ export default function FeedPage({ initialData }: { initialData: any }) {
         {/* 피드 리스트 */}
         {feedList.length === 0 ? (
           <div className="text-center text-gray-500">
-            표시할 피드가 없습니다.
+            추천 피드를 불러오는 중입니다.
           </div>
         ) : (
           feedList.map((feed, index) => (
