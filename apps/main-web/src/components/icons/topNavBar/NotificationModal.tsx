@@ -1,11 +1,15 @@
+'use client';
+
 import { Button } from '@repo/ui/components/ui/button';
 import { ScrollArea } from '@repo/ui/components/ui/scroll-area';
 import { X } from 'lucide-react';
+import { NotificationData } from '../../../types/notification/notificationType';
+import { NotificationMessage } from './NotificationMessage';
 
 interface NotificationModalProps {
   isOpen: boolean;
   closeModal: () => void;
-  notificationData: any;
+  notificationData: NotificationData[];
 }
 
 export function NotificationModal({
@@ -15,8 +19,8 @@ export function NotificationModal({
 }: NotificationModalProps) {
   if (!isOpen) return null;
 
-  const hasNotification =
-    notificationData && Object.keys(notificationData).length > 0;
+  const hasNotifications = notificationData && notificationData.length > 0;
+
   return (
     <div
       className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-start justify-center pt-20 z-50"
@@ -34,10 +38,13 @@ export function NotificationModal({
           </Button>
         </div>
         <ScrollArea className="p-4 max-h-[60vh]">
-          {hasNotification ? (
-            <pre className="text-sm bg-muted p-4 rounded-md overflow-auto">
-              {JSON.stringify(notificationData, null, 2)}
-            </pre>
+          {hasNotifications ? (
+            notificationData.map((notification) => (
+              <NotificationMessage
+                key={notification.id}
+                notification={notification}
+              />
+            ))
           ) : (
             <div className="text-center text-sm text-muted-foreground py-4">
               알림이 없습니다.
@@ -45,7 +52,10 @@ export function NotificationModal({
           )}
         </ScrollArea>
         <div className="p-4 border-t">
-          <Button onClick={closeModal} className="w-full bg-lookids">
+          <Button
+            onClick={closeModal}
+            className="w-full bg-lookids text-white hover:bg-lookids/90"
+          >
             닫기
           </Button>
         </div>
