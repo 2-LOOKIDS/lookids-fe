@@ -47,7 +47,7 @@ export function Sidebar({ open, onClose }: SidebarProps) {
         }}
       >
         <div className="flex items-center justify-between mb-4 p-4">
-          <h2 className="text-2xl font-bold text-white">category</h2>
+          <h2 className="text-2xl font-bold text-white">Menu</h2>
           <div onClick={onClose} className="z-[100]">
             <X color="white" size={'1.5rem'} />
           </div>
