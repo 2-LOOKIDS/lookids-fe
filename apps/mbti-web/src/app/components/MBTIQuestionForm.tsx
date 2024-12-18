@@ -64,7 +64,7 @@ export default function MBTIQuestionForm({
               >
                 {option.icon}
               </span>
-              <p className="text-sm sm:text-base font-medium text-center text-[#fd9340]">
+              <p className="text-lg whitespace-nowrap sm:text-3xl  font-bold text-center text-[#fd9340]">
                 {option.label}
               </p>
             </div>
