@@ -2,18 +2,17 @@ import { getPetList, getUserProfile } from '../../actions/user';
 
 import AddPet from '../../components/pages/mypage/AddPet';
 import EditCommentForm from '../../components/pages/mypage/EditCommentForm';
-
-import { getServerSession } from 'next-auth';
-import Hr from '../../components/common/Hr';
-import InputFormDialog from '../../components/forms/InputFormDialog';
 import EditPassword from '../../components/pages/mypage/EditPassword';
+import { EditPetButton } from '../../components/pages/profile/PetList';
 import EditPets from '../../components/pages/mypage/EditPets';
 import EditProfileImage from '../../components/pages/mypage/EditProfileImage';
 import EditUserProfileForm from '../../components/pages/mypage/EditUserProfileForm';
-import SignOut from '../../components/pages/mypage/SignOut';
 import FeedList from '../../components/pages/profile/FeedList';
-import { EditPetButton } from '../../components/pages/profile/PetList';
+import Hr from '../../components/common/Hr';
+import InputFormDialog from '../../components/forms/InputFormDialog';
+import SignOut from '../../components/pages/mypage/SignOut';
 import { formatDateString } from '../../utils/formatDate';
+import { getServerSession } from 'next-auth';
 import { options } from '../api/auth/[...nextauth]/options';
 
 export default async function page() {
@@ -25,9 +24,9 @@ export default async function page() {
   const comment = userProfile.comment ?? '소개글을 작성해주세요!';
   const userBirthDate = formatDateString(userProfile.birthDate);
   return (
-    <main className="">
+    <main>
       {/* 프로필 사진, 닉네임 변경 */}
-      <section className="flex flex-col items-center justify-center px-4 py-5">
+      <section className="flex flex-col items-center justify-center px-4 pt-2">
         <EditProfileImage
           imgUrl={userProfile.image}
           imgAlt={userProfile.nickname}
