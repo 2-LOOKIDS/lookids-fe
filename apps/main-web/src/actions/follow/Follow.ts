@@ -1,32 +1,35 @@
 'use server';
 
+import { CommonResponse, PaginationResponse } from '../../types/responseType';
 import {
   FollowerList,
   Following,
   FollowingList,
+  FollowingUser,
 } from '../../types/follow/FollowType';
-import { CommonResponse, PaginationResponse } from '../../types/responseType';
 
-import { revalidatePath } from 'next/cache';
-import { responseList } from '../../utils/chatting/fetchMessages';
 import { fetchDataforMembers } from '../common/common';
+import { responseList } from '../../utils/chatting/fetchMessages';
+import { revalidatePath } from 'next/cache';
 
 const BASE_URL = `${process.env.BACKEND_URL}/follow-block-service`;
 
 // 팔로잉 목록 조회
 export async function getFollowingList1(): Promise<
-  PaginationResponse<Following>
+  // PaginationResponse<Following>
+  PaginationResponse<FollowingUser>
 > {
   try {
     const data = await fetchDataforMembers<
-      CommonResponse<responseList<Following>>
+      // CommonResponse<responseList<Following>>
+      CommonResponse<responseList<FollowingUser>>
     >(
       `follow-block-service/read/following?page=0&size=10`,
       'GET',
       null,
       'no-cache'
     );
-    return await data.result;
+    return data.result;
   } catch (error) {
     console.error('팔로잉 목록 조회 중 오류 발생:', error);
     throw new Error(`팔로잉 목록 조회 실패: ${error}`);
@@ -59,8 +62,7 @@ export const getFollowingList = async (
     },
   });
   const result = (await response.json()) as CommonResponse<FollowingList>;
-  // console.log('🚀 ~ following:', result);
-  console.log('API_URL', API_URL);
+
   return result.result;
 };
 

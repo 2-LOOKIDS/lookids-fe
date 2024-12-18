@@ -19,17 +19,16 @@ export default function FollowingList({ uuid }: FollowingListProps) {
 
   const getKey: SWRInfiniteKeyLoader = (pageIndex, previousPageData) => {
     if (previousPageData && previousPageData.length) return null;
-    return `/read/following?page=${pageIndex}&size=10`;
+    return `read/following?page=${pageIndex}&size=10`;
   };
 
   const { data, size, setSize } = useSWRInfinite(getKey, fetcher);
 
-  console.log(data);
   return (
-    <ul>
+    <ul className="flex flex-col gap-2">
       {data?.map((item, idx) => {
         return item.content.map((item, idx) => {
-          return <UserCard key={idx} uuid={item.followerUuid} />;
+          return <UserCard key={idx} {...item} />;
         });
       })}
     </ul>
