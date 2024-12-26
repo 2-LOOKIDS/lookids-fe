@@ -3,11 +3,6 @@ import { revalidateTag } from 'next/cache';
 import { CommonResponse, responseList } from '../../types/responseType';
 import { fetchDataforMembers } from '../common/common';
 
-/*
-  Favorite Service
-*/
-
-// 좋아요 여부 조회
 // /read/favorite/feed
 export async function getIsFavorite(targetCode: string): Promise<boolean> {
   try {
@@ -25,7 +20,6 @@ export async function getIsFavorite(targetCode: string): Promise<boolean> {
   }
 }
 
-// 좋아요 토글 형식
 // /write/favorite
 export async function putFavoriteComment(
   authorUuid: string,

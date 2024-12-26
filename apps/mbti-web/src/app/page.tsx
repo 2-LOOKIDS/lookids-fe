@@ -49,22 +49,6 @@ export default function Home() {
             테스트 시작하기
           </Link>
         </motion.div>
-        {/* {animalEmojis.map((emoji, index) => (
-          <motion.span
-            key={index}
-            className="absolute text-4xl"
-            initial={{ opacity: 0, scale: 0 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, delay: index * 0.1 + 0.5 }}
-            style={{
-              top: `${Math.random() * 100}%`,
-              left: `${Math.random() * 100}%`,
-              transform: `translate(-50%, -50%) rotate(${Math.random() * 360}deg)`,
-            }}
-          >
-            {emoji}
-          </motion.span>
-        ))} */}
       </div>
     </main>
   );

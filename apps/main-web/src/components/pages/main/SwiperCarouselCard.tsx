@@ -23,13 +23,11 @@ export default function SwiperCarouselCard({ pet }: { pet: Pet }) {
           </p>
         </div>
         <div className="relative h-[100px] w-[100px]">
-          {/* Decorative circles */}
           <div className="absolute -left-[50px] -top-[50px] h-[200px] w-[200px]">
             <div className="absolute inset-0 rounded-full bg-white/5" />
             <div className="absolute inset-[20px] rounded-full bg-white/5" />
             <div className="absolute inset-[35px] rounded-full bg-white/10" />
           </div>
-          {/* Pet image */}
           <div className="relative h-full w-full overflow-hidden rounded-full">
             <Image
               src={pet.imageUrl}

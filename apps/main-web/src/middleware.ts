@@ -8,5 +8,5 @@ export const config = {
     '/notification/:path*',
     '/mypage/:path*',
     '/feed/:path*',
-  ], // 모든 하위 경로 포함
+  ],
 };

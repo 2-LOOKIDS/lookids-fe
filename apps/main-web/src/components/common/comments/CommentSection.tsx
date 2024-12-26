@@ -66,7 +66,6 @@ export default function CommentSection({ feedCode }: { feedCode: string }) {
         <div key={comment.commentCode} className="mb-4">
           <Comments feedCode={feedCode} comment={comment} />
 
-          {/* 대댓글 입력 필드 */}
           {activeReply === comment.commentCode && (
             <div className="mt-2 flex flex-col gap-2">
               <Input
@@ -88,7 +87,6 @@ export default function CommentSection({ feedCode }: { feedCode: string }) {
           )}
         </div>
       ))}
-      {/* {(isLoading || isValidating) && <div>Loading...</div>} */}
     </div>
   );
 }

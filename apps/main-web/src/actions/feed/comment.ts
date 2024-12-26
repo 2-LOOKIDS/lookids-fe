@@ -2,9 +2,6 @@ import { CommentReplyType, CommentType } from '../../types/feed/CommentType';
 import { CommonResponse, responseList } from '../../types/responseType';
 import { fetchDataforCommon, fetchDataforMembers } from '../common/common';
 
-/*
-Commnet Service 
-*/
 // 댓글 달기
 export async function uploadComment(
   feedCode: string,
@@ -43,16 +40,6 @@ export async function uploadReply(
     throw new Error(`대댓글 업로드 실패: ${error}`);
   }
 }
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-/*
-
-Comment Read Service
-
-*/
 
 // 댓글 조회
 export async function getComments(

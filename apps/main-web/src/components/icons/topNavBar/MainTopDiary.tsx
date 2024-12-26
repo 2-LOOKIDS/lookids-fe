@@ -3,13 +3,12 @@ export default function BellIcon() {
     <svg
       width="56"
       height="56"
-      viewBox="0 0 56 56" // viewBox를 아이콘 크기에 맞춤
+      viewBox="0 0 56 56"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
       <g filter="url(#filter0_d_55_1668)">
         <ellipse cx="28" cy="28" rx="19.2953" ry="19" fill="white" />{' '}
-        {/* 위치 및 크기 조정 */}
       </g>
       <path
         d="M20 35V37C20 38.1 20.9 39 22 39H34C35.1 39 36 38.1 36 37V35H20Z"

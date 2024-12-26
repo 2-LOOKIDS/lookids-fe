@@ -7,10 +7,8 @@ import {
 
 import { CommonResponse } from '../../types/responseType';
 
-// auth-service BASE_URL
 const BASE_URL = `${process.env.BACKEND_URL}/auth-service/auth`;
 
-// 이메일, 아이디, 비밀번호 유효성 체크
 export const checkCredentialsAvailabilityApi = async (
   value: string,
   type: string,
@@ -35,7 +33,6 @@ export const checkCredentialsAvailabilityApi = async (
   return result.result?.verification;
 };
 
-// 이메일 인증 코드 발송
 export const sendVerificationCodeToEmailApi = async (
   email: string
 ): Promise<boolean> => {
@@ -53,7 +50,6 @@ export const sendVerificationCodeToEmailApi = async (
   return result.result?.verification;
 };
 
-// 인증 코드 검사
 export const verifyEmailCodeApi = async (
   email: string,
   code: string
@@ -72,7 +68,6 @@ export const verifyEmailCodeApi = async (
   return result.result?.verification;
 };
 
-// 회원가입
 export const registerUserApi = async (
   values: RegisterUserInfo
 ): Promise<CommonResponse<null>> => {

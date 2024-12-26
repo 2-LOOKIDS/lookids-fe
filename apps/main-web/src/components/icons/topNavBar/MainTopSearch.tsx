@@ -3,13 +3,12 @@ export default function CustomIcon() {
     <svg
       width="56"
       height="56"
-      viewBox="0 0 56 56" // viewBox를 아이콘 크기에 맞춤
+      viewBox="0 0 56 56"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
       <g filter="url(#filter0_d_55_1682)">
         <ellipse cx="28" cy="28" rx="19.2953" ry="19" fill="white" />{' '}
-        {/* 위치 및 크기 조정 */}
       </g>
       <path
         d="M30 21C32.7 23.7 32.9 27.9 30.7 30.7C30.5 30.9 30.3 31.2 30 31.4C29.7 31.7 29.4 31.9 29 32.2C26.3 34.2 22.3 34 19.8 31.4C17 28.6 17 24 19.8 21.2C22.6 18.4 27.2 18.4 30 21Z"

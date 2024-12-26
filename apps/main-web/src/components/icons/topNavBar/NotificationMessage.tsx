@@ -45,11 +45,6 @@ export function NotificationMessage({
               피드 보기
             </Link>
           ) : null}
-          {/* <div className="text-xs text-gray-400 mt-2">
-            {formatDistanceToNow(new Date(notification.createdAt), {
-              addSuffix: true,
-            })}
-          </div> */}
         </div>
       </div>
     </div>

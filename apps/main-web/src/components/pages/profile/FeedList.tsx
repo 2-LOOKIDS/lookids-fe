@@ -2,17 +2,16 @@
 
 import useSWRInfinite, { SWRInfiniteKeyLoader } from 'swr/infinite';
 
-import FeedThumbnail from './FeedThumbnail';
-import FeedThumbnailSkeleton from '../../ui/Skeletons/FeedThumbnailSkeleton';
 import Link from 'next/link';
-import UserLikesTab from './UserLikesTab';
-import UserPostsTab from './UserPostsTab';
-import { getFeedThumbnails } from '../../../actions/feed/FeedList';
-import { getMediaUrl } from '../../../utils/media';
-import { mutate } from 'swr';
+import { useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
-import { useSearchParams } from 'next/navigation';
+import { mutate } from 'swr';
+import { getFeedThumbnails } from '../../../actions/feed/FeedList';
+import FeedThumbnailSkeleton from '../../ui/Skeletons/FeedThumbnailSkeleton';
+import FeedThumbnail from './FeedThumbnail';
+import UserLikesTab from './UserLikesTab';
+import UserPostsTab from './UserPostsTab';
 
 interface Tab {
   id: number;
@@ -94,19 +93,6 @@ export default function FeedList({ uuid }: FeedListProps) {
 
       <div className="flex w-full justify-center pt-4">
         <div className="grid w-full grid-cols-3 gap-1">
-          {/* {data &&
-            data.map((item) => {
-              return item?.content.map((item, idx) => {
-                return (
-                  <FeedThumbnail
-                    feedCode={item.feedCode}
-                    key={idx}
-                    imgUrl={item.mediaUrl}
-                    imgAlt={item.feedCode}
-                  />
-                );
-              });
-            })} */}
           {isLoading ? (
             <FeedThumbnailSkeleton />
           ) : (

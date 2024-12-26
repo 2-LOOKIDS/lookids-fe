@@ -17,5 +17,3 @@ export async function verifyPassword(
     throw Error('verifyPassword error');
   }
 }
-
-//export async function findIdByEmail()

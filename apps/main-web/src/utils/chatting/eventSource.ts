@@ -1,9 +1,6 @@
 import { EventSourcePolyfill } from 'event-source-polyfill';
 import { MessageResponse } from '../../types/chatting/ChattingType';
 
-/**
- * EventSource를 설정하고 연결하는 유틸 함수
- */
 export function connectEventSource(
   chatId: string,
   myAccessToken: string,

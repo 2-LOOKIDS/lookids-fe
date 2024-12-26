@@ -17,7 +17,6 @@ export default function MainSwiper() {
   const [slideIndex, setSlideIndex] = useState(0); // 현재 슬라이드 인덱스
   const swiperRef = useRef<SwiperType | null>(null);
 
-  // SWR을 사용하여 데이터 요청 및 캐싱
   const { data: petData = [] } = useSWR<PetDetail[]>(
     '/api/pets/random', // 캐싱 키
     getRandomPetList, // 데이터 요청 함수

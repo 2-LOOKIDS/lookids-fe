@@ -9,7 +9,6 @@ export default function MainHamburger() {
     >
       <g filter="url(#filter0_d_18_14)">
         <ellipse cx="28" cy="28" rx="19.2953" ry="19" fill="#FD9340" />{' '}
-        {/* 위치 및 크기 조정 */}
       </g>
       <path
         fillRule="evenodd"

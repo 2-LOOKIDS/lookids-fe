@@ -1,9 +1,6 @@
 import { getUserProfile } from '../../actions/user';
 import { UserInfo } from '../../types/user';
 
-/**
- * 참여자들의 프로필 데이터를 가져오는 유틸 함수
- */
 export async function fetchParticipantsProfile(participants: string[]) {
   try {
     const profiles = await Promise.all(

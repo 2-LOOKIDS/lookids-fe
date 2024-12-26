@@ -28,13 +28,11 @@ export default function CommonMenu({ menuItems }: CommonMenuProps) {
 
   return (
     <div ref={menuRef} className="relative">
-      {/* 메뉴 버튼 */}
       <EllipsisVertical
         className="cursor-pointer text-gray-600 hover:text-gray-800"
         onClick={() => setMenuOpen((prev) => !prev)}
       />
 
-      {/* 메뉴 아이템 */}
       {isMenuOpen && (
         <div className="absolute right-0 top-8 z-10 w-48 rounded-md bg-white shadow-lg transition-transform transform scale-100 origin-top-right">
           {menuItems.map((item, index) => (

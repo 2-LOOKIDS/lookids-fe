@@ -25,7 +25,6 @@ export default async function page() {
   const userBirthDate = formatDateString(userProfile.birthDate);
   return (
     <main>
-      {/* 프로필 사진, 닉네임 변경 */}
       <section className="flex flex-col items-center justify-center px-4 pt-2">
         <EditProfileImage
           imgUrl={userProfile.image}
@@ -53,7 +52,6 @@ export default async function page() {
         </div>
       </section>
       <Hr />
-      {/* 소개글 변경 */}
       <section className="px-5 py-5">
         <div className="flex flex-col gap-4">
           <p className="text-sm font-semibold">내 소개글</p>
@@ -70,24 +68,20 @@ export default async function page() {
         </div>
       </section>
       <Hr />
-      {/* 마이펫 관리 */}
       <section className="flex flex-col gap-1 py-5">
         <EditPets petList={petList} />
         <AddPet />
       </section>
       <Hr />
-      {/* 피드 썸네일 리스트 */}
 
       <section className="flex flex-col gap-1 py-5">
         <FeedList uuid={uuid} />
       </section>
       <Hr />
 
-      {/* 비밀번호 변경 페이지 이동 버튼 */}
       <section className="px-5 py-5">
         <EditPassword />
       </section>
-      {/* 로그아웃 버튼 */}
       <SignOut />
     </main>
   );

@@ -1,9 +1,8 @@
 'use client';
 
-import Link from 'next/link';
-import ProfileAvatar from '../../ui/ProfileAvatar';
-import { SearchContentUser } from '../../../types/search';
 import { useRouter } from 'next/navigation';
+import { SearchContentUser } from '../../../types/search';
+import ProfileAvatar from '../../ui/ProfileAvatar';
 
 interface UserResultListProps {
   result: SearchContentUser[];
@@ -36,10 +35,6 @@ function UserResultItem({ content }: UserResultItemProps) {
       className="flex items-center gap-2 cursor-pointer"
       onClick={() => router.push(`user/${content.nickname}-${content.tag}`)}
     >
-      {/* <Link
-        href={`user/${content.nickname}-${content.tag}`}
-        className="flex items-center gap-2"
-      > */}
       <ProfileAvatar
         className="h-10 w-10"
         imgUrl={content.profileImage}
@@ -48,7 +43,6 @@ function UserResultItem({ content }: UserResultItemProps) {
       <p>
         {content.nickname}@{content.tag}
       </p>
-      {/* </Link> */}
     </li>
   );
 }

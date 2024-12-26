@@ -3,7 +3,6 @@
 import { Session } from 'next-auth';
 import { getServerSession } from 'next-auth/next';
 import { options } from '../../app/api/auth/[...nextauth]/options';
-// import { Session } from "next-auth";
 
 type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 

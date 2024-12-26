@@ -9,40 +9,5 @@ interface UserLinkProps {
 }
 export default async function UserLink({ uuid }: UserLinkProps) {
   const userProfile = await getUserProfile(uuid);
-  return (
-    <div>{userProfile.nickname}</div>
-    // <Link
-    //   href={`user/${userInfo.nickname}-${userInfo.tag}`}
-    //   className="flex items-center gap-2"
-    // >
-    //   <ProfileAvatar
-    //     className="h-10 w-10"
-    //     imgUrl={userInfo.image}
-    //     imgAlt={`${userInfo.nickname}@${userInfo.tag}`}
-    //   />
-    //   <p>
-    //     {userInfo.nickname}@{userInfo.tag}
-    //   </p>
-    // </Link>
-  );
+  return <div>{userProfile.nickname}</div>;
 }
-// interface UserLinkProps {
-//   userInfo: UserInfo;
-// }
-// export default function UserLink({ userInfo }: UserLinkProps) {
-//   return (
-//     <Link
-//       href={`user/${userInfo.nickname}-${userInfo.tag}`}
-//       className="flex items-center gap-2"
-//     >
-//       <ProfileAvatar
-//         className="h-10 w-10"
-//         imgUrl={userInfo.image}
-//         imgAlt={`${userInfo.nickname}@${userInfo.tag}`}
-//       />
-//       <p>
-//         {userInfo.nickname}@{userInfo.tag}
-//       </p>
-//     </Link>
-//   );
-// }

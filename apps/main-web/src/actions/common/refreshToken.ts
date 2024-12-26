@@ -16,5 +16,5 @@ export const refreshToken = async (refreshToken: string, uuid: string) => {
 
   const data = await response.json();
 
-  return data; // 갱신된 토큰 데이터를 반환
+  return data;
 };

@@ -138,7 +138,6 @@ export default function SocialCard({
             {feedDetail.content}
           </p>
 
-          {/* 반려동물 쪽 */}
           {petDetails.length > 0 && (
             <div className="py-3">
               <h4 className="text-sm font-semibold text-gray-600 mb-2">

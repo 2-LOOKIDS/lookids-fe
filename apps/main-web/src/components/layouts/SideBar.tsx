@@ -1,6 +1,6 @@
-import Link from 'next/link';
 import { X } from 'lucide-react';
 import { signOut } from 'next-auth/react';
+import Link from 'next/link';
 import { useEffect } from 'react';
 
 interface SidebarProps {
@@ -65,11 +65,6 @@ export function Sidebar({ open, onClose }: SidebarProps) {
           >
             라이센스
           </Link>
-          {/* {data.map((category) => (
-            <p className="text-white text-xs font-bold bg-[#FFFFFF60] w-fit py-1 px-2 rounded-full">
-              {category.name}
-            </p>
-          ))} */}
         </div>
       </aside>
     </>

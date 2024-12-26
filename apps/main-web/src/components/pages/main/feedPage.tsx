@@ -89,9 +89,7 @@ export default function FeedPage({ initialData }: { initialData: any }) {
   return (
     <main className="px-4">
       <div className="mb-20 mt-14 flex flex-col gap-4">
-        {/* MainSwiper 로드 */}
         {!initialData ? <MainSwiperSkeleton /> : <MainSwiper />}
-        {/* 피드 리스트 */}
         {feedList.length === 0 ? (
           <div className="text-center text-gray-500">
             추천 피드를 불러오는 중입니다.
@@ -104,12 +102,10 @@ export default function FeedPage({ initialData }: { initialData: any }) {
             </div>
           ))
         )}
-        {/* 로딩 상태 표시 */}
         {isLoadingMore &&
           Array.from({ length: PAGE_SIZE }).map((_, i) => (
             <SocialCardSkeleton key={`loading-skeleton-${i}`} />
           ))}
-        {/* 더 이상 피드가 없을 때 */}
         {isReachingEnd && feedList.length > 0 && (
           <div className="text-center text-gray-500">
             더 이상 불러올 피드가 없습니다.

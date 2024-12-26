@@ -1,6 +1,5 @@
 'use client';
 
-import { DefaultValues, Path, useForm } from 'react-hook-form';
 import {
   Dialog,
   DialogContent,
@@ -8,19 +7,20 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@repo/ui/components/ui/dialog';
-import { PencilLine, X } from 'lucide-react';
+import { PencilLine } from 'lucide-react';
+import { DefaultValues, Path, useForm } from 'react-hook-form';
 import {
   PetProfileSchema,
   UserCommentSchema,
   UserProfileSchema,
 } from '../../../types/user';
 
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@repo/ui/components/ui/button';
 import { Input } from '@repo/ui/components/ui/input';
 import { Label } from '@repo/ui/components/ui/label';
 import { useState } from 'react';
 import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
 
 interface InternalDialogProps<
   TShape extends z.ZodRawShape,
@@ -84,12 +84,6 @@ function InternalDialog<
         onOpenAutoFocus={(e) => e.preventDefault()}
         className="w-[90%] rounded-sm"
       >
-        {/* <div
-          className="flex justify-end hover:cursor-pointer"
-          onClick={() => setOpen(false)}
-        >
-          <X className="h-4 w-4" />
-        </div> */}
         <DialogTitle className="hidden" />
         <form
           onSubmit={handleSubmit(onSubmit)}

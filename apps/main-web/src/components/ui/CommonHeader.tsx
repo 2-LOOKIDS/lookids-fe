@@ -1,9 +1,9 @@
 'use client';
 
 import { ChevronLeft } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { CommonHeaderProps } from '../../types/common/MenuType';
 import CommonMenu from '../common/CommonMenu';
-import { useRouter } from 'next/navigation';
 
 export default function CommonHeader({
   title,
@@ -19,7 +19,6 @@ export default function CommonHeader({
           router.back();
         }}
       />
-      {/* 메뉴 버튼 */}
       {ismenu && menuItems.length > 0 && (
         <div className="absolute right-4">
           <CommonMenu menuItems={menuItems} />

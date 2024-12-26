@@ -221,7 +221,6 @@ export default function MessageSection({
         {isLoading && <p>Loading more messages...</p>}
       </section>
 
-      {/* 모달 컴포넌트 렌더링 */}
       {selectedProfile && (
         <ParticipantModal
           participant={selectedProfile} // 모달 닫기

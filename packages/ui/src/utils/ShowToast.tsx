@@ -8,6 +8,5 @@ export default function ShowToast({ message, iconType }: CustomToastProps) {
   return toast({
     description: <CustomToast message={message} iconType={iconType} />,
     duration: 2000,
-    // action: <ToastAction altText="Try again">확인</ToastAction>,
   });
 }

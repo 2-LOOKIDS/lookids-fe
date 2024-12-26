@@ -81,14 +81,12 @@ export default function AddFeedForm({ selectedPetCode }: AddFeedFormProps) {
         }
         className="min-h-[140px] border-gray-300 text-[16px]"
       />
-      {/* Tags */}
       <FeedTags
         tags={tags}
         selectedTags={selectedTags}
         onTagToggle={handleTagSelect}
       />
 
-      {/* Buttons */}
       <div className="space-y-4 pt-4">
         <Button
           type="submit"

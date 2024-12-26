@@ -13,14 +13,10 @@ export default function Page() {
   return (
     <ImageProvider>
       <div className="mx-auto min-h-screen w-full max-w-[430px] bg-white">
-        {/* Header */}
         <AddFeedHeader />
         <hr />
-        {/* Image Upload */}
         <ImageUpload />
-        {/* ProfileCircle with onPetSelect */}
         <ProfileCircle onPetSelect={setSelectedPetCode} />
-        {/* AddFeedForm with selectedPetCode */}
         <AddFeedForm selectedPetCode={selectedPetCode} />
       </div>
     </ImageProvider>

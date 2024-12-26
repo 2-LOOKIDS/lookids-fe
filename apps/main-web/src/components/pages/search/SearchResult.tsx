@@ -1,24 +1,24 @@
 'use client';
 
-import {
-  SearchContentFeed,
-  SearchContentPet,
-  SearchContentUser,
-} from '../../../types/search';
+import { useEffect, useState } from 'react';
+import useSWRInfinite, { SWRInfiniteKeyLoader } from 'swr/infinite';
 import {
   searchFeed,
   searchPet,
   searchUser,
 } from '../../../actions/search/search';
-import { useEffect, useState } from 'react';
-import useSWRInfinite, { SWRInfiniteKeyLoader } from 'swr/infinite';
+import {
+  SearchContentFeed,
+  SearchContentPet,
+  SearchContentUser,
+} from '../../../types/search';
 
-import { FeedResultList } from './FeedResultList';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
+import { useInView } from 'react-intersection-observer';
+import { FeedResultList } from './FeedResultList';
 import { PetResultList } from './PetResultList';
 import { UserResultList } from './UserResultList';
-import { useInView } from 'react-intersection-observer';
-import { useSearchParams } from 'next/navigation';
 
 type Tab = 'user' | 'feed' | 'pet';
 
@@ -105,7 +105,6 @@ export default function SearchResult({ query }: SearchResultProps) {
   }, [inView, isLoadingMore, isReachingEnd]);
   return (
     <section className="pt-4 ">
-      {/* 사람 / 피드(태그) / 동물*/}
       <ul className="flex text-center h-8">
         {tabs.map((tab) => (
           <li
@@ -122,7 +121,6 @@ export default function SearchResult({ query }: SearchResultProps) {
         ))}
       </ul>
 
-      {/* 각 탭에 따라 다른 컴포넌트를 렌더링 */}
       {data &&
         data.map((item, idx) => {
           switch (activeTab) {

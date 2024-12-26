@@ -1,26 +1,23 @@
-import {
-  getFollowState,
-  getFollowingList,
-} from '../../../../actions/follow/Follow';
+import { getFollowState } from '../../../../actions/follow/Follow';
 import {
   getPetList,
   getUserProfile,
   getUserProfileByNicknameTag,
 } from '../../../../actions/user';
 
+import { Metadata } from 'next';
+import { getServerSession } from 'next-auth';
+import { notFound } from 'next/navigation';
+import { getProfileStats } from '../../../../actions/batch/batch';
+import { checkOneOnOneChatRoom } from '../../../../actions/chatting/Chatting';
 import FeedList from '../../../../components/pages/profile/FeedList';
 import FollowButton from '../../../../components/pages/profile/FollowButton';
 import MessageButton from '../../../../components/pages/profile/MessageButton';
-import { Metadata } from 'next';
 import PetList from '../../../../components/pages/profile/PetList';
-import ProfileAvatar from '../../../../components/ui/ProfileAvatar';
 import ProfileDescription from '../../../../components/pages/profile/ProfileDescription';
 import ProfileHeader from '../../../../components/pages/profile/ProfileHeader';
 import ProfileStats from '../../../../components/pages/profile/ProfileStats';
-import { checkOneOnOneChatRoom } from '../../../../actions/chatting/Chatting';
-import { getProfileStats } from '../../../../actions/batch/batch';
-import { getServerSession } from 'next-auth';
-import { notFound } from 'next/navigation';
+import ProfileAvatar from '../../../../components/ui/ProfileAvatar';
 import { options } from '../../../api/auth/[...nextauth]/options';
 
 export async function generateMetadata({
@@ -65,7 +62,6 @@ export default async function page({ params }: { params: { id: string } }) {
               imgAlt={userProfile.nickname}
             />
             <ProfileStats stats={stats} />
-            {/* <ProfileStats uuid={userProfile.uuid} /> */}
           </div>
 
           <ProfileDescription comment={userProfile.comment} />

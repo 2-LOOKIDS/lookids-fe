@@ -1,8 +1,8 @@
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import * as React from 'react';
 
-import { X } from 'lucide-react';
 import { cn } from '@repo/ui/lib/utils';
+import { X } from 'lucide-react';
 
 const Dialog = DialogPrimitive.Root;
 
@@ -69,14 +69,7 @@ const DialogFooter = ({
   className,
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) => (
-  <div
-    className={cn(
-      // 'flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2',
-      // 'flex flex-col-reverse',
-      className
-    )}
-    {...props}
-  />
+  <div className={cn(className)} {...props} />
 );
 DialogFooter.displayName = 'DialogFooter';
 
@@ -99,11 +92,6 @@ const DialogDescription = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Description>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Description>
 >(({ className, ...props }, ref) => (
-  // <DialogPrimitive.Description
-  //   ref={ref}
-  //   className={cn("text-sm text-slate-500 dark:text-slate-400", className)}
-  //   {...props}
-  // />
   <div
     ref={ref}
     className={cn('text-sm text-slate-950 dark:text-slate-400', className)}
@@ -114,13 +102,13 @@ DialogDescription.displayName = DialogPrimitive.Description.displayName;
 
 export {
   Dialog,
-  DialogPortal,
-  DialogOverlay,
   DialogClose,
-  DialogTrigger,
   DialogContent,
-  DialogHeader,
-  DialogFooter,
-  DialogTitle,
   DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogOverlay,
+  DialogPortal,
+  DialogTitle,
+  DialogTrigger,
 };
